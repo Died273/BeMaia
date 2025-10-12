@@ -90,6 +90,7 @@ const Features = () => (
             <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
           </Button>
         </div>
+
       </div>
       <div className="pointer-events-none z-0 absolute top-32 -left-32 w-56 h-56 rounded-full bg-primary/20 blur-3xl animate-float" />
       <div className="pointer-events-none z-0 absolute bottom-12 right-12 w-64 h-64 rounded-full bg-secondary/20 blur-3xl animate-float" style={{ animationDelay: '1.1s' }} />

@@ -83,7 +83,7 @@ export default function ContactModal() {
               <Button
                 variant="secondary"
                 size="lg"
-                className="w-full text-white"
+                className="w-full text-white relative overflow-hidden group before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:-translate-x-full hover:before:translate-x-full before:transition-transform before:duration-700"
                 onClick={handleCopy}
                 disabled={copied}
               >
@@ -94,7 +94,7 @@ export default function ContactModal() {
             <AnimatePresence>
               {copied && (
                 <motion.div 
-                  className="absolute left-1/2 -translate-x-1/2 mt-5 bottom-[-85px] min-w-[450px] bg-gradient-to-r from-primary to-secondary text-white py-3 px-8 rounded-xl shadow-xl font-semibold text-lg flex items-center gap-3"
+                  className="absolute left-[0%] -translate-x-1/2 mt-5 bottom-[-85px] min-w-[450px] bg-gradient-to-r from-primary to-secondary text-white py-3 px-8 rounded-xl shadow-xl font-semibold text-lg flex items-center gap-3"
                   initial={{ opacity: 0, y: -20, scale: 0.9 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -10, scale: 0.95 }}

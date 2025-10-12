@@ -1,7 +1,6 @@
 // src/pages/index.tsx
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
-import Mission from "@/components/Mission";
 import HowWeWork from "@/components/HowWeWork";
 import PartnerSection from "@/components/PartnerSection";
 import UniversityOrigin from "@/components/UniversityOrigin";
@@ -15,7 +14,6 @@ const Index = () => {
       <Header />
         <Hero />
         <MarketOpportunity />
-        <Mission />
         <HowWeWork />
         <UniversityOrigin />
         <CTA />

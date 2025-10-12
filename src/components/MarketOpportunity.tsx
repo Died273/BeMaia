@@ -13,7 +13,7 @@ const MarketOpportunity = () => {
     {
       icon: <Euro className="w-8 h-8 text-primary" />,
       value: "€4B+",
-      label: "Annual cost in Netherlands alone",
+      label: "Annual cost in the Netherlands",
       color: "primary"
     },
     {
@@ -23,16 +23,16 @@ const MarketOpportunity = () => {
       color: "secondary"
     },
     {
-      icon: <Building2 className="w-8 h-8 text-accent" />,
+      icon: <Building2 className="w-8 h-8 text-secondary" />,
       value: "85%",
-      label: "Organizations affected",
-      color: "accent"
+      label: "Of organizations are affected",
+      color: "secondary"
     },
     {
-      icon: <TrendingUp className="w-8 h-8 text-primary" />,
+      icon: <TrendingUp className="w-8 h-8 text-accent" />,
       value: "3X",
       label: "ROI on prevention vs treatment",
-      color: "primary"
+      color: "accent"
     }
   ];
 
@@ -90,7 +90,7 @@ const MarketOpportunity = () => {
                   ease: [0.39, 1.69, 0.36, 1]
                 }}
               >
-                <Card className="p-6 text-center bg-card hover:shadow-xl transition-all duration-300 border-2 hover:scale-105">
+                <Card className="p-6 text-center bg-card hover:shadow-xl transition-all duration-300 border-2 hover:scale-105 hover:border-primary/40">
                   <div className={`w-16 h-16 rounded-full bg-${stat.color}/10 flex items-center justify-center mx-auto mb-4`}>
                     {stat.icon}
                   </div>
@@ -111,7 +111,7 @@ const MarketOpportunity = () => {
               ease: [0.39, 1.69, 0.36, 1]
             }}
           >
-            <Card className="p-8 md:p-12 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 border-2 border-primary/20">
+            <Card className="p-8 md:p-12 from-primary/5 via-secondary/5 to-accent/5 border-2 border-primary/20 hover:scale-105 hover:shadow-xl hover:border-primary/40 transition-all duration-300">
               <div className="max-w-3xl mx-auto text-center">
                 <h3 className="text-2xl sm:text-3xl font-bold mb-4">
                   Early Intervention Saves Money

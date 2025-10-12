@@ -13,13 +13,13 @@ const HowWeWork = () => {
       icon: Shield,
       title: "Privacy -First Design",
       description: "Enterprise-grade security with full GDPR compliance and anonymous data aggregation.",
-      color: "from-primary to-accent",
+      color: "from-primary to-secondary",
     },
     {
       icon: TrendingUp,
       title: "Actionable Recommendations",
-      description: "We don't just provide insights. We deliver specific, prioritized steps company leaders can take to improve well-being right now.",
-      color: "from-accent to-primary",
+      description: "We deliver specific, prioritized steps leaders can take to improve well-being now.",
+      color: "from-secondary to-accent",
     },
     {
       icon: Lightbulb,

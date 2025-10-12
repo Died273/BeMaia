@@ -9,9 +9,9 @@ const bottomBarDelay = getColumnDelay(2) + 0.1;
 const Footer = () => {
   const { openModal } = useContactModal();
   const productLinks = [
-    { href: "/features", label: "Features" },
     { href: "/pricing", label: "Pricing" },
-    { href: "/security", label: "Security" }
+    { href: "/security", label: "Security" },
+    { href: "/mission", label: "Mission" },
   ];
 
   const companyLinks = [

@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, BarChart3, TrendingUp, Activity } from "lucide-react";
 import heroImage from "@/assets/hero-visualization.jpg";
 import { motion } from "framer-motion";
+import { useContactModal } from '@/contexts/ContactModalContext';
 
 // Animation delays
 const headlineDelay = 0.05;
@@ -13,6 +14,7 @@ const floatingCard1Delay = imageDelay + 0.3;
 const floatingCard2Delay = floatingCard1Delay + 0.2;
 
 const Hero = () => {
+  const { openModal } = useContactModal();
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary/5 via-blue-400/10 to-secondary/10 pt-24 sm:pt-20">
       {/* Animated soft white/neutral blobs */}
@@ -83,6 +85,7 @@ const Hero = () => {
                 variant="secondary"
                 size="lg"
                 className="text-white relative overflow-hidden group before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:-translate-x-full hover:before:translate-x-full before:transition-transform before:duration-700"
+                onClick={() => openModal('info@bemaia.nl')}
               >
                 Get in Touch
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />

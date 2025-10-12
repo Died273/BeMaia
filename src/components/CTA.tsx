@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, Mail, Calendar } from "lucide-react";
 import { motion } from "framer-motion";
+import { useContactModal } from '@/contexts/ContactModalContext';
 
 // Animation delays
 const cardDelay = 0.05;
@@ -11,6 +12,7 @@ const buttonsDelay = descDelay + 0.1;
 const footerDelay = buttonsDelay + 0.2;
 
 const CTA = () => {
+  const { openModal } = useContactModal();
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-bl from-secondary/10 via-blue-400/10 to-primary/5 pt-24 sm:pt-20">
       {/* Animated soft white/neutral blobs */}
@@ -86,11 +88,12 @@ const CTA = () => {
                   variant="secondary"
                   size="lg"
                   className="text-white relative overflow-hidden group before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:-translate-x-full hover:before:translate-x-full before:transition-transform before:duration-700"
-                >
-                  Get in Touch
-                  <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
-                </Button>
-              </motion.div>
+                onClick={() => openModal('info@bemaia.nl')}
+              >
+                Get in Touch
+                <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </motion.div>
 
               <motion.div 
                 className="pt-8 border-t border-border/50"

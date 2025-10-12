@@ -1,6 +1,7 @@
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import { Target, Heart, TrendingUp } from "lucide-react";
 import { motion } from "framer-motion";
-import Header from "@/components/Header";
 
 // Animation delays
 const headlineDelay = 0.05;
@@ -14,7 +15,10 @@ const Mission = () => {
         <div className="group relative flex justify-center items-center h-16 w-16">
           {/* Gradient background circle */}
           <div
-            className="absolute inset-0 z-0 rounded-full bg-gradient-to-br from-primary to-secondary transition-transform duration-200 group-hover:scale-150"
+            className={`
+            absolute inset-0 z-0 rounded-full bg-gradient-to-br ${"from-primary to-secondary"}
+            transition-transform duration-200 group-hover:scale-150
+          `}
           />
           {/* Icon in front */}
           <Target className="w-8 h-8 text-white z-10 transition-transform duration-200 group-hover:scale-150" />
@@ -22,35 +26,43 @@ const Mission = () => {
       ),
       gradient: "from-primary to-secondary",
       title: "Proactive",
-      description: "Identify risks before they become crises",
+      description: "Identify risks before they become crises"
     },
     {
       icon: (
         <div className="group relative flex justify-center items-center h-16 w-16">
           <div
-            className="absolute inset-0 z-0 rounded-full bg-gradient-to-br from-secondary to-accent transition-transform duration-200 group-hover:scale-150"
+            className={`
+            absolute inset-0 z-0 rounded-full bg-gradient-to-br ${"from-secondary to-accent"}
+            transition-transform duration-200 group-hover:scale-150
+          `}
           />
           <Heart className="w-8 h-8 text-white z-10 transition-transform duration-200 group-hover:scale-150" />
         </div>
       ),
       gradient: "from-secondary to-accent",
       title: "Empathetic",
-      description: "Put people first with privacy-protected insights",
+      description: "Put people first with privacy-protected insights"
     },
     {
       icon: (
         <div className="group relative flex justify-center items-center h-16 w-16">
           <div
-            className="absolute inset-0 z-0 rounded-full bg-gradient-to-br from-primary to-secondary transition-transform duration-200 group-hover:scale-150"
+            className={`
+            absolute inset-0 z-0 rounded-full bg-gradient-to-br ${"from-primary to-secondary"}
+            transition-transform duration-200 group-hover:scale-150
+          `}
           />
           <TrendingUp className="w-8 h-8 text-white z-10 transition-transform duration-200 group-hover:scale-150" />
         </div>
       ),
       gradient: "from-primary to-secondary",
       title: "Results-Driven",
-      description: "Deliver measurable impact on well-being and profits",
-    },
+      description: "Deliver measurable impact on well-being and profits"
+    }
   ];
+
+
 
   return (
     <>
@@ -74,7 +86,7 @@ const Mission = () => {
                 transition={{
                   duration: 0.9,
                   delay: headlineDelay,
-                  ease: [0.39, 1.69, 0.36, 1],
+                  ease: [0.39, 1.69, 0.36, 1]
                 }}
               >
                 Building Healthier Organizations
@@ -87,7 +99,7 @@ const Mission = () => {
                 transition={{
                   duration: 0.9,
                   delay: descDelay,
-                  ease: [0.39, 1.69, 0.36, 1],
+                  ease: [0.39, 1.69, 0.36, 1]
                 }}
               >
                 BeMaia was founded on the belief that employee burnout is preventable. By combining cutting-edge data science
@@ -100,14 +112,14 @@ const Mission = () => {
               {values.map((value, index) => (
                 <motion.div
                   key={value.title}
-                  className="group text-center space-y-4"
+                  className="text-center space-y-4"
                   initial={{ opacity: 0, y: -38, scale: 0.94 }}
                   whileInView={{ opacity: 1, y: 0, scale: 1 }}
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{
                     duration: 1.1,
                     delay: getCardDelay(index),
-                    ease: [0.39, 1.69, 0.36, 1],
+                    ease: [0.39, 1.69, 0.36, 1]
                   }}
                 >
                   <div className={`w-16 h-16 rounded-full bg-gradient-to-br ${value.gradient} flex items-center justify-center mx-auto shadow-lg`}>
@@ -128,7 +140,8 @@ const Mission = () => {
           @keyframes float { 0%,100%{transform:translateY(0);}50%{transform:translateY(-26px);} }
         `}</style>
       </section>
-    </>
+      <Footer />
+      </>
   );
 };
 

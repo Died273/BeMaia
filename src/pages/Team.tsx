@@ -11,7 +11,7 @@ const founders = [
   {
     name: "Louis Enrico Böker",
     role: "Co-Founder",
-    expertise: "Business Strategy & Growth",
+    expertise: "Business & Growth",
     bio: "",
     photo: "/team/louis.jpg",
     color: "from-secondary to-primary",

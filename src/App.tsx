@@ -5,11 +5,15 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Team from "./pages/Team";
+import Pricing from "./pages/Pricing";
 import NotFound from "./pages/NotFound";
 import ScrollToTop from "@/components/ScrollToTop";
 import Features from "./pages/Features";
-
-
+import { ContactModalProvider } from '@/contexts/ContactModalContext';
+import ContactModal from '@/components/ui/ContactModal';
+import Security from "./pages/Security";
+import PrivacyPolicy from "./pages/Privacy";  
+import TermsOfService from "./pages/Terms";
 
 const queryClient = new QueryClient();
 
@@ -18,16 +22,22 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
-        <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/team" element={<Team />} />
-          <Route path="/features" element={<Features />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <ContactModalProvider>
+        <ContactModal />
+        <BrowserRouter>
+          <ScrollToTop />
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/team" element={<Team />} />
+            <Route path="/pricing" element={<Pricing />} />
+            <Route path="/features" element={<Features />} />
+            <Route path="/security" element={<Security />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<TermsOfService />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </ContactModalProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );

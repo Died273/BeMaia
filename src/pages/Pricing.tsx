@@ -1,0 +1,112 @@
+import Header from "@/components/Header";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import Footer from "@/components/Footer";
+
+// Animation delays
+const headlineDelay = 0.05;
+const descDelay = headlineDelay + 0.18;
+const cardDelay = descDelay + 0.25;
+const buttonDelay = cardDelay + 0.28;
+
+const Pricing = () => (
+  <>
+    <Header />
+    <section className="min-h-screen w-full py-36 bg-gradient-to-br from-white via-primary/10 to-primary/20 relative overflow-x-hidden">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-3xl mx-auto text-center mb-16">
+          <h1
+            className="text-4xl sm:text-5xl font-bold mb-6 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent py-4 animate-fade-down"
+            style={{ animationDelay: `${headlineDelay}s` }}
+          >
+            Pricing
+          </h1>
+          <p
+            className="text-xl text-muted-foreground max-w-xl mx-auto animate-fade-down"
+            style={{ animationDelay: `${descDelay}s` }}
+          >
+            <span>
+              BeMaia is currently <b className="text-primary">free</b> for all partners during our pilot phase!
+            </span>
+            <br />
+            <span className="block mt-4">
+              Join our partnership program, get full access, and help us improve BeMaia for everyone.
+            </span>
+          </p>
+        </div>
+        <div className="grid grid-cols-1 gap-12 max-w-2xl mx-auto">
+          <div
+            className="animate-fade-in-up"
+            style={{ animationDelay: `${cardDelay}s` }}
+          >
+            <Card
+              className={`
+                group p-8 bg-white/80 border border-border/30 shadow-xl
+                hover:scale-105 hover:shadow-2xl hover:border-primary/40
+                transition-all duration-300
+              `}
+              style={{
+                borderRadius: "2rem",
+                maxWidth: "32rem",
+                margin: "0 auto",
+              }}
+            >
+              <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                Early Access – <span className="text-secondary">€0</span>
+              </h2>
+              <p className="text-lg text-muted-foreground mb-4">
+                Enjoy <span className="font-bold text-primary">all features</span>,
+                help shape the platform, and connect with our team.<br />
+                <span className="inline-block mt-3 font-semibold px-3 py-1 rounded-xl bg-secondary/10 text-secondary shadow">
+                  No payment required during the pilot program!
+                </span>
+              </p>
+              <Button
+                size="lg"
+                variant="hero"
+                className="mt-8 px-10 font-bold text-white bg-primary hover:bg-secondary transition flex items-center justify-center animate-fade-up"
+                style={{ animationDelay: `${buttonDelay}s` }}
+                onClick={() =>
+                  window.open(
+                    "mailto:l.boeker@bemaia.nl?subject=Pilot Partnership Inquiry",
+                    "_blank"
+                  )
+                }
+              >
+                Become a Pilot Partner
+              </Button>
+            </Card>
+          </div>
+        </div>
+      </div>
+      {/* Soft blue floating blobs */}
+      <div className="pointer-events-none z-0 absolute top-32 -left-32 w-56 h-56 rounded-full bg-primary/10 blur-2xl animate-float" />
+      <div className="pointer-events-none z-0 absolute bottom-12 right-12 w-64 h-64 rounded-full bg-primary/20 blur-2xl animate-float" style={{ animationDelay: '1.1s' }} />
+      <style>{`
+        .animate-fade-in-up { animation: fadeinUp 0.92s cubic-bezier(.39,1.69,.36,1) both; }
+        @keyframes fadeinUp { 0% {opacity: 0;transform: translateY(32px);} 70%{opacity:.82} 100% {opacity:1; transform:translateY(0);} }
+        .animate-fade-down { 
+          opacity: 0; 
+          transform: translateY(-32px); 
+          animation: fadeDown .95s cubic-bezier(.39,1.69,.36,1) both;
+        }
+        @keyframes fadeDown {
+          to { opacity: 1; transform: translateY(0);}
+        }
+        .animate-fade-up {
+          opacity: 0;
+          transform: translateY(24px); 
+          animation: fadeUp .87s cubic-bezier(.39,1.69,.36,1) both;
+        }
+        @keyframes fadeUp {
+          to { opacity: 1; transform: translateY(0);}
+        }
+        .animate-float { animation: float 8s ease-in-out infinite alternate;}
+        @keyframes float { 0%,100%{transform:translateY(0);}50%{transform:translateY(-26px);} }
+      `}</style>
+    </section>
+    <Footer />
+  </>
+);
+
+export default Pricing;

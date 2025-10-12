@@ -14,6 +14,7 @@ import ContactModal from '@/components/ui/ContactModal';
 import Security from "./pages/Security";
 import PrivacyPolicy from "./pages/Privacy";  
 import TermsOfService from "./pages/Terms";
+import Mission from "./pages/Mission";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ const App = () => (
             <Route path="/team" element={<Team />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/features" element={<Features />} />
+            <Route path="/mission" element={<Mission />} />
             <Route path="/security" element={<Security />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />
             <Route path="/terms" element={<TermsOfService />} />

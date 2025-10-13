@@ -53,7 +53,7 @@ const founders = [
     role: "Co-Founder",
     expertise: "Technology & Data Science",
     bio: "",
-    photo: "/team/diederick.jpeg",
+    photo: "/assets/team/diederick.jpeg",
     color: "from-secondary to-primary",
     email: "d.gier@bemaia.nl",
     linkedin: "https://www.linkedin.com/in/diederickdegier/",

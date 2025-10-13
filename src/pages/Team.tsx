@@ -33,9 +33,10 @@ const founders = [
     role: "Co-Founder",
     expertise: "Sales & Product Development",
     bio: "",
-    photo: "/team/tim.jpg",
+    photo: "/team/tim.jpeg",
     color: "from-secondary to-primary",
     email: "t.spaargaren@bemaia.nl",
+    linkedin: "https://www.linkedin.com/in/tim-spaargaren-a15412244/",
   },
   {
     name: "Tanhushri Chidanand",
@@ -45,15 +46,17 @@ const founders = [
     photo: "/team/tanhushri.jpg",
     color: "from-primary to-secondary",
     email: "info@bemaia.com",
+    linkedin: "https://www.linkedin.com/in/tanushri-chidanand-a721a0234/",
   },
   {
     name: "Diederick de Gier",
     role: "Co-Founder",
     expertise: "Technology & Data Science",
     bio: "",
-    photo: "/team/diederick.jpg",
+    photo: "/team/diederick.jpeg",
     color: "from-secondary to-primary",
     email: "d.gier@bemaia.nl",
+    linkedin: "https://www.linkedin.com/in/diederickdegier/",
   },
 ];
 

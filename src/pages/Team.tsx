@@ -37,7 +37,6 @@ const founders = [
     color: "from-secondary to-primary",
     email: "t.spaargaren@bemaia.nl",
     linkedin: "https://www.linkedin.com/in/tim-spaargaren-a15412244/",
-    linkedin: "https://www.linkedin.com/in/tim-spaargaren-a15412244/",
   },
   {
     name: "Tanhushri Chidanand",
@@ -48,7 +47,6 @@ const founders = [
     color: "from-primary to-secondary",
     email: "info@bemaia.com",
     linkedin: "https://www.linkedin.com/in/tanushri-chidanand-a721a0234/",
-    linkedin: "https://www.linkedin.com/in/tanushri-chidanand-a721a0234/",
   },
   {
     name: "Diederick de Gier",
@@ -56,10 +54,8 @@ const founders = [
     expertise: "Technology & Data Science",
     bio: "",
     photo: "/assets/team/diederick.jpeg",
-    photo: "/assets/team/diederick.jpeg",
     color: "from-secondary to-primary",
     email: "d.gier@bemaia.nl",
-    linkedin: "https://www.linkedin.com/in/diederickdegier/",
     linkedin: "https://www.linkedin.com/in/diederickdegier/",
   },
 ];

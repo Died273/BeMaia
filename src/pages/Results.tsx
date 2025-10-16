@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Footer from "@/components/Footer";
+import Header from "@/components/Header";
 import { 
   TrendingUp, 
   Award, 
@@ -9,14 +10,18 @@ import {
   Wind,
   Brain, 
   Heart, 
-  ArrowRight,
   Building2,
   Users,
   Sparkles,
   CheckCircle2,
   Lightbulb,
-  RotateCcw
+  RotateCcw,
+  Mail,
+  User,
+  Phone,
+  Send
 } from "lucide-react";
+
 
 const questions = [
   { id: 1, dimension: "exhaustion" },
@@ -34,18 +39,22 @@ const questions = [
 ];
 
 const cutoff = {
-  total: { green: [1.00, 2.53], orange: [2.54, 2.95], red: [2.96, 5.00] },
-  exhaustion: { green: [1.00, 3.16], orange: [3.17, 3.50], red: [3.51, 5.00] },
-  mental_distance: { green: [1.00, 2.16], orange: [2.17, 3.16], red: [3.17, 5.00] },
-  cognitive: { green: [1.00, 2.82], orange: [2.83, 3.16], red: [3.17, 5.00] },
-  emotional: { green: [1.00, 2.16], orange: [2.17, 2.82], red: [2.83, 5.00] }
+  // Unified bins for all dimensions and total:
+  // Low Risk / Healthy: 1.00 - 2.79
+  // At Risk: 2.80 - 3.49
+  // Very High Risk / High Risk: 3.50 - 5.00
+  total: { green: [1.0, 2.79], orange: [2.8, 3.49], red: [3.5, 5.0] },
+  exhaustion: { green: [1.0, 2.79], orange: [2.8, 3.49], red: [3.5, 5.0] },
+  mental_distance: { green: [1.0, 2.79], orange: [2.8, 3.49], red: [3.5, 5.0] },
+  cognitive: { green: [1.0, 2.79], orange: [2.8, 3.49], red: [3.5, 5.0] },
+  emotional: { green: [1.0, 2.79], orange: [2.8, 3.49], red: [3.5, 5.0] }
 };
 
 const dimensionInfo = {
   exhaustion: {
     icon: Zap,
     name: "Exhaustion",
-    description: "Physical and mental energy levels"
+    description: "Physical and mental energy "
   },
   mental_distance: {
     icon: Wind,
@@ -129,8 +138,47 @@ export default function Results() {
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
   const [showFlipHint, setShowFlipHint] = useState(true);
   
+  // BACKEND NOTE: Contact form state - these values will be sent to Supabase
+  const [contactForm, setContactForm] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [contactErrors, setContactErrors] = useState<{ email?: string }>({});
+  const emailRef = useRef<HTMLInputElement | null>(null);
+  
   const finalScores = useMemo(() => calcScores(responses), [responses]);
   const totalZone = getZone("total", finalScores.total);
+
+  // BACKEND NOTE: Save questionnaire responses to Supabase when component mounts
+  // You should create a 'questionnaire_responses' table with columns:
+  // - id (uuid, primary key)
+  // - created_at (timestamp)
+  // - total_score (numeric)
+  // - exhaustion_score (numeric)
+  // - mental_distance_score (numeric)
+  // - cognitive_score (numeric)
+  // - emotional_score (numeric)
+  // - responses (jsonb) - stores the raw responses object
+  useEffect(() => {
+    // BACKEND TODO: Implement Supabase insert here
+    // const saveResponses = async () => {
+    //   const { data, error } = await supabase
+    //     .from('questionnaire_responses')
+    //     .insert({
+    //       total_score: finalScores.total,
+    //       exhaustion_score: finalScores.exhaustion,
+    //       mental_distance_score: finalScores.mental_distance,
+    //       cognitive_score: finalScores.cognitive,
+    //       emotional_score: finalScores.emotional,
+    //       responses: responses
+    //     });
+    // };
+    // saveResponses();
+  }, [finalScores, responses]);
 
   useEffect(() => {
     setAnimatedScores({ total: 0, exhaustion: 0, mental_distance: 0, cognitive: 0, emotional: 0 });
@@ -167,6 +215,64 @@ export default function Results() {
     setShowFlipHint(false);
   };
 
+  // BACKEND NOTE: Contact form submission handler
+  // You should create a 'contact_submissions' table in Supabase with columns:
+  // - id (uuid, primary key)
+  // - created_at (timestamp)
+  // - name (text)
+  // - email (text)
+  // - organization (text)
+  // - message (text)
+  // - questionnaire_response_id (uuid, optional foreign key to link with questionnaire response)
+  const handleContactSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    // validate email is present and looks like an email
+    const email = contactForm.email?.trim() || '';
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email) {
+      setContactErrors({ email: 'Please provide your email.' });
+      emailRef.current?.focus();
+      return;
+    }
+
+    if (!emailRegex.test(email)) {
+      setContactErrors({ email: 'Please provide a valid email address.' });
+      emailRef.current?.focus();
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    // BACKEND TODO: Implement Supabase insert here
+    // const { data, error } = await supabase
+    //   .from('contact_submissions')
+    //   .insert({
+    //     name: contactForm.name,
+    //     email: contactForm.email,
+    //     organization: contactForm.organization,
+    //     message: contactForm.message
+    //   });
+    // 
+    // if (error) {
+    //   console.error('Error submitting contact form:', error);
+    //   setIsSubmitting(false);
+    //   // Handle error - show error message to user
+    //   return;
+    // }
+
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    setIsSubmitting(false);
+    setSubmitSuccess(true);
+    
+    // Reset form
+  setContactForm({ name: '', email: '', phone: '', message: '' });
+    
+    // Reset success message after 5 seconds
+    setTimeout(() => setSubmitSuccess(false), 5000);
+  };
+
   if (Object.keys(responses).length !== questions.length) {
     navigate("/questionnaire");
     return null;
@@ -183,9 +289,13 @@ export default function Results() {
       <style>{`
         .flip-card-container {
           perspective: 1000px;
+          /* ensure the card has a stable height and clips any transformed content */
+          min-height: 250px;
           height: 100%;
-          position: relative; /* ensure positioned children are contained */
+          position: relative;
           display: block;
+          overflow: hidden;
+          border-radius: 12px;
           -webkit-font-smoothing: antialiased;
         }
 
@@ -193,10 +303,11 @@ export default function Results() {
           position: relative;
           width: 100%;
           height: 100%;
+          min-height: 200px;
           transition: transform 0.6s;
           transform-style: preserve-3d;
-          transform-origin: center center; /* ensure it flips in place */
-          will-change: transform; /* hint for smoother animation */
+          transform-origin: center center;
+          will-change: transform;
         }
 
         .flip-card.flipped {
@@ -211,18 +322,95 @@ export default function Results() {
           right: 0;
           width: 100%;
           height: 100%;
+          box-sizing: border-box;
           backface-visibility: hidden;
           -webkit-backface-visibility: hidden;
-          will-change: transform, opacity; /* smoother back/front transitions */
+          will-change: transform, opacity;
         }
 
         .flip-card-back {
           transform: rotateY(180deg);
         }
 
-        /* Hover effect should only scale on the composite transform to avoid layout shifts */
         .flip-card-container:hover .flip-card:not(.flipped) {
           transform: translateZ(0) scale(1.02);
+        }
+
+        .contact-input {
+          width: 100%;
+          padding: 14px 16px;
+          background: rgba(255, 255, 255, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          border-radius: 8px;
+          color: white;
+          font-size: 15px;
+          font-weight: 500;
+          transition: all 0.3s ease;
+          outline: none;
+        }
+
+        .contact-input::placeholder {
+          color: rgba(255, 255, 255, 0.5);
+        }
+
+        .contact-input:focus {
+          background: rgba(255, 255, 255, 0.15);
+          border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .contact-textarea {
+          width: 100%;
+          padding: 14px 16px;
+          background: rgba(255, 255, 255, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          border-radius: 8px;
+          color: white;
+          font-size: 15px;
+          font-weight: 500;
+          transition: all 0.3s ease;
+          outline: none;
+          resize: vertical;
+          min-height: 120px;
+          font-family: inherit;
+        }
+
+        .contact-textarea::placeholder {
+          color: rgba(255, 255, 255, 0.5);
+        }
+
+        .contact-textarea:focus {
+          background: rgba(255, 255, 255, 0.15);
+          border-color: rgba(255, 255, 255, 0.4);
+        }
+        
+        /* Responsive grid for dimension cards */
+        .dimension-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 20px;
+          margin-bottom: 60px;
+        }
+
+        @media (min-width: 768px) {
+          .dimension-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+
+        @media (min-width: 1200px) {
+          .dimension-grid {
+            grid-template-columns: repeat(4, 1fr);
+          }
+        }
+
+        /* Mobile: add spacing between score number and badge, remove translate overlap */
+        @media (max-width: 639px) {
+          .score-badge {
+            transform: none !important;
+            margin-top: 12px !important;
+            display: inline-flex !important;
+            margin-left: 0 !important;
+          }
         }
         
         @media (prefers-reduced-motion: reduce) {
@@ -232,18 +420,9 @@ export default function Results() {
         }
       `}</style>
 
+      <Header />
+
       <div className="max-w-6xl mx-auto px-6 py-14" style={{ paddingBottom: 80, position: 'relative', zIndex: 2 }}>
-        <header className="text-center mb-12">
-          <motion.a
-            href="/"
-            initial={{ opacity: 1 }}
-            whileHover={{ scale: 1.15 }}
-            whileTap={{ scale: 0.98 }}
-            style={{ color: 'white', fontWeight: 700, fontSize: 26, display: 'inline-block' }}
-          >
-            Homepage
-          </motion.a>
-        </header>
 
         {/* Main Results Container */}
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: 60 }}>
@@ -328,6 +507,7 @@ export default function Results() {
                     verticalAlign: 'middle',
                     transform: 'translateY(-20px)'
                   }}
+                  className="score-badge"
                 >
                   <CheckCircle2 style={{ width: 20, height: 20 }} />
                   {totalZone.label}
@@ -370,12 +550,7 @@ export default function Results() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              style={{ 
-                display: 'grid', 
-                gridTemplateColumns: 'repeat(2, 1fr)', 
-                gap: 20,
-                marginBottom: 60
-              }}
+              className="dimension-grid"
             >
               {Object.entries(dimensionInfo).map(([key, info], idx) => {
                 const zone = getZone(key as keyof typeof cutoff, finalScores[key]);
@@ -384,17 +559,17 @@ export default function Results() {
                 const dimensionAdviceText = getDimensionAdvice(key, zone.label);
                 
                 return (
-                  <motion.div
-                    key={key}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.3 + idx * 0.1 }}
-                    style={{
-                      height: 200,
-                      cursor: 'pointer'
-                    }}
-                    onClick={() => toggleFlip(key)}
-                  >
+                    <motion.div
+                      key={key}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.3 + idx * 0.1 }}
+                      style={{
+                        minHeight: 200,
+                        cursor: 'pointer'
+                      }}
+                      onClick={() => toggleFlip(key)}
+                    >
                     <div className="flip-card-container">
                       <div className={`flip-card ${isFlipped ? 'flipped' : ''}`}>
                         {/* FRONT - Score Card */}
@@ -544,7 +719,7 @@ export default function Results() {
               })}
             </motion.div>
 
-            {/* Call to Action - Primary Focus */}
+            {/* Contact Form - Primary Focus */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -655,7 +830,7 @@ export default function Results() {
                 }}
               />
               <motion.div
-                initial={{ scaleY: 0, originY: 0 }}
+                initial={{ scaleY:0, originY: 0 }}
                 animate={{ scaleY: 1 }}
                 transition={{ duration: 0.6, delay: 0.8 }}
                 style={{
@@ -672,14 +847,13 @@ export default function Results() {
                 background: 'rgba(255, 255, 255, 0.08)',
                 backdropFilter: 'blur(10px)',
                 borderRadius: 12,
-                padding: '48px 40px',
-                textAlign: 'center'
+                padding: '48px 40px'
               }}>
                 <motion.div
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ delay: 1.3, type: "spring" }}
-                  style={{ marginBottom: 20 }}
+                  style={{ marginBottom: 20, textAlign: 'center' }}
                 >
                   <Building2 style={{ width: 48, height: 48, color: 'white', margin: '0 auto' }} />
                 </motion.div>
@@ -688,7 +862,8 @@ export default function Results() {
                   fontSize: 28, 
                   fontWeight: 800, 
                   color: 'white', 
-                  marginBottom: 16 
+                  marginBottom: 16,
+                  textAlign: 'center'
                 }}>
                   Protect Your Team's Well-being
                 </h2>
@@ -696,9 +871,10 @@ export default function Results() {
                 <p style={{ 
                   fontSize: 18, 
                   color: 'rgba(255, 255, 255, 0.9)', 
-                  marginBottom: 32,
+                  marginBottom: 40,
                   maxWidth: 600,
-                  margin: '0 auto 32px'
+                  margin: '0 auto 40px',
+                  textAlign: 'center'
                 }}>
                   This individual assessment is just the beginning. We've built a comprehensive solution for organizations to prevent burnout across entire teams—with zero effort for HR.
                 </p>
@@ -708,7 +884,7 @@ export default function Results() {
                   flexWrap: 'wrap',
                   gap: 24, 
                   justifyContent: 'center',
-                  marginBottom: 32
+                  marginBottom: 40
                 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                     <Sparkles style={{ width: 20, height: 20, color: 'white' }} />
@@ -724,27 +900,170 @@ export default function Results() {
                   </div>
                 </div>
 
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  style={{
-                    padding: '16px 48px',
-                    background: 'white',
-                    color: 'var(--primary)',
-                    border: 'none',
-                    borderRadius: 999,
-                    fontSize: 18,
-                    fontWeight: 800,
-                    cursor: 'pointer',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: 12
-                  }}
-                  onClick={() => window.location.href = 'mailto:contact@yourcompany.com'}
-                >
-                  Learn More for Organizations
-                  <ArrowRight style={{ width: 20, height: 20 }} />
-                </motion.button>
+                {/* Contact Form */}
+                <AnimatePresence mode="wait">
+                  {submitSuccess ? (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      style={{
+                        padding: '32px',
+                        background: 'rgba(34, 197, 94, 0.2)',
+                        border: '2px solid rgba(34, 197, 94, 0.5)',
+                        borderRadius: 12,
+                        textAlign: 'center'
+                      }}
+                    >
+                      <CheckCircle2 style={{ width: 48, height: 48, color: 'rgb(34, 197, 94)', margin: '0 auto 16px' }} />
+                      <h3 style={{ color: 'white', fontSize: 20, fontWeight: 700, marginBottom: 8 }}>
+                        Thank You!
+                      </h3>
+                      <p style={{ color: 'rgba(255, 255, 255, 0.9)', fontSize: 16 }}>
+                        We've received your message and will get back to you soon.
+                      </p>
+                    </motion.div>
+                  ) : (
+                    <motion.form
+                      initial={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      onSubmit={handleContactSubmit}
+                      style={{ maxWidth: 600, margin: '0 auto' }}
+                    >
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 20, marginBottom: 20 }}>
+                        {/* Email Input (required) - now first field */}
+                        <div>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+                            <label style={{ color: 'white', fontSize: 13, fontWeight: 700 }}>
+                              Email <span style={{ color: '#ef4444' }}>*</span>
+                            </label>
+                            {contactErrors.email && (
+                              <div style={{ color: '#ef4444', fontSize: 13, fontWeight: 600 }}>
+                                {contactErrors.email}
+                              </div>
+                            )}
+                          </div>
+
+                          <div style={{ position: 'relative' }}>
+                            <div style={{ 
+                              position: 'absolute', 
+                              left: 16, 
+                              top: '50%', 
+                              transform: 'translateY(-50%)',
+                              pointerEvents: 'none'
+                            }}>
+                              <Mail style={{ width: 18, height: 18, color: 'rgba(255, 255, 255, 0.5)' }} />
+                            </div>
+                            <input
+                              ref={emailRef}
+                              type="email"
+                              placeholder="Email"
+                              value={contactForm.email}
+                              onChange={(e) => {
+                                setContactForm({ ...contactForm, email: e.target.value });
+                                if (contactErrors.email) setContactErrors({});
+                              }}
+                              className="contact-input"
+                              style={{ paddingLeft: 48, borderColor: contactErrors.email ? 'rgba(239, 68, 68, 0.8)' : undefined }}
+                            />
+                          </div>
+                        </div>
+
+                        {/* Name Input (optional) */}
+                        <div style={{ position: 'relative' }}>
+                          <div style={{ 
+                            position: 'absolute', 
+                            left: 16, 
+                            top: '50%', 
+                            transform: 'translateY(-50%)',
+                            pointerEvents: 'none'
+                          }}>
+                            <User style={{ width: 18, height: 18, color: 'rgba(255, 255, 255, 0.5)' }} />
+                          </div>
+                          <input
+                            type="text"
+                            placeholder="Full Name "
+                            value={contactForm.name}
+                            onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
+                            className="contact-input"
+                            style={{ paddingLeft: 48 }}
+                          />
+                        </div>
+
+                        {/* Phone Input (optional) */}
+                        <div style={{ position: 'relative' }}>
+                          <div style={{ 
+                            position: 'absolute', 
+                            left: 16, 
+                            top: '50%', 
+                            transform: 'translateY(-50%)',
+                            pointerEvents: 'none'
+                          }}>
+                            <Phone style={{ width: 18, height: 18, color: 'rgba(255, 255, 255, 0.5)' }} />
+                          </div>
+                          <input
+                            type="tel"
+                            placeholder="Phone number "
+                            value={contactForm.phone}
+                            onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
+                            className="contact-input"
+                            style={{ paddingLeft: 48 }}
+                          />
+                        </div>
+
+                        {/* Message Textarea (optional) */}
+                        <div>
+                          <textarea
+                            placeholder="Anything else you'd like us to know? "
+                            value={contactForm.message}
+                            onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
+                            className="contact-textarea"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Submit Button */}
+                      <motion.button
+                        type="submit"
+                        disabled={isSubmitting}
+                        whileHover={!isSubmitting ? { scale: 1.02 } : {}}
+                        whileTap={!isSubmitting ? { scale: 0.98 } : {}}
+                        style={{
+                          width: '100%',
+                          padding: '16px 32px',
+                          background: isSubmitting ? 'rgba(255, 255, 255, 0.5)' : 'white',
+                          color: 'var(--primary)',
+                          border: 'none',
+                          borderRadius: 999,
+                          fontSize: 18,
+                          fontWeight: 800,
+                          cursor: isSubmitting ? 'not-allowed' : 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: 12,
+                          transition: 'all 0.3s ease'
+                        }}
+                      >
+                        {isSubmitting ? (
+                          <>
+                            <motion.div
+                              animate={{ rotate: 360 }}
+                              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                              style={{ width: 20, height: 20, border: '2px solid var(--primary)', borderTopColor: 'transparent', borderRadius: '50%' }}
+                            />
+                            Sending...
+                          </>
+                        ) : (
+                          <>
+                            Send
+                            <Send style={{ width: 20, height: 20 }} />
+                          </>
+                        )}
+                      </motion.button>
+                    </motion.form>
+                  )}
+                </AnimatePresence>
               </div>
             </motion.div>
 

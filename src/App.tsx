@@ -15,7 +15,8 @@ import Security from "./pages/Security";
 import PrivacyPolicy from "./pages/Privacy";  
 import TermsOfService from "./pages/Terms";
 import Mission from "./pages/Mission"; 
-
+import Questionnaire from "./pages/Questionnaire";
+import Results from "./pages/Results";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -31,7 +32,8 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/team" element={<Team />} />
             <Route path="/pricing" element={<Pricing />} />
-            <Route path="/features" element={<Features />} />
+            <Route path="/questionnaire" element={<Questionnaire />} />
+            <Route path="/results" element={<Results />} />
             <Route path="/security" element={<Security />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />
             <Route path="/terms" element={<TermsOfService />} />

@@ -8,7 +8,7 @@ const descDelay = headlineDelay + 0.18;
 const sectionDelay = (idx: number) => descDelay + 0.15 + idx * 0.12;
 
 const PrivacyPolicy = () => (
-  <div className="min-h-screen bg-gradient-to-b from-background via-muted/30 to-background">
+  <div className="min-h-screen page-bg">
     <Header />
     
     <section className="py-32">

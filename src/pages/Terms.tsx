@@ -7,7 +7,7 @@ const headlineDelay = 0.05;
 const sectionDelay = (idx: number) => headlineDelay + 0.18 + idx * 0.12;
 
 const TermsOfService = () => (
-  <div className="min-h-screen bg-gradient-to-b from-background via-muted/30 to-background">
+  <div className="min-h-screen page-bg">
     <Header />
     <section className="py-32">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -81,7 +81,7 @@ const TermsOfService = () => (
         >
           <h2 className="text-2xl font-bold mb-2">4. Privacy & GDPR Compliance</h2>
           <p>
-            Use of our Service is also governed by our <a className="underline text-accent font-medium" href="/privacy-policy">Privacy Policy</a>. We comply with all GDPR and Dutch data protection laws concerning your data. Data processing agreements are available upon request.
+            Use of our Service is also governed by our <a className="underline text-accent font-medium" href="/privacy">Privacy Policy</a>. We comply with all GDPR and Dutch data protection laws concerning your data. Data processing agreements are available upon request.
           </p>
         </motion.section>
 

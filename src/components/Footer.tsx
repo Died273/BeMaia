@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 import { useContactModal } from '@/contexts/ContactModalContext';
+import { Link } from 'react-router-dom';
+import BeMaiaLogo from "@/assets/logo.svg";
 
 // Animation delays
 const logoDelay = 0.05;
@@ -45,8 +47,8 @@ const Footer = () => {
               }}
             >
               <div className="flex items-center gap-2 mb-4">
-                <div className="bg-white rounded-2xl p-4 flex items-center justify-center" style={{ height: "64px", width: "148px" }}>
-                  <img src="/favicon.svg" alt="BeMaia Logo" className="h-20 w-48" />
+                <div className="bg-white rounded-2xl p-4 flex items-center justify-center" style={{ height: "64px", width: "425px" }}>
+                  <img src={BeMaiaLogo} alt="BeMaia Logo" className="w-45 h-20" />
                 </div>
               </div>
               <p className="text-background/80 max-w-md">
@@ -70,9 +72,9 @@ const Footer = () => {
               <ul className="space-y-2">
                 {productLinks.map((link) => (
                   <li key={link.label}>
-                    <a href={link.href} className="text-background/80 hover:text-background transition-colors hover:underline">
+                    <Link to={link.href} className="text-background/80 hover:text-background transition-colors hover:underline">
                       {link.label}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -94,21 +96,26 @@ const Footer = () => {
                 {companyLinks.map((link) => (
                   <li key={link.label}>
                     {link.onClick ? (
-                      <a
-                        href={link.href}
+                      // keep the onClick handler (contact opens modal)
+                      <button
                         className="text-background/80 hover:text-background transition-colors hover:underline cursor-pointer"
                         onClick={link.onClick}
                       >
                         {link.label}
-                      </a>
-                    ) : (
+                      </button>
+                    ) : link.external ? (
                       <a
                         href={link.href}
                         className="text-background/80 hover:text-background transition-colors hover:underline"
-                        {...(link.external && { target: "_blank", rel: "noopener noreferrer" })}
+                        target="_blank"
+                        rel="noopener noreferrer"
                       >
                         {link.label}
                       </a>
+                    ) : (
+                      <Link to={link.href} className="text-background/80 hover:text-background transition-colors hover:underline">
+                        {link.label}
+                      </Link>
                     )}
                   </li>
                 ))}

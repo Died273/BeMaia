@@ -9,7 +9,7 @@ export default defineConfig(({ mode }) => ({
   // You can override at build time for a project page (username.github.io/repo) with VITE_BASE=/BeMaia/
   base: process.env.VITE_BASE || '/',
   server: {
-    host: "::",
+    host: true,
     port: 8080,
   },
   build: {

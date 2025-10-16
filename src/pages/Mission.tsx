@@ -67,7 +67,7 @@ const Mission = () => {
   return (
     <>
       <Header />
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary/5 via-blue-400/10 to-secondary/10 pt-24 sm:pt-20">
+  <section className="relative min-h-screen flex items-center justify-center overflow-hidden page-bg pt-24 sm:pt-20">
         {/* Animated soft white/neutral blobs */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-1 left-1 w-[5rem] h-[5rem] bg-white/60 rounded-full blur-3xl animate-float"></div>

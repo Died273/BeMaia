@@ -16,17 +16,59 @@ const floatingCard2Delay = floatingCard1Delay + 0.2;
 const Hero = () => {
   const { openModal } = useContactModal();
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary/5 via-blue-400/10 to-secondary/10 pt-24 sm:pt-20">
-      {/* Animated soft white/neutral blobs */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1 left-1 w-[5rem] h-[5rem] bg-white/60 rounded-full blur-3xl animate-float"></div>
-        <div className="absolute bottom-8 right-12 w-[30rem] h-[28rem] bg-muted/20 rounded-full blur-3xl animate-float" style={{ animationDelay: "1s" }}></div>
-        <div className="absolute top-3/4 left-1/3 w-40 h-40 bg-white/30 rounded-full blur-2xl animate-float" style={{ animationDelay: "2s" }}></div>
-      </div>
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 sm:pt-20">
+      {/* background is provided by pages via .page-bg; removed local gradient so hero doesn't influence page background */}
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left Content */}
+          {/* Visual (now left on large screens) */}
+          <motion.div 
+            className="relative flex justify-center"
+            initial={{ opacity: 0, y: -38, scale: 0.94 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ 
+              duration: 1.1, 
+              delay: imageDelay,
+              ease: [0.39, 1.69, 0.36, 1]
+            }}
+          >
+            <div className="relative rounded-3xl overflow-hidden shadow-2xl w-full max-w-[12rem] md:max-w-[24rem] mx-auto">
+              <img
+                src={heroImage}
+                alt="BeMaia Analytics Dashboard"
+                className="w-full h-auto object-cover"
+              />
+              <div className="absolute inset-0 "></div>
+            </div>
+
+            {/* Floating stats cards (static) */}
+            <div className="absolute -left-6 top-1/4 bg-card p-4 rounded-2xl shadow-xl hidden lg:block">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                  <BarChart3 className="w-6 h-6 text-primary" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium">Team Health</p>
+                  <p className="text-2xl font-bold text-primary">89%</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="absolute -right-6 bottom-1/4 bg-card p-4 rounded-2xl shadow-xl hidden lg:block">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center">
+                  <Activity className="w-6 h-6 text-accent" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium">Risk Score</p>
+                  <p className="text-2xl font-bold text-accent">Low</p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Right Content (now text on the right) */}
           <div className="space-y-8">
             <motion.h1 
               className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight"
@@ -122,72 +164,7 @@ const Hero = () => {
             </motion.div>
           </div>
 
-          {/* Right Visual */}
-          <motion.div 
-            className="relative"
-            initial={{ opacity: 0, y: -38, scale: 0.94 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ 
-              duration: 1.1, 
-              delay: imageDelay,
-              ease: [0.39, 1.69, 0.36, 1]
-            }}
-          >
-            <div className="relative rounded-3xl overflow-hidden shadow-2xl">
-              <img
-                src={heroImage}
-                alt="BeMaia Analytics Dashboard"
-                className="w-full h-auto"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent"></div>
-            </div>
-
-            {/* Floating stats cards */}
-            <motion.div 
-              className="absolute -left-6 top-1/4 bg-card p-4 rounded-2xl shadow-xl hidden lg:block"
-              initial={{ opacity: 0, x: -30, scale: 0.9 }}
-              whileInView={{ opacity: 1, x: 0, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ 
-                duration: 1, 
-                delay: floatingCard1Delay,
-                ease: [0.39, 1.69, 0.36, 1]
-              }}
-            >
-              <div className="flex items-center gap-3 animate-float">
-                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                  <BarChart3 className="w-6 h-6 text-primary" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium">Team Health</p>
-                  <p className="text-2xl font-bold text-primary">89%</p>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div 
-              className="absolute -right-6 bottom-1/4 bg-card p-4 rounded-2xl shadow-xl hidden lg:block"
-              initial={{ opacity: 0, x: 30, scale: 0.9 }}
-              whileInView={{ opacity: 1, x: 0, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ 
-                duration: 1, 
-                delay: floatingCard2Delay,
-                ease: [0.39, 1.69, 0.36, 1]
-              }}
-            >
-              <div className="flex items-center gap-3 animate-float" style={{ animationDelay: '1.5s' }}>
-                <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center">
-                  <Activity className="w-6 h-6 text-accent" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium">Risk Score</p>
-                  <p className="text-2xl font-bold text-accent">Low</p>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
+          
         </div>
       </div>
 

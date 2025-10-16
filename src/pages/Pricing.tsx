@@ -16,7 +16,7 @@ const Pricing = () => {
   return (
     <>
       <Header />
-  <section className="min-h-screen w-full pt-56 pb-6 bg-gradient-to-br from-white via-primary/10 to-primary/20 relative overflow-x-hidden">
+  <section className="min-h-screen w-full pt-56 pb-6 page-bg relative overflow-x-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-16">
             <h1
@@ -55,7 +55,7 @@ const Pricing = () => {
                   margin: "0 auto",
                 }}
               >
-                <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r text-primary">
                   Early Access – <span className="text-secondary">€0</span>
                 </h2>
                 <p className="text-lg text-muted-foreground mb-4">
@@ -79,9 +79,6 @@ const Pricing = () => {
             </div>
           </div>
         </div>
-        {/* Soft blue floating blobs */}
-        <div className="pointer-events-none z-0 absolute top-32 -left-32 w-56 h-56 rounded-full bg-primary/10 blur-2xl animate-float" />
-        <div className="pointer-events-none z-0 absolute bottom-12 right-12 w-64 h-64 rounded-full bg-primary/20 blur-2xl animate-float" style={{ animationDelay: '1.1s' }} />
         <style>{`
           .animate-fade-in-up { animation: fadeinUp 0.92s cubic-bezier(.39,1.69,.36,1) both; }
           @keyframes fadeinUp { 0% {opacity: 0;transform: translateY(32px);} 70%{opacity:.82} 100% {opacity:1; transform:translateY(0);} }
@@ -101,8 +98,6 @@ const Pricing = () => {
           @keyframes fadeUp {
             to { opacity: 1; transform: translateY(0);}
           }
-          .animate-float { animation: float 8s ease-in-out infinite alternate;}
-          @keyframes float { 0%,100%{transform:translateY(0);}50%{transform:translateY(-26px);} }
         `}</style>
       </section>
         <Footer />

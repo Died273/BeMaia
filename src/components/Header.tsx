@@ -52,23 +52,23 @@ const Header = () => {
             <Link
               to="/team"
               className={`font-medium text-sm sm:text-base transition-colors
-                ${location.pathname === "/team" ? "text-primary" : "text-foreground hover:text-primary"}
+                ${location.pathname === "/team" ? "text-secondary" : "text-foreground hover:text-primary"}
               `}
             >
               Our Team
             </Link>
             <Link
-              to="/features"
+              to="/questionnaire"
               className={`font-medium text-sm sm:text-base transition-colors
-                ${location.pathname === "/features" ? "text-primary" : "text-foreground hover:text-primary"}
+                ${location.pathname === "/questionnaire" ? "text-secondary" : "text-foreground hover:text-primary"}
               `}
             >
-              Features
+              Questionnaire
             </Link>
             <Link
               to="/pricing"
               className={`font-medium text-sm sm:text-base transition-colors
-                ${location.pathname === "/pricing" ? "text-primary" : "text-foreground hover:text-primary"}
+                ${location.pathname === "/pricing" ? "text-secondary" : "text-foreground hover:text-primary"}
               `}
             >
               Pricing

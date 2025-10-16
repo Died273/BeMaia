@@ -33,7 +33,7 @@ const founders = [
     role: "Co-Founder",
     expertise: "Sales & Product Development",
     bio: "",
-    photo: "/team/tim.jpeg",
+    photo: "/assets/team/tim.jpeg",
     color: "from-secondary to-primary",
     email: "t.spaargaren@bemaia.nl",
     linkedin: "https://www.linkedin.com/in/tim-spaargaren-a15412244/",

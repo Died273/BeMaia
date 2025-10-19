@@ -865,7 +865,7 @@ export default function Results() {
                   marginBottom: 16,
                   textAlign: 'center'
                 }}>
-                  Protect Your Team's Well-being
+                  We can improve the well-beeing of organizations!
                 </h2>
 
                 <p style={{ 
@@ -876,7 +876,7 @@ export default function Results() {
                   margin: '0 auto 40px',
                   textAlign: 'center'
                 }}>
-                  This individual assessment is just the beginning. We've built a comprehensive solution for organizations to prevent burnout across entire teams—with zero effort for HR.
+                  You know someone who works at a organization that could benefit from a proactive burnout-prevention program? We can help teams reduce risk, improve wellbeing, and deliver measurable results — if so, get in touch and we'll show how we can support them.
                 </p>
 
                 <div style={{ 

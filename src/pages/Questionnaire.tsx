@@ -1,7 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { ChevronLeft } from "lucide-react";
 import Footer from "@/components/Footer";
+import Header from "@/components/Header";
+import { useContactModal } from '@/contexts/ContactModalContext';
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+} from "@/components/ui/alert-dialog";
 
 type Question = { id: number; text: string; dimension?: string };
 
@@ -18,7 +31,6 @@ const questions: Question[] = [
   { id: 19, text: "At work, I feel unable to control my emotions" },
   { id: 20, text: "I do not recognize myself in the way I react emotionally at work" },
   { id: 23, text: "At work I may overreact unintentionally" },
-  { id: 24, text: "Too see your Results please share your Email with us." },
 ];
 
 const scaleOptions = [
@@ -31,7 +43,10 @@ const scaleOptions = [
 
 export default function Questionnaire() {
   const navigate = useNavigate();
+  const { openModal } = useContactModal();
   const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [creditOpen, setCreditOpen] = useState(false);
   const [responses, setResponses] = useState<Record<number, string>>({});
   const [countedQuestionIds, setCountedQuestionIds] = useState<number[]>([]);
   
@@ -39,10 +54,6 @@ export default function Questionnaire() {
   const [displayText, setDisplayText] = useState("");
   const [optionDisplayTexts, setOptionDisplayTexts] = useState<string[]>([]);
   const [pendingSelection, setPendingSelection] = useState<string | null>(null);
-  const [emailInput, setEmailInput] = useState<string>('');
-  const [emailError, setEmailError] = useState<string | null>(null);
-  const emailRef = useRef<HTMLInputElement | null>(null);
-  const isValidEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 
   const progressedCount = countedQuestionIds.length;
   const rawProgress = (progressedCount / questions.length) * 100;
@@ -63,10 +74,6 @@ export default function Questionnaire() {
   useEffect(() => {
     setDisplayText(questions[currentQuestion].text);
     setOptionDisplayTexts(scaleOptions.map(o => o.label));
-    // sync email input when arriving at the email question
-    if (questions[currentQuestion].id === 24) {
-      setEmailInput(responses[24] || '');
-    }
   }, [currentQuestion, responses]);
 
   function handleResponse(value: string) {
@@ -141,87 +148,8 @@ export default function Questionnaire() {
     setIsAnimating(false);
   }
 
-  // BACKEND NOTE: Email submission handler
-  // You should save the email to Supabase 'questionnaire_emails' table with columns:
-  // - id (uuid, primary key)
-  // - created_at (timestamp)
-  // - email (text)
-  // - questionnaire_response_id (uuid, optional foreign key)
-  const handleEmailSubmit = async () => {
-    const email = emailInput.trim();
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email) {
-      setEmailError('Please enter your email');
-      emailRef.current?.focus();
-      return;
-    }
-
-    if (!emailRegex.test(email)) {
-      setEmailError('Please enter a valid email address');
-      emailRef.current?.focus();
-      return;
-    }
-
-    const updatedResponses = { ...responses, [questions[currentQuestion].id]: email };
-    setResponses(updatedResponses);
-
-    // BACKEND TODO: Save email to Supabase here
-    // const { data, error } = await supabase
-    //   .from('questionnaire_emails')
-    //   .insert({ email: email });
-
-    if (currentQuestion < questions.length - 1) {
-      handleNext();
-    } else {
-      const filtered = { ...updatedResponses };
-      delete filtered[24];
-      navigate('/results', { state: { responses: filtered } });
-    }
-  };
-
-  // Render either the email input (for question id 24) or the scale options
+  // Render the scale options
   function renderAnswerArea() {
-    const qId = questions[currentQuestion].id;
-    
-    if (qId === 24) {
-      return (
-        /* Email Input Section - Responsive */
-        <div className="px-4 py-5 sm:px-6 sm:py-6 md:px-8 md:py-8">
-          <input
-            ref={emailRef}
-            type="email"
-            value={emailInput}
-            onChange={(e) => { setEmailInput(e.target.value); if (emailError) setEmailError(null); }}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                handleEmailSubmit();
-              }
-            }}
-            aria-label="Email"
-            placeholder="you@company.com"
-            className="w-full px-3 py-3 sm:px-4 sm:py-3 text-sm sm:text-base rounded-lg border border-white/20 bg-transparent text-white outline-none focus:border-white/40 focus:bg-white/5 transition-all"
-          />
-          {emailError && (
-            <div className="text-red-400 text-sm mt-2">{emailError}</div>
-          )}
-          <div className="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-            <div className="text-white/90 text-xs sm:text-sm md:text-base italic font-normal">
-              *Your answers are fully anonymous and not connected to your email.
-            </div>
-            <motion.button
-              onClick={handleEmailSubmit}
-              disabled={isAnimating || !isValidEmail(emailInput.trim())}
-              whileHover={{ scale: isValidEmail(emailInput.trim()) ? 1.05 : 1 }}
-              whileTap={{ scale: isValidEmail(emailInput.trim()) ? 0.95 : 1 }}
-              className="w-full sm:w-auto px-5 py-2.5 sm:px-6 sm:py-3 rounded-lg bg-white text-primary font-bold text-sm sm:text-base cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-            >
-              Next
-            </motion.button>
-          </div>
-        </div>
-      );
-    }
-
     return (
       <>
         {/* DESKTOP: Horizontal grid layout (≥768px) */}
@@ -260,7 +188,7 @@ export default function Questionnaire() {
                   className="qa-option w-full h-[76px] border-none text-white font-semibold text-2xl flex items-center justify-center cursor-pointer transition-all"
                   style={{
                     padding: '20px 12px',
-                    background: selected ? 'rgba(255,255,255,0.06)' : 'transparent',
+                    background: selected ? 'rgba(255,255,255,0.12)' : 'transparent',
                     opacity: isAnimating ? 0.6 : 1,
                     cursor: isAnimating ? 'not-allowed' : 'pointer'
                   }}
@@ -290,11 +218,11 @@ export default function Questionnaire() {
                 aria-disabled={isAnimating}
                 aria-pressed={selected}
                 className="qa-option-mobile w-full px-5 py-4 rounded-lg border border-white/20 text-white font-semibold text-base flex items-center justify-center cursor-pointer transition-all"
-                style={{
-                  background: selected ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.03)',
+                  style={{
+                  background: selected ? 'rgba(255,255,255,0.16)' : 'rgba(255,255,255,0.03)',
                   opacity: isAnimating ? 0.6 : 1,
                   cursor: isAnimating ? 'not-allowed' : 'pointer',
-                  borderColor: selected ? 'rgba(255,255,255,0.4)' : 'rgba(255,255,255,0.2)'
+                  borderColor: selected ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.2)'
                 }}
               >
                 <span className="text-center">{opt.label}</span>
@@ -380,18 +308,7 @@ export default function Questionnaire() {
   {/* Main Container - Responsive padding */}
   <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-24 sm:pt-164 py-8 sm:py-64" style={{ paddingBottom: 'clamp(200px, 25vh, 320px)', position: 'relative', zIndex: 2 }}>
         
-  {/* Header - Responsive */}
-  <header className="text-center mb-0">
-          <motion.a
-            href="/"
-            initial={{ opacity: 1 }}
-            whileHover={{ scale: 1.15 }}
-            whileTap={{ scale: 0.98 }}
-            className="text-white font-bold text-xl sm:text-2xl lg:text-[26px] inline-block underline underline-offset-4 decoration-white/90 decoration-2"
-          >
-            Homepage
-          </motion.a>
-        </header>
+  <Header />
 
         {/* Question Card Container - Responsive spacing */}
         <div className="flex justify-center">
@@ -536,7 +453,9 @@ export default function Questionnaire() {
                 aria-label="Previous question"
               >
                 <span className="hidden sm:inline">Previous question</span>
-                <span className="sm:hidden">Previous</span>
+                <span className="sm:hidden">
+                  <ChevronLeft className="w-8 h-8" />
+                </span>
               </motion.button>
 
               <motion.div
@@ -573,19 +492,77 @@ export default function Questionnaire() {
               </motion.div>
 
               {/* Right action button to keep layout symmetric on wide viewports */}
-              <motion.button
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0 }}
-                whileHover={{ scale: 1.12 }}
-                onClick={() => navigate('/mission')}
-                disabled={isAnimating}
-                className="bg-transparent text-white border-none px-2 py-6 sm:px-2.5 sm:py-2 font-bold text-xs sm:text-sm lg:text-base cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                aria-label="Further information"
-              >
-                <span className="hidden sm:inline">Further Info</span>
-                <span className="sm:hidden">Info</span>
-              </motion.button>
+              <AlertDialog open={alertOpen} onOpenChange={(v) => setAlertOpen(v)}>
+                <AlertDialogTrigger asChild>
+                  <motion.button
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0 }}
+                    whileHover={{ scale: 1.12 }}
+                    disabled={isAnimating}
+                    onClick={() => setAlertOpen(true)}
+                    className="bg-transparent text-white border-none px-2 py-6 sm:px-2.5 sm:py-2 font-bold text-xs sm:text-sm lg:text-base cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                    aria-label="Further information"
+                  >
+                    <span className="hidden sm:inline">Further Info</span>
+                    <span className="sm:hidden text-sm">Info</span>
+                  </motion.button>
+                </AlertDialogTrigger>
+
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Anonymous & Private</AlertDialogTitle>
+            <AlertDialogDescription className="font-normal">
+                      The questionnaire is fully anonymous and will not be linked to any personal
+                      information such as your name or email. Your answers are used only for
+                      aggregated insights.
+                      <br />
+                      If you have questions, feedback, or need support, message us at:{' '}
+                      <button
+                        className="text-accent underline font-medium bg-transparent border-none p-0 m-0 cursor-pointer"
+                        onClick={() => {
+                          // Close the alert first, then open the contact modal to avoid overlay stacking
+                          setAlertOpen(false);
+                          setTimeout(() => openModal('info@bemaia.nl'), 220);
+                        }}
+                      >
+                        info@bemaia.nl
+                      </button>
+                      <br />
+                      <button
+                        className="text-accent underline font-medium bg-transparent border-none p-0 m-0 cursor-pointe"
+                        onClick={() => {
+                          // Close the info alert then open the credit dialog
+                          setAlertOpen(false);
+                          setTimeout(() => setCreditOpen(true), 220);
+                        }}
+                      >
+                        About the Questionnaire
+                      </button>
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+
+                  <AlertDialogFooter>
+                    <AlertDialogCancel onClick={() => setAlertOpen(false)}>Close</AlertDialogCancel>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+
+              {/* Credit / License AlertDialog for BAT-12 */}
+              <AlertDialog open={creditOpen} onOpenChange={(v) => setCreditOpen(v)}>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Questionaire</AlertDialogTitle>
+                    <AlertDialogDescription className="font-normal">
+                      The BAT-12 (Burnout Assessment Tool) is used under the Creative Commons Attribution 4.0 International License (CC BY 4.0), developed by Wilmar Schaufeli and collaborators. For more information, see Schaufeli et al.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+
+                  <AlertDialogFooter>
+                    <AlertDialogCancel onClick={() => setCreditOpen(false)}>Close</AlertDialogCancel>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
           </div>
         </div>

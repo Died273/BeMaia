@@ -73,6 +73,14 @@ const Header = () => {
             >
               Pricing
             </Link>
+            <Link
+              to="/login"
+              className={`font-medium text-sm sm:text-base transition-colors
+                ${location.pathname === "/login" ? "text-primary" : "text-foreground hover:text-primary"}
+              `}
+            >
+              Login
+            </Link>
             <Button variant="hero" size="sm" className="text-white" onClick={() => openModal('info@bemaia.nl')}>
               Contact
             </Button>

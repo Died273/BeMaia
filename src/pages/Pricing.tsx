@@ -61,9 +61,6 @@ const Pricing = () => {
                 <p className="text-lg text-muted-foreground mb-4">
                   Enjoy <span className="font-bold text-primary">all features</span>,
                   help shape the platform, and connect with our team.<br />
-                  <span className="inline-block mt-3 font-semibold px-3 py-1 rounded-xl bg-secondary/10 text-secondary shadow">
-                    No payment required during the pilot program!
-                  </span>
                 </p>
                 <div className="flex justify-center">
                   <Button

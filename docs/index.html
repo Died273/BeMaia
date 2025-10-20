@@ -23,15 +23,16 @@
   <link rel="stylesheet" href="/assets/index-8e77b9f7.css">
 </head>
 <body>
-<script>
-  (function() {
-    var redirect = sessionStorage.redirect;
-    delete sessionStorage.redirect;
-    if (redirect && redirect != location.href) {
-      history.replaceState(null, null, redirect);
-    }
-  })();
-</script>
+  <script>
+    (function() {
+      var redirect = sessionStorage.redirect;
+      delete sessionStorage.redirect;
+      if (redirect && redirect !== location.href) {
+        history.replaceState(null, null, redirect);
+        window.dispatchEvent(new PopStateEvent('popstate')); //force new state
+      }
+    })();
+  </script>
 <div id="root"></div>
 
 </body>

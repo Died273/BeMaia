@@ -11,18 +11,7 @@ const Header = () => {
   const { openModal } = useContactModal();
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // scale nav link by 1.15 on hover/focus for a subtle emphasis
-  const handleScaleUp = (e: React.MouseEvent<HTMLElement> | React.FocusEvent<HTMLElement>) => {
-    const el = e.currentTarget as HTMLElement;
-    el.style.transition = 'transform 150ms ease';
-    el.style.transform = 'scale(1.15)';
-  };
-
-  const handleScaleDown = (e: React.MouseEvent<HTMLElement> | React.FocusEvent<HTMLElement>) => {
-    const el = e.currentTarget as HTMLElement;
-    el.style.transition = 'transform 150ms ease';
-    el.style.transform = '';
-  };
+  // no hover zoom interactions in the header
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -50,15 +39,15 @@ const Header = () => {
   };
 
   return (
-    <header className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-full max-w-2xl px-2 sm:px-4 md:px-8">
+    <header className="fixed top-0 left-0 right-0 z-50 w-full">
       <div
-        className={`transition-all duration-300 rounded-3xl border
+        className={`transition-all duration-300 rounded-none border
           ${scrolled
             ? "bg-white/40 border-white/20 backdrop-blur-xl shadow-2xl"
             : "bg-gradient-to-tr from-white/30 via-primary/10 to-white/20 border-white/10 backdrop-blur-md shadow-lg"
           }`}
       >
-        <nav className="flex justify-between items-center h-16 px-2 sm:px-6">
+        <nav className="flex justify-between items-center h-24 px-2 sm:px-6">
           {/* Logo */}
           <div
             role="button"
@@ -71,7 +60,7 @@ const Header = () => {
             <img
               src={BeMaiaLogo}
               alt="BeMaia Logo"
-              className="w-18 h-14 transition-transform duration-200 hover:scale-150 cursor-pointer"
+              className="w-18 h-14 cursor-pointer"
             />
           </div>
 
@@ -82,10 +71,6 @@ const Header = () => {
               className={`font-medium text-sm sm:text-base transition-colors
                 ${location.pathname === "/team" ? "text-secondary" : "text-foreground hover:text-primary"}
               `}
-              onMouseEnter={handleScaleUp}
-              onMouseLeave={handleScaleDown}
-              onFocus={handleScaleUp}
-              onBlur={handleScaleDown}
             >
               Our Team
             </Link>
@@ -94,10 +79,6 @@ const Header = () => {
               className={`font-medium text-sm sm:text-base transition-colors
                 ${location.pathname === "/questionnaire" ? "text-secondary" : "text-foreground hover:text-primary"}
               `}
-              onMouseEnter={handleScaleUp}
-              onMouseLeave={handleScaleDown}
-              onFocus={handleScaleUp}
-              onBlur={handleScaleDown}
             >
               Questionnaire
             </Link>
@@ -106,10 +87,6 @@ const Header = () => {
               className={`font-medium text-sm sm:text-base transition-colors
                 ${location.pathname === "/pricing" ? "text-secondary" : "text-foreground hover:text-primary"}
               `}
-              onMouseEnter={handleScaleUp}
-              onMouseLeave={handleScaleDown}
-              onFocus={handleScaleUp}
-              onBlur={handleScaleDown}
             >
               Pricing
             </Link>

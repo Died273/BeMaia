@@ -12,8 +12,8 @@ const MarketOpportunity = () => {
   const stats = [
     {
       icon: <Euro className="w-8 h-8 text-primary" />,
-      value: "€4B+",
-      label: "Annual cost in the Netherlands",
+      value: "€250k ",
+      label: "Annual cost savings for ",
       color: "primary"
     },
     {
@@ -53,7 +53,7 @@ const MarketOpportunity = () => {
                 ease: [0.39, 1.69, 0.36, 1]
               }}
             >
-              The Burnout Crisis is Real
+              Ho
             </motion.h2>
             <motion.p 
               className="text-xl text-muted-foreground max-w-3xl mx-auto"

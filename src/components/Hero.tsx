@@ -12,7 +12,7 @@ const statsDelay = buttonsDelay + 0.2;
 const Hero = () => {
   const { openModal } = useContactModal();
   return (
-    <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden pt-28 pb-12">
+    <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden pt-36 pb-12">
       {/* background is provided by pages via .page-bg; removed local gradient so hero doesn't influence page background */}
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

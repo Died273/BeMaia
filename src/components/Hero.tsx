@@ -100,7 +100,7 @@ const Hero = () => {
                   <TrendingUp className="w-5 h-5" />
                   €20k
                 </div>
-                <p className="text-sm text-muted-foreground">Cost per person on Bornout</p>
+                <p className="text-sm text-muted-foreground">Cost per person on Burnout</p>
               </div>
               <div className="space-y-1">
                 <div className="text-2xl font-bold text-secondary">Continuous</div>

@@ -30,9 +30,9 @@ const Hero = () => {
                 ease: [0.39, 1.69, 0.36, 1]
               }}
             >
-              Catch Burnout
+              Make Wellbeing
               <span className="block bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Before It Starts
+                Your Advantage
               </span>
             </motion.h1>
 

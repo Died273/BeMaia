@@ -47,7 +47,7 @@ const buttonDelay = cardsLastDelay - 0.45;
 const Features = () => (
   <>
     <Header />
-    <section className="min-h-screen w-full py-36 bg-gradient-to-br from-background via-muted/40 to-background relative overflow-x-hidden">
+  <section className="min-h-screen w-full py-36 page-bg relative overflow-x-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto text-center mb-16">
           <h1

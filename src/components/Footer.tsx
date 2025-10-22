@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 import { useContactModal } from '@/contexts/ContactModalContext';
+import { Link } from 'react-router-dom';
+import BeMaiaLogo from "@/assets/logo.svg";
 
 // Animation delays
 const logoDelay = 0.05;
@@ -31,10 +33,10 @@ const Footer = () => {
     <footer className="bg-primary text-background py-12">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-8">
             {/* Brand */}
             <motion.div
-              className="md:col-span-2"
+              className="md:col-span-2 text-center md:text-left"
               initial={{ opacity: 0, y: -30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
@@ -45,11 +47,11 @@ const Footer = () => {
               }}
             >
               <div className="flex items-center gap-2 mb-4">
-                <div className="bg-white rounded-2xl p-4 flex items-center justify-center" style={{ height: "64px", width: "148px" }}>
-                  <img src="/favicon.svg" alt="BeMaia Logo" className="h-20 w-48" />
+                <div className="bg-white rounded-2xl p-4 flex items-center justify-center mx-auto md:mx-0 h-16 w-full max-w-[425px]">
+                  <img src={BeMaiaLogo} alt="BeMaia Logo" className="w-auto h-16 sm:h-12 md:h-16" />
                 </div>
               </div>
-              <p className="text-background/80 max-w-md">
+              <p className="text-background/80 max-w-md mx-auto md:mx-0">
                 Empowering organizations to prevent burnout before it starts, through real-time
                 data-driven company health analytics.
               </p>
@@ -57,6 +59,7 @@ const Footer = () => {
 
             {/* Product */}
             <motion.div
+              className="text-center md:text-left"
               initial={{ opacity: 0, y: -30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
@@ -70,9 +73,9 @@ const Footer = () => {
               <ul className="space-y-2">
                 {productLinks.map((link) => (
                   <li key={link.label}>
-                    <a href={link.href} className="text-background/80 hover:text-background transition-colors hover:underline">
+                    <Link to={link.href} className="text-background/80 hover:text-background transition-colors hover:underline">
                       {link.label}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -80,6 +83,7 @@ const Footer = () => {
 
             {/* Company */}
             <motion.div
+              className="text-center md:text-left"
               initial={{ opacity: 0, y: -30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
@@ -94,21 +98,26 @@ const Footer = () => {
                 {companyLinks.map((link) => (
                   <li key={link.label}>
                     {link.onClick ? (
-                      <a
-                        href={link.href}
+                      // keep the onClick handler (contact opens modal)
+                      <button
                         className="text-background/80 hover:text-background transition-colors hover:underline cursor-pointer"
                         onClick={link.onClick}
                       >
                         {link.label}
-                      </a>
-                    ) : (
+                      </button>
+                    ) : link.external ? (
                       <a
                         href={link.href}
                         className="text-background/80 hover:text-background transition-colors hover:underline"
-                        {...(link.external && { target: "_blank", rel: "noopener noreferrer" })}
+                        target="_blank"
+                        rel="noopener noreferrer"
                       >
                         {link.label}
                       </a>
+                    ) : (
+                      <Link to={link.href} className="text-background/80 hover:text-background transition-colors hover:underline">
+                        {link.label}
+                      </Link>
                     )}
                   </li>
                 ))}
@@ -128,10 +137,10 @@ const Footer = () => {
               ease: [0.39, 1.69, 0.36, 1]
             }}
           >
-            <p className="text-background/60 text-sm">
+            <p className="text-background/60 text-sm text-center md:text-left">
               © 2025 BeMaia. All rights reserved.
             </p>
-            <div className="flex gap-6 text-sm">
+            <div className="flex gap-6 text-sm justify-center md:justify-start">
               <a href="/privacy" className="text-background/80 hover:text-background transition-colors hover:underline">
                 Privacy Policy
               </a>

@@ -37,13 +37,7 @@ const MarketOpportunity = () => {
   ];
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-bl from-secondary/10 via-blue-400/10 to-primary/5 pt-24 sm:pt-20">
-      {/* Animated soft white/neutral blobs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1 left-1 w-[5rem] h-[5rem] bg-white/60 rounded-full blur-3xl animate-float"></div>
-        <div className="absolute bottom-8 right-12 w-[30rem] h-[28rem] bg-muted/20 rounded-full blur-3xl animate-float" style={{ animationDelay: "1s" }}></div>
-        <div className="absolute top-3/4 left-1/3 w-40 h-40 bg-white/30 rounded-full blur-2xl animate-float" style={{ animationDelay: "2s" }}></div>
-      </div>
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden page-bg pt-24 sm:pt-20">
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
@@ -140,10 +134,7 @@ const MarketOpportunity = () => {
         </div>
       </div>
 
-      <style>{`
-        .animate-float { animation: float 8s ease-in-out infinite alternate;}
-        @keyframes float { 0%,100%{transform:translateY(0);}50%{transform:translateY(-26px);} }
-      `}</style>
+      {/* blobs removed — page background handled by global .page-bg in src/index.css */}
     </section>
   );
 };

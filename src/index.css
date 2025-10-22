@@ -4,106 +4,147 @@
 
 @layer base {
   :root {
-    --background: 316 38% 94%;         /* #dca2c9 lightened */
-    --foreground: 200 63% 25%;         /* #2ca1d7 darkened */
-
-    --card: 0 0% 100%;
-    --card-foreground: 200 63% 25%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 200 63% 25%;
-
-    --primary: 200 63% 50%;            /* #2ca1d7 */
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 326 54% 63%;          /* #e64298, .7 opacity ~ softer pink */
-    --secondary-foreground: 0 0% 100%;
-
-    --muted: 316 25% 90%;              /* #dca2c9 faded more */
-    --muted-foreground: 200 20% 50%;   /* #2ca1d7 muted */
-
-    --accent: 17 84% 60%;              /* #ee5e43 */
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 17 84% 60%;         /* #ee5e43 */
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 316 20% 100%;             /* #dca2c9 very light */
-    --input: 316 20% 88%;
-    --ring: 200 63% 50%;
-
-    --radius: 1rem;
-
-    --gradient-warm: linear-gradient(135deg, #dba2ca 0%, #2da1d7 100%);
-    --gradient-gold: linear-gradient(135deg, #ee5d44 0%, #e64298 100%);
-    --gradient-subtle: linear-gradient(180deg, #dba2ca 0%, #2da1d7 100%);
-
-    --shadow-soft: 0 4px 20px -4px rgba(230, 66, 152, 0.13);
-    --shadow-glow: 0 0 30px rgba(238, 94, 67, 0.24);
-
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-spring: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-
-    --sidebar-background: 316 38% 97%;           /* very light #dca2c9 */
-    --sidebar-foreground: 200 63% 25%;           /* dark #2ca1d7 */
-    --sidebar-primary: 316 54% 53%;              /* #e64298 */
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 316 25% 95%;
-    --sidebar-accent-foreground: 200 63% 25%;
-    --sidebar-border: 316 20% 89%;
-    --sidebar-ring: 200 63% 50%;
-  }
-
-  .dark {
-    --background: 330 17% 14%;          /* #e64298 deepened for back */
-    --foreground: 316 38% 97%;
-
-    --card: 200 63% 15%;                /* #2ca1d7 very dark */
-    --card-foreground: 316 38% 97%;
-
-    --popover: 200 63% 15%;
-    --popover-foreground: 316 38% 97%;
-
-    --primary: 326 54% 63%;             /* #e64298 */
-    --primary-foreground: 330 17% 14%;
-
-    --secondary: 200 63% 32%;           /* #2ca1d7 darker */
-    --secondary-foreground: 0 0% 100%;
-
-    --muted: 200 25% 20%;               /* #2ca1d7 muted */
-    --muted-foreground: 316 20% 75%;    /* #dca2c9 light */
-
-    --accent: 17 84% 60%;               /* #ee5e43 */
-    --accent-foreground: 316 38% 97%;
-
-    --destructive: 17 84% 40%;          /* #ee5e43 deeper */
-    --destructive-foreground: 316 38% 97%;
-
-    --border: 200 25% 22%;
-    --input: 200 25% 22%;
-    --ring: 326 54% 63%;
+    /* ===== CORE COLORS (store full hsl() strings so editors/sliders work) ===== */
+    --background: hsl(217 77% 93%);         /* Light blue #E1EAFB */
+    --foreground: hsl(251 51% 27%);         /* Deep purple #402E8D */
     
-    --sidebar-background: 330 17% 14%;
-    --sidebar-foreground: 316 35% 95%;
-    --sidebar-primary: 326 54% 63%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 200 63% 18%;
-    --sidebar-accent-foreground: 316 35% 95%;
-    --sidebar-border: 200 25% 22%;
-    --sidebar-ring: 200 63% 50%;
+    --primary: hsl(251 51% 37%);            /* Deep purple #402E8D */
+    --primary-foreground: hsl(0 0% 100%);   /* White */
+    --primary-light: hsl(251 51% 67%);      /* Lighter purple */
+    
+    --secondary: hsl(343 85% 51%);          /* Bright pink #EC1A57 */
+    --secondary-foreground: hsl(0 0% 100%); /* White */
+    
+    --accent: hsl(43 98% 53%);              /* Yellow/gold #FDBC11 */
+    --accent-foreground: hsl(251 51% 27%);  /* Deep purple */
+    
+    /* ===== Card COLORS ===== */
+    --card: hsl(0 0% 100%);
+    --card-foreground: hsl(251 51% 27%);
+    
+    /* ===== SIDEBAR COLORS ===== */
+    --sidebar-background: hsl(219 76% 97%);
+    --sidebar-foreground: hsl(251 51% 27%);
+    --sidebar-primary: hsl(343 85% 51%);
+    --sidebar-primary-foreground: hsl(0 0% 100%);
+    --sidebar-accent: hsl(219 76% 90%);
+    --sidebar-accent-foreground: hsl(251 51% 27%);
+    --sidebar-border: hsl(219 76% 85%);
+    --sidebar-ring: hsl(251 51% 37%);
+    
+    /* ===== EFFECTS & UTILITIES ===== */
+    --page-gradient: linear-gradient(180deg, var(--background) 0%, #ffffff 100%);
+    --shadow-glow: 0 0 30px rgba(253, 188, 17, 0.24);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* ===== TYPOGRAPHY ===== */
+    --font-family-base: 'KitSans', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    
+    /* ===== OTHER VARIABLES ===== */
+    --radius: 1rem;
+    /* Tailwind theme variables (provide sensible defaults so color utilities resolve) */
+    --border: hsl(219 76% 85%);
+    --input: hsl(0 0% 100%);
+    --ring: hsl(251 51% 37%);
+    --muted: hsl(220 16% 88%);
+    --muted-foreground: hsl(251 51% 45%);
+    --popover: hsl(0 0% 100%);
+    --popover-foreground: var(--foreground);
+    --destructive: hsl(0 85% 60%);
+    --destructive-foreground: hsl(0 0% 100%);
   }
 }
 
+
+/* Map the most common Tailwind slate colors and semantic classes to your theme variables for consistency */
+.text-foreground { color: var(--foreground) !important; }
+.text-muted-foreground { color: var(--muted-foreground) !important; }
+.text-primary { color: var(--primary) !important; }
+.text-accent { color: var(--accent) !important; }
+
+.text-slate-500 { color: var(--muted-foreground) !important; }
+.text-slate-600 { color: var(--muted-foreground) !important; }
+.text-slate-700 { color: var(--foreground) !important; }
+.text-slate-800 { color: var(--foreground) !important; }
+.text-slate-900 { color: var(--foreground) !important; }
+
+/* ===== PAGE BACKGROUND ===== */
+.page-bg {
+  background-image: var(--page-gradient);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+/* ===== TAILWIND GRADIENT HELPER ===== */
+.to-primary-light { 
+  --tw-gradient-to: var(--primary-light);
+}
+
+/* ===== TYPOGRAPHY ===== */
 @layer base {
-  * {
-    @apply border-border;
+  * { 
+    box-sizing: border-box; 
   }
 
   body {
-    @apply bg-background text-foreground font-sans;
+    /* Global page background from the css variable (full hsl(...) string) */
+    background-image: var(--page-gradient);
+    background-color: var(--background);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+
+    /* Use the foreground token directly (it's a full color string) */
+    color: var(--foreground);
+    font-family: var(--font-family-base);
+    font-weight: 200;  /* KitSans ExtraLight */
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-display;
+  h1 {
+    font-family: var(--font-family-base);
+    font-weight: 700;  /* KitSans Bold */
+    font-size: 36px;
+    line-height: 1.1;
   }
+
+  h2 {
+    font-family: var(--font-family-base);
+    font-weight: 400;  /* KitSans Regular */
+    font-size: 24px;
+    line-height: 1.2;
+  }
+
+  /* Typography utility classes */
+  .site-header { 
+    font-family: var(--font-family-base); 
+    font-weight: 700; 
+    font-size: 36px; 
+  }
+  
+  .site-subheader { 
+    font-family: var(--font-family-base); 
+    font-weight: 400; 
+    font-size: 24px; 
+  }
+  
+  .site-text { 
+    font-family: var(--font-family-base); 
+    font-weight: 200; 
+    font-size: 16px; 
+  }
+}
+
+/* ===== BRAND COMPONENT ===== */
+.button-accent {
+  background: linear-gradient(90deg, var(--sidebar-primary) 0%, var(--accent) 100%);
+  color: white;
+  border-radius: 9999px;
+  font-weight: bold;
+  box-shadow: var(--shadow-glow);
+  padding: 0.75rem 1.5rem;
+  transition: var(--transition-smooth);
 }

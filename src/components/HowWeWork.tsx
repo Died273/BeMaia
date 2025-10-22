@@ -11,26 +11,26 @@ const HowWeWork = () => {
   const steps = [
     {
       icon: Shield,
-      title: "Privacy -First Design",
-      description: "Enterprise-grade security with full GDPR compliance and anonymous data aggregation.",
+      title: "Fast + Focussed ",
+      description: "Get meaningful insights on burnout, wellbeing, and organizational health in just 10 minutes so you can quickly pinpoint team needs and risks.​",
       color: "from-primary to-secondary",
     },
     {
       icon: TrendingUp,
-      title: "Actionable Recommendations",
-      description: "We deliver specific, prioritized steps leaders can take to improve well-being now.",
+      title: "Effortless Process",
+      description: "We handle all the analysis, deliver tailored recommendations, and support implementation, making it effortless for you to prioritize what matters most: your people.​",
       color: "from-secondary to-accent",
     },
     {
       icon: Lightbulb,
-      title: "Expert-Driven Analysis",
-      description: "Our team analyzes the data using proven research methodologies—no black-box algorithms. Fully anonymized to ensure honest feedback.",
+      title: "Expert-Backed Insights",
+      description: "Our expert-backed evaluations from leading wellbeing specialists guarantee depth and credibility, empowering decisions with trusted data.​",
       color: "from-secondary to-accent",
     },
     {
       icon: Users,
-      title: "Continuous Surveys",
-      description: "Employees enjoy filling out our engaging surveys, designed to feel natural and non-intrusive. Higher participation means better data quality.",
+      title: "Continuous Growth Tracking",
+      description: "Ongoing micro-surveys track your team’s progress over time, helping you continuously foster improvement and resilience.",
       color: "from-primary to-secondary",
     },
   ];

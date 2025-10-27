@@ -8,7 +8,6 @@ import Team from "./pages/Team";
 import Pricing from "./pages/Pricing";
 import NotFound from "./pages/NotFound";
 import ScrollToTop from "@/components/ScrollToTop";
-import Features from "./pages/Features";
 import { ContactModalProvider } from '@/contexts/ContactModalContext';
 import ContactModal from '@/components/ui/ContactModal';
 import Security from "./pages/Security";
@@ -18,6 +17,8 @@ import Mission from "./pages/Mission";
 import Questionnaire from "./pages/Questionnaire";
 import Results from "./pages/Results";
 import DashboardCompany from "./pages/DashbaordCompany";
+import Signup from "./pages/Signup";
+import Login from "./pages/Login";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -31,6 +32,8 @@ const App = () => (
           <ScrollToTop />
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
             <Route path="/team" element={<Team />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/questionnaire" element={<Questionnaire />} />

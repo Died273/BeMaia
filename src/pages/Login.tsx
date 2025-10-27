@@ -5,41 +5,32 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Eye, EyeOff } from "lucide-react";
-import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/hooks/useAuth";
 import BeMaiaLogo from "@/assets/logo.svg";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const { signIn, isLoading } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: email,
-        password: password,
-      });
+    const { data, error } = await signIn({
+      email,
+      password,
+    });
 
-      if (error) {
-        alert(`Login failed: ${error.message}`);
-        setIsLoading(false);
-        return;
-      }
-
-      // Success - user logged in
-      alert('Login successful!');
-      navigate('/');
-      
-    } catch (error) {
-      console.error('Login error:', error);
-      alert('An unexpected error occurred. Please try again.');
-      setIsLoading(false);
+    if (error) {
+      alert(`Login failed: ${error.message}`);
+      return;
     }
+
+    // Success - user logged in
+    alert('Login successful!');
+    navigate('/');
   };
 
   return (

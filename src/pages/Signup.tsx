@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Eye, EyeOff } from "lucide-react";
-import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/hooks/useAuth";
 import BeMaiaLogo from "@/assets/logo.svg";
 
 const Signup = () => {
@@ -18,11 +18,11 @@ const Signup = () => {
     company: "",
     role: ""
   });
-  const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
   const navigate = useNavigate();
+  const { signUp, isLoading } = useAuth();
 
   // Password requirement checks (re-computed on each render based on current input)
   const passwordValue = formData.password || "";
@@ -84,37 +84,22 @@ const Signup = () => {
       return;
     }
     
-    setIsLoading(true);
-    
-    try {
-      // Sign up with Supabase
-      const { data, error } = await supabase.auth.signUp({
-        email: formData.email,
-        password: formData.password,
-        options: {
-          data: {
-            username: formData.firstName,        // Changed from first_name
-            company_id: Number(1),                       // Changed from company
-            role: formData.role,                 // This one is correct
-          }
-        }
-      });
+    const { data, error } = await signUp({
+      firstName: formData.firstName,
+      email: formData.email,
+      password: formData.password,
+      company: formData.company,
+      role: formData.role,
+    });
 
-      if (error) {
-        alert(`Signup failed: ${error.message}`);
-        setIsLoading(false);
-        return;
-      }
-
-      // Success - user created
-      alert('Account created successfully! Please check your email to verify your account.');
-      navigate('/login');
-      
-    } catch (error) {
-      console.error('Signup error:', error);
-      alert('An unexpected error occurred. Please try again.');
-      setIsLoading(false);
+    if (error) {
+      alert(`Signup failed: ${error.message}`);
+      return;
     }
+
+    // Success - user created
+    alert('Account created successfully! Please check your email to verify your account.');
+    navigate('/login');
   };
 
   return (
@@ -184,7 +169,7 @@ const Signup = () => {
                   <SelectTrigger className="h-11">
                     <SelectValue placeholder="Select your company" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-white text-foreground border shadow-lg">
                     <SelectItem value="tech-corp">Tech Corp</SelectItem>
                     <SelectItem value="innovate-labs">Innovate Labs</SelectItem>
                     <SelectItem value="digital-solutions">Digital Solutions</SelectItem>
@@ -207,7 +192,7 @@ const Signup = () => {
                   <SelectTrigger className="h-11">
                     <SelectValue placeholder="Select your role" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-white text-foreground border shadow-lg">
                     <SelectItem value="ceo">CEO</SelectItem>
                     <SelectItem value="cto">CTO</SelectItem>
                     <SelectItem value="developer">Developer</SelectItem>
@@ -250,38 +235,40 @@ const Signup = () => {
                   </button>
                 </div>
                 {/* Live password requirements */}
-                <ul className="mt-2 space-y-1 text-sm" aria-live="polite">
-                  <li className={passwordRequirements.hasMinLength ? "text-green-600" : "text-red-500"}>
-                    <span aria-label={passwordRequirements.hasMinLength ? "fulfilled" : "not fulfilled"} role="img" className="mr-2">
-                      {passwordRequirements.hasMinLength ? "✅" : "❌"}
-                    </span>
-                    Minimum 8 characters
-                  </li>
-                  <li className={passwordRequirements.hasUppercase ? "text-green-600" : "text-red-500"}>
-                    <span aria-label={passwordRequirements.hasUppercase ? "fulfilled" : "not fulfilled"} role="img" className="mr-2">
-                      {passwordRequirements.hasUppercase ? "✅" : "❌"}
-                    </span>
-                    At least one uppercase letter
-                  </li>
-                  <li className={passwordRequirements.hasLowercase ? "text-green-600" : "text-red-500"}>
-                    <span aria-label={passwordRequirements.hasLowercase ? "fulfilled" : "not fulfilled"} role="img" className="mr-2">
-                      {passwordRequirements.hasLowercase ? "✅" : "❌"}
-                    </span>
-                    At least one lowercase letter
-                  </li>
-                  <li className={passwordRequirements.hasNumber ? "text-green-600" : "text-red-500"}>
-                    <span aria-label={passwordRequirements.hasNumber ? "fulfilled" : "not fulfilled"} role="img" className="mr-2">
-                      {passwordRequirements.hasNumber ? "✅" : "❌"}
-                    </span>
-                    At least one number
-                  </li>
-                  <li className={passwordRequirements.hasSpecial ? "text-green-600" : "text-red-500"}>
-                    <span aria-label={passwordRequirements.hasSpecial ? "fulfilled" : "not fulfilled"} role="img" className="mr-2">
-                      {passwordRequirements.hasSpecial ? "✅" : "❌"}
-                    </span>
-                    At least one special character (e.g., !@#$%^&*)
-                  </li>
-                </ul>
+                {passwordValue.length > 0 && (
+                  <ul className="mt-2 space-y-1 text-sm" aria-live="polite">
+                    <li className={passwordRequirements.hasMinLength ? "text-green-600" : "text-red-500"}>
+                      <span aria-label={passwordRequirements.hasMinLength ? "fulfilled" : "not fulfilled"} role="img" className="mr-2">
+                        {passwordRequirements.hasMinLength ? "✅" : "❌"}
+                      </span>
+                      Minimum 8 characters
+                    </li>
+                    <li className={passwordRequirements.hasUppercase ? "text-green-600" : "text-red-500"}>
+                      <span aria-label={passwordRequirements.hasUppercase ? "fulfilled" : "not fulfilled"} role="img" className="mr-2">
+                        {passwordRequirements.hasUppercase ? "✅" : "❌"}
+                      </span>
+                      At least one uppercase letter
+                    </li>
+                    <li className={passwordRequirements.hasLowercase ? "text-green-600" : "text-red-500"}>
+                      <span aria-label={passwordRequirements.hasLowercase ? "fulfilled" : "not fulfilled"} role="img" className="mr-2">
+                        {passwordRequirements.hasLowercase ? "✅" : "❌"}
+                      </span>
+                      At least one lowercase letter
+                    </li>
+                    <li className={passwordRequirements.hasNumber ? "text-green-600" : "text-red-500"}>
+                      <span aria-label={passwordRequirements.hasNumber ? "fulfilled" : "not fulfilled"} role="img" className="mr-2">
+                        {passwordRequirements.hasNumber ? "✅" : "❌"}
+                      </span>
+                      At least one number
+                    </li>
+                    <li className={passwordRequirements.hasSpecial ? "text-green-600" : "text-red-500"}>
+                      <span aria-label={passwordRequirements.hasSpecial ? "fulfilled" : "not fulfilled"} role="img" className="mr-2">
+                        {passwordRequirements.hasSpecial ? "✅" : "❌"}
+                      </span>
+                      At least one special character (e.g., !@#$%^&*)
+                    </li>
+                  </ul>
+                )}
               </div>
 
               {/* Confirm Password Field */}

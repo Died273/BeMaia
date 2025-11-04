@@ -39,7 +39,7 @@ const founders = [
     linkedin: "https://www.linkedin.com/in/tim-spaargaren-a15412244/",
   },
   {
-    name: "Tanhushri Chidanand",
+    name: "Tanushri Chidanand",
     role: "Co-Founder",
     expertise: "Marketing & Organizational Psychology",
     bio: "",

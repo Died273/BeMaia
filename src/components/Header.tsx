@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import BeMaiaLogo from "@/assets/logo.svg";
 import { useContactModal } from '@/contexts/ContactModalContext';
+import { supabase } from '@/lib/supabase';
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -10,12 +11,29 @@ const Header = () => {
   const location = useLocation();
   const { openModal } = useContactModal();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Check if user is logged in
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setIsLoggedIn(!!user);
+    };
+    checkUser();
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsLoggedIn(!!session?.user);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   // close mobile menu when route changes
@@ -91,16 +109,19 @@ const Header = () => {
             >
               Pricing
             </Link>
-            <Link
-              to="/login"
-              className={`font-medium text-sm sm:text-base transition-colors
-                ${location.pathname === "/login" ? "text-primary" : "text-foreground hover:text-primary"}
-              `}
+            <button
+              onClick={() => openModal('info@bemaia.nl')}
+              className={`font-medium text-sm sm:text-base transition-colors text-foreground hover:text-primary`}
             >
-              Login
-            </Link>
-            <Button variant="hero" size="sm" className="text-white" onClick={() => openModal('info@bemaia.nl')}>
               Contact
+            </button>
+            <Button 
+              variant="hero" 
+              size="sm" 
+              className="text-white" 
+              onClick={() => navigate(isLoggedIn ? '/profile' : '/login')}
+            >
+              {isLoggedIn ? 'Profile' : 'Login'}
             </Button>
           </div>
 
@@ -153,8 +174,19 @@ const Header = () => {
                 >
                   Pricing
                 </Link>
-                <Button variant="hero" size="sm" className="text-white mt-2" onClick={() => { openModal('info@bemaia.nl'); setMenuOpen(false); }}>
+                <button
+                  onClick={() => { openModal('info@bemaia.nl'); setMenuOpen(false); }}
+                  className="font-medium text-base text-primary text-left"
+                >
                   Contact
+                </button>
+                <Button 
+                  variant="hero" 
+                  size="sm" 
+                  className="text-white mt-2" 
+                  onClick={() => { navigate(isLoggedIn ? '/profile' : '/login'); setMenuOpen(false); }}
+                >
+                  {isLoggedIn ? 'Profile' : 'Login'}
                 </Button>
               </div>
             </div>

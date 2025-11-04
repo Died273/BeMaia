@@ -15,10 +15,12 @@ import PrivacyPolicy from "./pages/Privacy";
 import TermsOfService from "./pages/Terms";
 import Mission from "./pages/Mission"; 
 import Questionnaire from "./pages/Questionnaire";
+import DbQuestionnaire from "./pages/DbQuestionnaire";
 import Results from "./pages/Results";
 import DashboardCompany from "./pages/DashbaordCompany";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
+import Profile from "./pages/Profile";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -34,9 +36,11 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="/team" element={<Team />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/questionnaire" element={<Questionnaire />} />
+            <Route path="/questionnaire/db" element={<DbQuestionnaire />} />
             <Route path="/results" element={<Results />} />
             <Route path="/security" element={<Security />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />

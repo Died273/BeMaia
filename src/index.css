@@ -81,6 +81,13 @@
   --tw-gradient-to: var(--primary-light);
 }
 
+/* ===== NUMBER FONT ===== */
+@layer utilities {
+  .font-number {
+    font-family: Arial, sans-serif;
+  }
+}
+
 /* ===== TYPOGRAPHY ===== */
 @layer base {
   * { 

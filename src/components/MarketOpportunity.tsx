@@ -12,8 +12,8 @@ const MarketOpportunity = () => {
   const stats = [
     {
       icon: <Euro className="w-8 h-8 text-primary" />,
-      value: "€4B+",
-      label: "Annual cost in the Netherlands",
+      value: "€50k - €120k",
+      label: "Cost per burned-out employee",
       color: "primary"
     },
     {
@@ -88,7 +88,7 @@ const MarketOpportunity = () => {
                   <div className={`w-16 h-16 rounded-full bg-${stat.color}/10 flex items-center justify-center mx-auto mb-4`}>
                     {stat.icon}
                   </div>
-                  <p className={`text-3xl font-bold text-${stat.color} mb-2`}>{stat.value}</p>
+                  <p className={`text-3xl font-bold text-${stat.color} mb-2`} style={{ fontFamily: 'Arial, sans-serif' }}>{stat.value}</p>
                   <p className="text-sm text-muted-foreground">{stat.label}</p>
                 </Card>
               </motion.div>
@@ -116,15 +116,15 @@ const MarketOpportunity = () => {
                 </p>
                 <div className="flex flex-wrap justify-center gap-8 pt-6 border-t border-border/50">
                   <div>
-                    <p className="text-3xl font-bold text-primary">40%</p>
+                    <p className="text-3xl font-bold text-primary" style={{ fontFamily: 'Arial, sans-serif' }}>40%</p>
                     <p className="text-sm text-muted-foreground">Lower turnover</p>
                   </div>
                   <div>
-                    <p className="text-3xl font-bold text-secondary">25%</p>
+                    <p className="text-3xl font-bold text-secondary" style={{ fontFamily: 'Arial, sans-serif' }}>25%</p>
                     <p className="text-sm text-muted-foreground">More productive</p>
                   </div>
                   <div>
-                    <p className="text-3xl font-bold text-accent">60%</p>
+                    <p className="text-3xl font-bold text-accent" style={{ fontFamily: 'Arial, sans-serif' }}>60%</p>
                     <p className="text-sm text-muted-foreground">Higher engagement</p>
                   </div>
                 </div>

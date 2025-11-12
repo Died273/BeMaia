@@ -482,7 +482,8 @@ export default function Results() {
                     fontSize: 72, 
                     fontWeight: 800, 
                     color: zoneColors[totalZone.color].text,
-                    lineHeight: 1
+                    lineHeight: 1,
+                    fontFamily: 'Arial, sans-serif'
                   }}>
                     {animatedScores.total.toFixed(2)}
                   </div>
@@ -606,7 +607,8 @@ export default function Results() {
                             <div style={{ 
                               fontSize: 36, 
                               fontWeight: 800, 
-                              color: zoneColors[zone.color].text 
+                              color: zoneColors[zone.color].text,
+                              fontFamily: 'Arial, sans-serif'
                             }}>
                               {animatedScores[key].toFixed(2)}
                             </div>

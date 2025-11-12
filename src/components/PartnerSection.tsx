@@ -22,8 +22,8 @@ const PartnerSection = () => {
     },
     {
       icon: TrendingUp,
-      stat: "85%",
-      label: "Improvement in mental well-being",
+      stat: "10+",
+      label: "Burnout Experts on the Team",
     },
   ];
 

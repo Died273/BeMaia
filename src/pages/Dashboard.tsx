@@ -16,11 +16,8 @@ import {
   ArrowRight,
   Flame,
   Sparkles,
-  Activity,
-  Eye,
-  EyeOff
+  Activity
 } from "lucide-react";
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, Radar } from 'recharts';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -116,11 +113,11 @@ const mockData = {
         "Turn off all notifications during focus blocks",
         "Limit meetings to 25 minutes with 5-min breaks"
       ],
-      timeframe: "Implement this week - Review in 3 weeks",
+      timeframe: "Implement next week - Review in 3 weeks",
       impact: "Expected 15-25% cognitive improvement"
     },
     {
-      priority: "medium",
+      priority: "low",
       dimension: "Emotional",
       dimensionKey: "emotional",
       title: "Sustain Emotional Resilience",
@@ -131,7 +128,7 @@ const mockData = {
         "Peer recognition program (kudos board/channel)",
         "Monthly 1-on-1s to discuss stress and support needs"
       ],
-      timeframe: "Roll out over next 2 weeks",
+      timeframe: "Ongoing - No urgent changes needed",
       impact: "Prevent deterioration, maintain healthy zone"
     },
     {
@@ -154,8 +151,6 @@ const mockData = {
 
 export default function DashboardCompany() {
   const [animatedScore, setAnimatedScore] = useState(0);
-  const [selectedDimension, setSelectedDimension] = useState<string | null>(null);
-  const [showRadar, setShowRadar] = useState(false);
   const [expandedRec, setExpandedRec] = useState<number | null>(0);
   
   // Helper function to get color based on score (lower is better for burnout)
@@ -188,19 +183,6 @@ export default function DashboardCompany() {
 
   const scoreChange = mockData.currentScore - mockData.previousScore;
   const isImproving = scoreChange < 0;
-  
-  // Prepare radar chart data
-  const radarData = mockData.subcategories.map(cat => ({
-    dimension: cat.name,
-    score: cat.score,
-    fullMark: 5
-  }));
-
-  const improvingDimensions = mockData.subcategories.filter(cat => cat.trend === "improving").length;
-  const worseningDimensions = mockData.subcategories.filter(cat => cat.trend !== "improving").length;
-  const highestRisk = mockData.subcategories.reduce((prev, current) =>
-    current.score > prev.score ? current : prev
-  );
 
   return (
     <>
@@ -250,14 +232,14 @@ export default function DashboardCompany() {
                     <div className="flex flex-col gap-3">
                       <div className="rounded-2xl px-4 py-3 backdrop-blur-sm" style={{ border: '1px solid rgba(255, 255, 255, 0.2)', backgroundColor: 'rgba(255, 255, 255, 0.05)' }}>
                         <p className="text-xs font-semibold uppercase" style={{ color: 'rgba(255, 255, 255, 0.6)' }}>Prev Month</p>
-                        <p className="text-2xl font-bold text-white font-number">{mockData.previousScore.toFixed(2)}</p>
+                        <p className="text-2xl font-bold text-white font-number" style={{ fontFamily: 'Arial, sans-serif' }}>{mockData.previousScore.toFixed(2)}</p>
                       </div>
                       <div className="rounded-2xl px-4 py-3 backdrop-blur-sm" style={{ 
                         border: isImproving ? '1px solid rgba(34, 197, 94, 0.3)' : '1px solid rgba(235, 95, 67, 0.3)',
                         backgroundColor: isImproving ? 'rgba(34, 197, 94, 0.1)' : 'rgba(235, 95, 67, 0.1)'
                       }}>
                         <p className="text-xs font-semibold uppercase" style={{ color: 'rgba(255, 255, 255, 0.6)' }}>Change</p>
-                        <div className="flex items-center gap-2 font-bold font-number text-2xl" style={{ color: isImproving ? 'rgb(34, 197, 94)' : 'rgb(235, 95, 67)' }}>
+                        <div className="flex items-center gap-2 font-bold font-number text-2xl" style={{ color: isImproving ? 'rgb(34, 197, 94)' : 'rgb(235, 95, 67)', fontFamily: 'Arial, sans-serif' }}>
                           {isImproving ? (
                             <TrendingDown className="w-5 h-5" />
                           ) : (
@@ -278,7 +260,7 @@ export default function DashboardCompany() {
                           transition={{ delay: 0.3, type: "spring", stiffness: 110 }}
                           className="relative flex flex-col items-center justify-center gap-1"
                         >
-                          <span className="text-5xl sm:text-6xl font-black text-white font-number">
+                          <span className="text-5xl sm:text-6xl font-black text-white font-number" style={{ fontFamily: 'Arial, sans-serif' }}>
                             {animatedScore.toFixed(2)}
                           </span>
                           <span className="text-xs font-semibold tracking-wide uppercase" style={{ color: 'rgba(255, 255, 255, 0.6)' }}>
@@ -307,39 +289,24 @@ export default function DashboardCompany() {
                       <Target className="w-5 h-5" style={{ color: 'rgba(255, 255, 255, 0.8)' }} />
                       <h2 className="text-xl font-black text-white">Dimensions</h2>
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => setSelectedDimension(null)}
-                      className="text-xs font-semibold transition-colors"
-                      style={{ color: 'rgba(255, 255, 255, 0.5)' }}
-                      onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.8)'}
-                      onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.5)'}
-                    >
-                      Clear focus
-                    </button>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-1 min-h-0 overflow-auto pr-1 content-start">
                     {mockData.subcategories.map((category, index) => {
                       const Icon = category.icon;
-                      const isSelected = selectedDimension === category.key;
                       const scoreColor = getScoreColor(category.score);
 
                       return (
-                        <motion.button
+                        <motion.div
                           key={category.key}
-                          type="button"
                           initial={{ opacity: 0, y: 16 }}
                           whileInView={{ opacity: 1, y: 0 }}
                           viewport={{ once: true, margin: "-60px" }}
                           transition={{ duration: 0.5, delay: index * 0.05 }}
-                          whileHover={{ y: -4 }}
-                          onClick={() => setSelectedDimension(isSelected ? null : category.key)}
-                          className="relative rounded-2xl p-4 text-left transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-white/50"
+                          className="relative rounded-2xl p-4 transition-all duration-300"
                           style={{ 
-                            border: isSelected ? '2px solid rgba(255, 255, 255, 0.4)' : '1px solid rgba(255, 255, 255, 0.2)',
-                            backgroundColor: isSelected ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.05)',
-                            boxShadow: isSelected ? `0 18px 40px -24px ${scoreColor}` : undefined
+                            border: '1px solid rgba(255, 255, 255, 0.2)',
+                            backgroundColor: 'rgba(255, 255, 255, 0.05)'
                           }}
                         >
                           <div className="flex items-start justify-between gap-3">
@@ -357,7 +324,7 @@ export default function DashboardCompany() {
                                 </p>
                               </div>
                             </div>
-                            <div className="flex flex-col items-end gap-1 text-xs font-semibold font-number" style={{ color: 'rgba(255, 255, 255, 0.6)' }}>
+                            <div className="flex flex-col items-end gap-1 text-xs font-semibold font-number" style={{ color: 'rgba(255, 255, 255, 0.6)', fontFamily: 'Arial, sans-serif' }}>
                               {category.trend === "improving" ? (
                                 <TrendingDown className="w-4 h-4 text-green-400" />
                               ) : (
@@ -370,7 +337,7 @@ export default function DashboardCompany() {
                           <div className="flex items-end gap-2 mt-4">
                             <span
                               className="text-3xl font-black font-number"
-                              style={{ color: scoreColor }}
+                              style={{ color: scoreColor, fontFamily: 'Arial, sans-serif' }}
                             >
                               {category.score.toFixed(1)}
                             </span>
@@ -398,7 +365,7 @@ export default function DashboardCompany() {
                               {category.score <= 2.5 ? 'Healthy' : category.score <= 3.5 ? 'At Risk' : 'Critical'}
                             </span>
                           </div>
-                        </motion.button>
+                        </motion.div>
                       );
                     })}
                   </div>
@@ -420,7 +387,7 @@ export default function DashboardCompany() {
                         <Sparkles className="w-5 h-5 text-yellow-400" />
                         <h2 className="text-xl font-black text-white">Manager Action Plan</h2>
                       </div>
-                      <div className="text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full" style={{ backgroundColor: 'rgba(34, 197, 94, 0.2)', color: '#86efac' }}>
+                      <div className="text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full" style={{ backgroundColor: 'rgba(34, 197, 94, 0.2)', color: '#86efac', fontFamily: 'Arial, sans-serif' }}>
                         {mockData.recommendations.length} Actions
                       </div>
                     </div>
@@ -469,15 +436,19 @@ export default function DashboardCompany() {
                                     className="px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wide"
                                     style={{
                                       backgroundColor: rec.priority === 'critical'
-                                        ? 'rgba(152, 5, 5, 0.3)'
+                                        ? 'rgba(239, 68, 68, 0.2)'
                                         : rec.priority === 'high'
-                                        ? 'rgba(251, 146, 60, 0.3)'
-                                        : 'rgba(255, 255, 255, 0.15)',
+                                        ? 'rgba(251, 146, 60, 0.2)'
+                                        : rec.priority === 'medium'
+                                        ? 'rgba(234, 179, 8, 0.2)'
+                                        : 'rgba(34, 197, 94, 0.2)',
                                       color: rec.priority === 'critical'
-                                        ? '#EB5F43'
+                                        ? '#ef4444'
                                         : rec.priority === 'high'
-                                        ? '#fdba74'
-                                        : 'white'
+                                        ? '#fb923c'
+                                        : rec.priority === 'medium'
+                                        ? '#eab308'
+                                        : '#22c55e'
                                     }}
                                   >
                                     Priority: {rec.priority}
@@ -523,22 +494,24 @@ export default function DashboardCompany() {
                                       </div>
                                     </div>
 
-                                    <div className="rounded-xl p-3" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}>
-                                      <p className="text-[10px] font-bold uppercase tracking-wide mb-2 flex items-center gap-1.5" style={{ color: 'white' }}>
-                                        <CheckCircle2 className="w-3.5 h-3.5" />
-                                        How to Execute
-                                      </p>
-                                      <ul className="space-y-1.5">
-                                        {rec.howTo.map((step, i) => (
-                                          <li key={i} className="flex items-start gap-2 text-xs" style={{ color: 'white' }}>
-                                            <span className="text-sm font-black mt-0.5 font-number" style={{ color: 'white' }}>
-                                              {i + 1}.
-                                            </span>
-                                            <span className="leading-relaxed">{step}</span>
-                                          </li>
-                                        ))}
-                                      </ul>
-                                    </div>
+                                    {rec.priority !== 'low' && (
+                                      <div className="rounded-xl p-3" style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}>
+                                        <p className="text-[10px] font-bold uppercase tracking-wide mb-2 flex items-center gap-1.5" style={{ color: 'white' }}>
+                                          <CheckCircle2 className="w-3.5 h-3.5" />
+                                          How to Execute
+                                        </p>
+                                        <ul className="space-y-1.5">
+                                          {rec.howTo.map((step, i) => (
+                                            <li key={i} className="flex items-start gap-2 text-xs" style={{ color: 'white' }}>
+                                              <span className="text-sm font-black mt-0.5 font-number" style={{ color: 'white', fontFamily: 'Arial, sans-serif' }}>
+                                                {i + 1}.
+                                              </span>
+                                              <span className="leading-relaxed">{step}</span>
+                                            </li>
+                                          ))}
+                                        </ul>
+                                      </div>
+                                    )}
 
                                     <div className="flex items-center justify-between gap-3 pt-2">
                                       <div className="flex items-center gap-2">
@@ -555,147 +528,6 @@ export default function DashboardCompany() {
                           </motion.div>
                         );
                       })}
-                    </div>
-                  </div>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, x: 24 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-80px" }}
-                  transition={{ duration: 0.6 }}
-                  className="relative min-h-0"
-                >
-                  <div className="absolute -inset-1 rounded-3xl blur-2xl opacity-60" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
-                  <div className="relative h-full rounded-3xl shadow-xl backdrop-blur-xl p-6 flex flex-col" style={{ border: '1px solid rgba(255, 255, 255, 0.2)', backgroundColor: 'rgba(255, 255, 255, 0.05)' }}>
-                    <div className="flex items-center justify-between gap-3 mb-4">
-                      <div>
-                        <h2 className="text-xl font-black text-white">Recovery Trajectory</h2>
-                        <p className="text-xs mt-1" style={{ color: 'rgba(255, 255, 255, 0.6)' }}>Eight-week burnout evolution</p>
-                      </div>
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => setShowRadar(!showRadar)}
-                        className="px-4 py-2 rounded-xl font-medium text-xs sm:text-sm transition-colors flex items-center gap-2 shadow-sm backdrop-blur-sm text-white"
-                        style={{ 
-                          backgroundColor: 'rgba(255, 255, 255, 0.1)', 
-                          border: '1px solid rgba(255, 255, 255, 0.2)' 
-                        }}
-                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.15)'}
-                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'}
-                      >
-                        {showRadar ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
-                        {showRadar ? 'Line view' : 'Radar view'}
-                      </motion.button>
-                    </div>
-
-                    <div className="flex-1 min-h-0">
-                      <AnimatePresence mode="wait">
-                        {!showRadar ? (
-                          <motion.div
-                            key="line"
-                            initial={{ opacity: 0, y: 16 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -16 }}
-                            className="h-full w-full"
-                          >
-                            <ResponsiveContainer width="100%" height="100%">
-                              <AreaChart data={mockData.historicalData}>
-                                <defs>
-                                  <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="0%" stopColor="white" stopOpacity={0.6} />
-                                    <stop offset="60%" stopColor="white" stopOpacity={0.3} />
-                                    <stop offset="100%" stopColor="white" stopOpacity={0} />
-                                  </linearGradient>
-                                </defs>
-                                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-                                <XAxis
-                                  dataKey="week"
-                                  tick={{ fontSize: 12, fill: 'rgba(255,255,255,0.7)', fontWeight: 600, fontFamily: 'Arial, sans-serif' }}
-                                  axisLine={{ stroke: 'rgba(255,255,255,0.2)' }}
-                                  tickLine={false}
-                                />
-                                <YAxis
-                                  domain={[0, 5]}
-                                  tick={{ fontSize: 12, fill: 'rgba(255,255,255,0.7)', fontWeight: 600, fontFamily: 'Arial, sans-serif' }}
-                                  axisLine={{ stroke: 'rgba(255,255,255,0.2)' }}
-                                  tickLine={false}
-                                />
-                                <Tooltip
-                                  contentStyle={{
-                                    backgroundColor: 'rgba(255,255,255,0.98)',
-                                    border: 'none',
-                                    borderRadius: '16px',
-                                    boxShadow: '0 10px 40px rgba(0,0,0,0.15)',
-                                    padding: '12px 16px',
-                                    fontFamily: 'Arial, sans-serif'
-                                  }}
-                                  labelStyle={{ color: '#111827', fontWeight: 'bold', marginBottom: '4px', fontFamily: 'Arial, sans-serif' }}
-                                  formatter={(value: number) => [
-                                    <span className="font-bold text-white" style={{ fontFamily: 'Arial, sans-serif' }}>{value.toFixed(2)}</span>,
-                                    'Score'
-                                  ]}
-                                />
-                                <Area
-                                  type="monotone"
-                                  dataKey="score"
-                                  stroke="white"
-                                  strokeWidth={3}
-                                  fill="url(#colorGradient)"
-                                  dot={{
-                                    fill: 'var(--primary)',
-                                    stroke: 'white',
-                                    strokeWidth: 3,
-                                    r: 5
-                                  }}
-                                  activeDot={{
-                                    r: 8,
-                                    stroke: 'white',
-                                    strokeWidth: 3,
-                                    fill: 'var(--primary)'
-                                  }}
-                                />
-                              </AreaChart>
-                            </ResponsiveContainer>
-                          </motion.div>
-                        ) : (
-                          <motion.div
-                            key="radar"
-                            initial={{ opacity: 0, scale: 0.85 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0, scale: 0.85 }}
-                            className="h-full w-full flex items-center justify-center"
-                          >
-                            <ResponsiveContainer width="100%" height="100%">
-                              <RadarChart data={radarData}>
-                                <PolarGrid stroke="rgba(255,255,255,0.2)" />
-                                <PolarAngleAxis
-                                  dataKey="dimension"
-                                  tick={{ fill: 'rgba(255,255,255,0.7)', fontSize: 12, fontWeight: 600, fontFamily: 'Arial, sans-serif' }}
-                                />
-                                <Radar
-                                  name="Current"
-                                  dataKey="score"
-                                  stroke="white"
-                                  fill="white"
-                                  fillOpacity={0.3}
-                                  strokeWidth={3}
-                                />
-                              </RadarChart>
-                            </ResponsiveContainer>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
-
-                    <div className="pt-4 mt-4 border-t border-dashed border-white/20 text-[11px] flex items-center justify-between text-white/60 uppercase tracking-wide">
-                      <span className="font-semibold font-number">Target: 1.0 — 2.5</span>
-                      <div className="flex items-center gap-3">
-                        <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-full bg-green-400" />Healthy</span>
-                        <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-full bg-orange-400" />At Risk</span>
-                        <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-full bg-red-400" />Critical</span>
-                      </div>
                     </div>
                   </div>
                 </motion.div>

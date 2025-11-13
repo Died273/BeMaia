@@ -3,11 +3,11 @@ import { ArrowRight, TrendingUp } from "lucide-react";
 import { motion } from "framer-motion";
 import { useContactModal } from '@/contexts/ContactModalContext';
 
-// Animation delays
-const headlineDelay = 0.05;
-const descDelay = headlineDelay + 0.2;
-const buttonsDelay = descDelay + 0.2;
-const statsDelay = buttonsDelay + 0.2;
+// Animation delays - faster and more energetic
+const headlineDelay = 0;
+const descDelay = headlineDelay + 0.1;
+const buttonsDelay = descDelay + 0.1;
+const statsDelay = buttonsDelay + 0.1;
 
 const Hero = () => {
   const { openModal } = useContactModal();
@@ -26,9 +26,9 @@ const Hero = () => {
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true }}
               transition={{ 
-                duration: 0.9, 
+                duration: 0.5, 
                 delay: headlineDelay,
-                ease: [0.39, 1.69, 0.36, 1]
+                ease: [0.25, 0.46, 0.45, 0.94]
               }}
             >
               Make Wellbeing
@@ -43,9 +43,9 @@ const Hero = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ 
-                duration: 0.9, 
+                duration: 0.5, 
                 delay: descDelay,
-                ease: [0.39, 1.69, 0.36, 1]
+                ease: [0.25, 0.46, 0.45, 0.94]
               }}
             >
               We turn insights into recommended changes that actively boost employee well-being
@@ -58,9 +58,9 @@ const Hero = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ 
-                duration: 1, 
+                duration: 0.5, 
                 delay: buttonsDelay,
-                ease: [0.39, 1.69, 0.36, 1]
+                ease: [0.25, 0.46, 0.45, 0.94]
               }}
             >
               <Button
@@ -91,9 +91,9 @@ const Hero = () => {
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true }}
               transition={{ 
-                duration: 1.1, 
+                duration: 0.5, 
                 delay: statsDelay,
-                ease: [0.39, 1.69, 0.36, 1]
+                ease: [0.25, 0.46, 0.45, 0.94]
               }}
             >
               <div className="space-y-1">

@@ -4,12 +4,12 @@ import { ArrowRight, Mail, Calendar } from "lucide-react";
 import { motion } from "framer-motion";
 import { useContactModal } from '@/contexts/ContactModalContext';
 
-// Animation delays
-const cardDelay = 0.05;
-const headlineDelay = cardDelay + 0.15;
-const descDelay = headlineDelay + 0.2;
-const buttonsDelay = descDelay + 0.1;
-const footerDelay = buttonsDelay + 0.2;
+// Animation delays - faster and more energetic
+const cardDelay = 0;
+const headlineDelay = cardDelay + 0.08;
+const descDelay = headlineDelay + 0.1;
+const buttonsDelay = descDelay + 0.08;
+const footerDelay = buttonsDelay + 0.1;
 
 const CTA = () => {
   const { openModal } = useContactModal();
@@ -28,9 +28,9 @@ const CTA = () => {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ 
-            duration: 0.8, 
+            duration: 0.5, 
             delay: cardDelay,
-            ease: [0.39, 1.69, 0.36, 1]
+            ease: [0.25, 0.46, 0.45, 0.94]
           }}
         >
           <Card className="max-w-4xl mx-auto p-8 md:p-16 bg-card border-2 border-primary/20 shadow-2xl">
@@ -41,9 +41,9 @@ const CTA = () => {
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ 
-                  duration: 0.9, 
+                  duration: 0.5, 
                   delay: headlineDelay,
-                  ease: [0.39, 1.69, 0.36, 1]
+                  ease: [0.25, 0.46, 0.45, 0.94]
                 }}
               >
                 Ready to Transform Your Organization?
@@ -55,9 +55,9 @@ const CTA = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ 
-                  duration: 0.9, 
+                  duration: 0.5, 
                   delay: descDelay,
-                  ease: [0.39, 1.69, 0.36, 1]
+                  ease: [0.25, 0.46, 0.45, 0.94]
                 }}
               >
                 Join forward-thinking companies using data-driven insights to build healthier,
@@ -70,9 +70,9 @@ const CTA = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ 
-                  duration: 1, 
+                  duration: 0.5, 
                   delay: buttonsDelay,
-                  ease: [0.39, 1.69, 0.36, 1]
+                  ease: [0.25, 0.46, 0.45, 0.94]
                 }}
               >
                 <Button
@@ -101,9 +101,9 @@ const CTA = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ 
-                  duration: 0.8, 
+                  duration: 0.4, 
                   delay: footerDelay,
-                  ease: [0.39, 1.69, 0.36, 1]
+                  ease: [0.25, 0.46, 0.45, 0.94]
                 }}
               >
                 <p className="text-sm text-muted-foreground mb-4">

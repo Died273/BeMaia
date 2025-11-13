@@ -2,11 +2,11 @@ import { Card } from "@/components/ui/card";
 import { Award, Users, TrendingUp } from "lucide-react";
 import { motion } from "framer-motion";
 
-// Animation delays
-const headlineDelay = 0.05;
-const descDelay = headlineDelay + 0.2;
-const logoCardDelay = descDelay + 0.2;
-const getStatCardDelay = (idx: number) => logoCardDelay + 0.2 + idx * 0.12;
+// Animation delays - faster and more energetic
+const headlineDelay = 0;
+const descDelay = headlineDelay + 0.08;
+const logoCardDelay = descDelay + 0.1;
+const getStatCardDelay = (idx: number) => logoCardDelay + 0.1 + idx * 0.05;
 
 const PartnerSection = () => {
   const highlights = [
@@ -45,9 +45,9 @@ const PartnerSection = () => {
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ 
-                duration: 0.9, 
+                duration: 0.5, 
                 delay: headlineDelay,
-                ease: [0.39, 1.69, 0.36, 1]
+                ease: [0.25, 0.46, 0.45, 0.94]
               }}
             >
               In Partnership with ByeByeBurnout
@@ -58,9 +58,9 @@ const PartnerSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ 
-                duration: 0.9, 
+                duration: 0.5, 
                 delay: descDelay,
-                ease: [0.39, 1.69, 0.36, 1]
+                ease: [0.25, 0.46, 0.45, 0.94]
               }}
             >
               We've joined forces with ByeByeBurnout, a leading expert in burnout prevention
@@ -79,9 +79,9 @@ const PartnerSection = () => {
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ 
-                duration: 1.1, 
+                duration: 0.5, 
                 delay: logoCardDelay,
-                ease: [0.39, 1.69, 0.36, 1]
+                ease: [0.25, 0.46, 0.45, 0.94]
               }}
             >
               <Card
@@ -114,9 +114,9 @@ const PartnerSection = () => {
                     whileInView={{ opacity: 1, y: 0, scale: 1 }}
                     viewport={{ once: true, margin: "-50px" }}
                     transition={{ 
-                      duration: 1.1, 
+                      duration: 0.5, 
                       delay: getStatCardDelay(index),
-                      ease: [0.39, 1.69, 0.36, 1]
+                      ease: [0.25, 0.46, 0.45, 0.94]
                     }}
                   >
                     <Card

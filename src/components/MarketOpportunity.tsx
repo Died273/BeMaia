@@ -12,14 +12,14 @@ const MarketOpportunity = () => {
   const stats = [
     {
       icon: <Euro className="w-8 h-8 text-primary" />,
-      value: "€50k - €120k",
-      label: "Cost per burned-out employee",
+      value: "€4 Billion",
+      label: "Burnout cost in the Netherlands",
       color: "primary"
     },
     {
       icon: <Users className="w-8 h-8 text-secondary" />,
-      value: "50%+",
-      label: "Employees experience burnout",
+      value: "1 out of 5",
+      label: "Employees had a burnout",
       color: "secondary"
     },
     {

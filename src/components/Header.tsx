@@ -46,7 +46,7 @@ const Header = () => {
             : "bg-gradient-to-tr from-white/30 via-primary/10 to-white/20 border-white/10 backdrop-blur-md shadow-lg"
           }`}
       >
-        <nav className="flex justify-between items-center h-16 px-4 sm:px-8 md:px-12 lg:px-16">
+        <nav className="flex justify-between items-center h-20 px-4 sm:px-8 md:px-12 lg:px-16">
           {/* Logo */}
           <div
             role="button"
@@ -59,7 +59,7 @@ const Header = () => {
             <img
               src={BeMaiaLogo}
               alt="BeMaia Logo"
-              className="w-18 h-14 cursor-pointer"
+              className="h-16 w-auto cursor-pointer -mt-3"
             />
           </div>
 

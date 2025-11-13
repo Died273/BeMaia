@@ -46,7 +46,7 @@ const Header = () => {
             : "bg-gradient-to-tr from-white/30 via-primary/10 to-white/20 border-white/10 backdrop-blur-md shadow-lg"
           }`}
       >
-        <nav className="flex justify-between items-center h-24 px-6 sm:px-12 md:px-16 lg:px-24">
+        <nav className="flex justify-between items-center h-16 px-4 sm:px-8 md:px-12 lg:px-16">
           {/* Logo */}
           <div
             role="button"
@@ -80,7 +80,15 @@ const Header = () => {
               `}
               
             >
-              Questionnaire
+              Demo Questionnaire
+            </Link>
+            <Link
+              to="/dashboard-company"
+              className={`font-medium text-sm sm:text-base transition-colors
+                ${location.pathname === "/dashboard-company" ? "text-secondary" : "text-foreground hover:text-primary"}
+              `}
+            >
+              Demo Dashboard
             </Link>
             <Link
               to="/pricing"
@@ -121,7 +129,7 @@ const Header = () => {
 
         {/* Mobile menu panel */}
         {menuOpen && (
-          <div className="md:hidden px-6 pb-6">
+          <div className="md:hidden px-4 pb-6">
             <div className="backdrop-blur rounded-xl p-4 border border-primary">
               <div className="flex flex-col gap-3">
                 <Link
@@ -136,7 +144,14 @@ const Header = () => {
                   onClick={() => setMenuOpen(false)}
                   className="font-medium text-base text-primary"
                 >
-                  Questionnaire
+                  Demo Questionnaire
+                </Link>
+                <Link
+                  to="/dashboard-company"
+                  onClick={() => setMenuOpen(false)}
+                  className="font-medium text-base text-primary"
+                >
+                  Demo Dashboard
                 </Link>
                 <Link
                   to="/pricing"

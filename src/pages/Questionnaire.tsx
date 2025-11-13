@@ -411,7 +411,7 @@ export default function Questionnaire() {
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 0.95, y: 0 }}
                         transition={{ duration: 0.3125, delay: 0.078125 }}
-                        className="text-base sm:text-lg lg:text-xl font-normal opacity-95 mb-2"
+                        className="text-base sm:text-lg lg:text-xl font-normal opacity-95 mb-2 font-number"
                       >
                         Question {currentQuestion + 1} of {questions.length}
                       </motion.div>

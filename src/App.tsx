@@ -17,7 +17,7 @@ import TermsOfService from "./pages/Terms";
 import Mission from "./pages/Mission"; 
 import Questionnaire from "./pages/Questionnaire";
 import Results from "./pages/Results";
-import DashboardCompany from "./pages/DashbaordCompany";
+import DashboardCompany from "./pages/Dashboard";
 const queryClient = new QueryClient();
 
 const App = () => (

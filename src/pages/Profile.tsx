@@ -1,83 +1,60 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '@/lib/supabase';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { User, Settings, FileText, Lock, LogOut, Menu, X } from 'lucide-react';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import { User, Settings, FileText, Lock, LogOut, Menu, X, Eye, EyeOff, Trash2, AlertTriangle } from 'lucide-react';
+import { useProfile } from '@/hooks/useProfile';
 
 type MenuSection = 'profile' | 'settings' | 'surveys' | 'security';
 
 const Profile = () => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<any>(null);
   const [activeSection, setActiveSection] = useState<MenuSection>('profile');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
-  // Profile form state
-  const [email, setEmail] = useState('');
-  const [fullName, setFullName] = useState('');
-  const [company, setCompany] = useState('');
-  const [saving, setSaving] = useState(false);
-
-  useEffect(() => {
-    checkUser();
-  }, []);
-
-  const checkUser = async () => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        navigate('/login', { state: { from: '/profile' } });
-        return;
-      }
-      setUser(user);
-      setEmail(user.email || '');
-      
-      // Fetch additional profile data from your database if you have a profiles table
-      // const { data: profile } = await supabase
-      //   .from('profiles')
-      //   .select('*')
-      //   .eq('id', user.id)
-      //   .single();
-      // if (profile) {
-      //   setFullName(profile.full_name || '');
-      //   setCompany(profile.company || '');
-      // }
-    } catch (error) {
-      console.error('Error fetching user:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    navigate('/');
-  };
-
-  const handleSaveProfile = async () => {
-    setSaving(true);
-    try {
-      // Update profile in your database
-      // const { error } = await supabase
-      //   .from('profiles')
-      //   .update({
-      //     full_name: fullName,
-      //     company: company,
-      //   })
-      //   .eq('id', user.id);
-      
-      // if (error) throw error;
-      alert('Profile updated successfully!');
-    } catch (error) {
-      console.error('Error updating profile:', error);
-      alert('Error updating profile');
-    } finally {
-      setSaving(false);
-    }
-  };
+  const {
+    loading,
+    user,
+    email,
+    fullName,
+    company,
+    saving,
+    newPassword,
+    confirmPassword,
+    passwordError,
+    passwordSuccess,
+    changingPassword,
+    showNewPassword,
+    showConfirmPassword,
+    showDeleteDataDialog,
+    showDeleteAccountDialog,
+    deletingData,
+    deletingAccount,
+    setFullName,
+    setCompany,
+    setNewPassword,
+    setConfirmPassword,
+    setShowNewPassword,
+    setShowConfirmPassword,
+    setShowDeleteDataDialog,
+    setShowDeleteAccountDialog,
+    handleLogout,
+    handleSaveProfile,
+    handleChangePassword,
+    handleDeleteUserData,
+    handleDeleteAccount,
+  } = useProfile();
 
   const menuItems = [
     { id: 'profile' as MenuSection, label: 'Profile', icon: User },
@@ -174,13 +151,127 @@ const Profile = () => {
               <h2 className="text-2xl font-bold text-foreground mb-2">Security</h2>
               <p className="text-muted-foreground">Manage your password and security settings</p>
             </div>
-            <div className="space-y-4">
-              <Button variant="outline" onClick={() => {
-                // Implement password reset
-                alert('Password reset email will be sent');
-              }}>
-                Change Password
+            
+            <div className="space-y-4 max-w-md">
+              <div className="space-y-2">
+                <Label htmlFor="newPassword">New Password</Label>
+                <div className="relative">
+                  <Input
+                    id="newPassword"
+                    type={showNewPassword ? "text" : "password"}
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="Enter new password"
+                    className="pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowNewPassword(!showNewPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {showNewPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
+                
+                {/* Password Requirements */}
+                {newPassword.length > 0 && (
+                  <ul className="mt-2 space-y-1 text-sm" aria-live="polite">
+                    <li className={newPassword.length >= 8 ? "text-green-600" : "text-red-500"}>
+                      <span aria-label={newPassword.length >= 8 ? "fulfilled" : "not fulfilled"} role="img" className="mr-2">
+                        {newPassword.length >= 8 ? "✅" : "❌"}
+                      </span>
+                      Minimum 8 characters
+                    </li>
+                    <li className={/[A-Z]/.test(newPassword) ? "text-green-600" : "text-red-500"}>
+                      <span aria-label={/[A-Z]/.test(newPassword) ? "fulfilled" : "not fulfilled"} role="img" className="mr-2">
+                        {/[A-Z]/.test(newPassword) ? "✅" : "❌"}
+                      </span>
+                      At least one uppercase letter
+                    </li>
+                    <li className={/[a-z]/.test(newPassword) ? "text-green-600" : "text-red-500"}>
+                      <span aria-label={/[a-z]/.test(newPassword) ? "fulfilled" : "not fulfilled"} role="img" className="mr-2">
+                        {/[a-z]/.test(newPassword) ? "✅" : "❌"}
+                      </span>
+                      At least one lowercase letter
+                    </li>
+                    <li className={/\d/.test(newPassword) ? "text-green-600" : "text-red-500"}>
+                      <span aria-label={/\d/.test(newPassword) ? "fulfilled" : "not fulfilled"} role="img" className="mr-2">
+                        {/\d/.test(newPassword) ? "✅" : "❌"}
+                      </span>
+                      At least one number
+                    </li>
+                    <li className={/[!@#$%^&*]/.test(newPassword) ? "text-green-600" : "text-red-500"}>
+                      <span aria-label={/[!@#$%^&*]/.test(newPassword) ? "fulfilled" : "not fulfilled"} role="img" className="mr-2">
+                        {/[!@#$%^&*]/.test(newPassword) ? "✅" : "❌"}
+                      </span>
+                      At least one special character (e.g., !@#$%^&*)
+                    </li>
+                  </ul>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="confirmPassword">Confirm New Password</Label>
+                <div className="relative">
+                  <Input
+                    id="confirmPassword"
+                    type={showConfirmPassword ? "text" : "password"}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="Re-enter new password"
+                    className="pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {showConfirmPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
+                {confirmPassword.length > 0 && (
+                  <p
+                    className={`mt-2 text-sm ${newPassword === confirmPassword ? "text-green-600" : "text-red-500"}`}
+                    aria-live="polite"
+                  >
+                    {newPassword === confirmPassword ? "Passwords match ✅" : "Passwords do not match ❌"}
+                  </p>
+                )}
+              </div>
+
+              {passwordError && (
+                <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3">
+                  <p className="text-sm text-destructive">{passwordError}</p>
+                </div>
+              )}
+
+              {passwordSuccess && (
+                <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                  <p className="text-sm text-green-700">{passwordSuccess}</p>
+                </div>
+              )}
+
+              <Button 
+                onClick={handleChangePassword} 
+                disabled={changingPassword}
+                className="w-full sm:w-auto"
+              >
+                {changingPassword ? 'Changing Password...' : 'Change Password'}
               </Button>
+
+              <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <p className="text-sm text-blue-800">
+                  <strong>Security Note:</strong> Your password will be updated immediately. Make sure you remember your new password.
+                </p>
+              </div>
             </div>
           </div>
         );
@@ -192,19 +283,94 @@ const Profile = () => {
               <h2 className="text-2xl font-bold text-foreground mb-2">Settings</h2>
               <p className="text-muted-foreground">Manage your account preferences</p>
             </div>
+            
             <div className="space-y-4">
-              <div className="bg-muted/50 rounded-lg p-6">
-                <h3 className="font-semibold mb-2">Account Actions</h3>
-                <Button 
-                  variant="destructive" 
-                  onClick={handleLogout}
-                  className="mt-2"
-                >
-                  <LogOut className="w-4 h-4 mr-2" />
-                  Logout
-                </Button>
+              {/* Delete User Data Section */}
+              <div className="bg-orange-50 border border-orange-200 rounded-lg p-6">
+                <div className="flex items-start gap-4">
+                  <AlertTriangle className="w-6 h-6 text-orange-600 flex-shrink-0 mt-1" />
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-foreground mb-2">Delete Survey Data</h3>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      This will permanently delete all your survey responses. This action cannot be undone.
+                    </p>
+                    <Button 
+                      variant="outline" 
+                      onClick={() => setShowDeleteDataDialog(true)}
+                      className="border-orange-300 text-orange-700 hover:bg-orange-100"
+                    >
+                      <Trash2 className="w-4 h-4 mr-2" />
+                      Delete Survey Data
+                    </Button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Delete Account Section */}
+              <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+                <div className="flex items-start gap-4">
+                  <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-1" />
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-foreground mb-2">Delete Account</h3>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      This will permanently delete your entire account, including all survey data, profile information, and settings. This action cannot be undone.
+                    </p>
+                    <Button 
+                      variant="destructive" 
+                      onClick={() => setShowDeleteAccountDialog(true)}
+                    >
+                      <Trash2 className="w-4 h-4 mr-2" />
+                      Delete Account
+                    </Button>
+                  </div>
+                </div>
               </div>
             </div>
+
+            {/* Delete User Data Confirmation Dialog */}
+            <AlertDialog open={showDeleteDataDialog} onOpenChange={setShowDeleteDataDialog}>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This will permanently delete all your survey responses. You will not be able to recover this data.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel disabled={deletingData}>Cancel</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={handleDeleteUserData}
+                    disabled={deletingData}
+                    className="bg-orange-600 hover:bg-orange-700"
+                  >
+                    {deletingData ? 'Deleting...' : 'Delete Survey Data'}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+
+            {/* Delete Account Confirmation Dialog */}
+            <AlertDialog open={showDeleteAccountDialog} onOpenChange={setShowDeleteAccountDialog}>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Delete your account?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This will permanently delete your entire account, including all survey data, profile information, and settings. 
+                    This action cannot be undone and you will be immediately logged out.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel disabled={deletingAccount}>Cancel</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={handleDeleteAccount}
+                    disabled={deletingAccount}
+                    className="bg-red-600 hover:bg-red-700"
+                  >
+                    {deletingAccount ? 'Deleting...' : 'Delete Account Permanently'}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
         );
 

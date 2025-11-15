@@ -90,7 +90,7 @@ export default function Questionnaire() {
     }
 
     setIsAnimating(true);
-    await new Promise(resolve => setTimeout(resolve, 976));
+    await new Promise(resolve => setTimeout(resolve, 488));
 
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
@@ -112,7 +112,7 @@ export default function Questionnaire() {
       setTimeout(() => {
         setCurrentQuestion(currentQuestion - 1);
         setIsAnimating(false);
-      }, 586);
+      }, 293);
     } else {
       window.history.back();
     }
@@ -213,7 +213,7 @@ export default function Questionnaire() {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 20 }}
-                transition={{ duration: 0.05, delay: idx * 0.1 }}
+                transition={{ duration: 0.025, delay: idx * 0.05 }}
                 onClick={() => handleOptionClick(opt.value)}
                 aria-disabled={isAnimating}
                 aria-pressed={selected}
@@ -256,11 +256,11 @@ export default function Questionnaire() {
         /* DESKTOP STYLES (≥768px) */
         @media (min-width: 768px) {
           .qa-option { 
-            transition: background 225ms ease, color 225ms ease; 
+            transition: background 112.5ms ease, color 112.5ms ease; 
             -webkit-background-clip: padding-box;
           }
           .qa-option .qa-label { 
-            transition: background 225ms ease, color 225ms ease; 
+            transition: background 112.5ms ease, color 112.5ms ease; 
           }
           
           .qa-option:hover { 
@@ -322,8 +322,9 @@ export default function Questionnaire() {
                   initial={{ scaleX: 0, originX: 0 }}
                   animate={{ scaleX: 1 }}
                   exit={{ scaleX: 0, originX: 1 }}
-                  transition={{ duration: 0.46875, delay: 0.46875, ease: "easeOut" }}
-                  className="absolute top-0 left-3 right-3 h-px bg-white z-[2]"
+                  transition={{ duration: 0.234375, delay: 0.234375, ease: "easeOut" }}
+                  className="absolute top-0 left-3 right-3 bg-white z-[2]"
+                  style={{ height: '1px' }}
                 />
                 
                 {/* Top-left corner */}
@@ -331,8 +332,9 @@ export default function Questionnaire() {
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0 }}
-                  transition={{ duration: 0.3125, delay: 0.46875, ease: "easeOut" }}
-                  className="absolute top-0 left-0 w-3 h-3 border-t border-l border-white rounded-tl-xl z-[2]"
+                  transition={{ duration: 0.15625, delay: 0.234375, ease: "easeOut" }}
+                  className="absolute top-0 left-0 w-3 h-3 border-white rounded-tl-xl z-[2]"
+                  style={{ borderTopWidth: '1px', borderLeftWidth: '1px' }}
                 />
                 
                 {/* Top-right corner */}
@@ -340,8 +342,9 @@ export default function Questionnaire() {
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0 }}
-                  transition={{ duration: 0.3125, delay: 0.9375, ease: "easeOut" }}
-                  className="absolute top-0 right-0 w-3 h-3 border-t border-r border-white rounded-tr-xl z-[2]"
+                  transition={{ duration: 0.15625, delay: 0.46875, ease: "easeOut" }}
+                  className="absolute top-0 right-0 w-3 h-3 border-white rounded-tr-xl z-[2]"
+                  style={{ borderTopWidth: '1px', borderRightWidth: '1px' }}
                 />
                 
                 {/* Right border */}
@@ -349,8 +352,9 @@ export default function Questionnaire() {
                   initial={{ scaleY: 0, originY: 0 }}
                   animate={{ scaleY: 1 }}
                   exit={{ scaleY: 0, originY: 1 }}
-                  transition={{ duration: 0.46875, delay: 0.9375, ease: "easeOut" }}
-                  className="absolute top-3 right-0 bottom-3 w-px bg-white z-[2]"
+                  transition={{ duration: 0.234375, delay: 0.46875, ease: "easeOut" }}
+                  className="absolute top-3 right-0 bottom-3 bg-white z-[2]"
+                  style={{ width: '1px' }}
                 />
                 
                 {/* Bottom-right corner */}
@@ -358,8 +362,9 @@ export default function Questionnaire() {
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0 }}
-                  transition={{ duration: 0.3125, delay: 0.9375, ease: "easeOut" }}
-                  className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-white rounded-br-xl z-[2]"
+                  transition={{ duration: 0.15625, delay: 0.46875, ease: "easeOut" }}
+                  className="absolute bottom-0 right-0 w-3 h-3 border-white rounded-br-xl z-[2]"
+                  style={{ borderBottomWidth: '1px', borderRightWidth: '1px' }}
                 />
                 
                 {/* Bottom border */}
@@ -367,8 +372,9 @@ export default function Questionnaire() {
                   initial={{ scaleX: 0, originX: 0 }}
                   animate={{ scaleX: 1 }}
                   exit={{ scaleX: 0, originX: 0 }}
-                  transition={{ duration: 0.46875, delay: 0.46875, ease: "easeOut" }}
-                  className="absolute bottom-0 left-3 right-3 h-px bg-white z-[2]"
+                  transition={{ duration: 0.234375, delay: 0.234375, ease: "easeOut" }}
+                  className="absolute bottom-0 left-3 right-3 bg-white z-[2]"
+                  style={{ height: '1px' }}
                 />
                 
                 {/* Bottom-left corner */}
@@ -376,8 +382,9 @@ export default function Questionnaire() {
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0 }}
-                  transition={{ duration: 0.3125, delay: 0.46875, ease: "easeOut" }}
-                  className="absolute bottom-0 left-0 w-3 h-3 border-b border-l border-white rounded-bl-xl z-[2]"
+                  transition={{ duration: 0.15625, delay: 0.234375, ease: "easeOut" }}
+                  className="absolute bottom-0 left-0 w-3 h-3 border-white rounded-bl-xl z-[2]"
+                  style={{ borderBottomWidth: '1px', borderLeftWidth: '1px' }}
                 />
                 
                 {/* Left border */}
@@ -385,8 +392,9 @@ export default function Questionnaire() {
                   initial={{ scaleY: 0, originY: 0 }}
                   animate={{ scaleY: 1 }}
                   exit={{ scaleY: 0, originY: 1 }}
-                  transition={{ duration: 0.46875, delay: 0, ease: "easeOut" }}
-                  className="absolute top-3 left-0 bottom-3 w-px bg-white z-[2]"
+                  transition={{ duration: 0.234375, delay: 0, ease: "easeOut" }}
+                  className="absolute top-3 left-0 bottom-3 bg-white z-[2]"
+                  style={{ width: '1px' }}
                 />
 
                 {/* Question Card */}
@@ -394,7 +402,7 @@ export default function Questionnaire() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3125 }}
+                  transition={{ duration: 0.15625 }}
                   className="rounded-xl overflow-hidden relative"
                 >
                   {/* Question Header Section - Responsive */}
@@ -403,15 +411,16 @@ export default function Questionnaire() {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      transition={{ duration: 0.375 }}
+                      transition={{ duration: 0.1875 }}
                       className="px-4 py-5 sm:px-6 sm:py-6 lg:px-5 lg:py-[22px] bg-transparent text-white font-bold text-center relative"
                     >
                       {/* Question Counter - Responsive */}
                       <motion.div 
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 0.95, y: 0 }}
-                        transition={{ duration: 0.3125, delay: 0.078125 }}
+                        transition={{ duration: 0.15625, delay: 0.0390625 }}
                         className="text-base sm:text-lg lg:text-xl font-normal opacity-95 mb-2 font-number"
+                        style={{ fontFamily: 'Arial, sans-serif' }}
                       >
                         Question {currentQuestion + 1} of {questions.length}
                       </motion.div>
@@ -429,8 +438,9 @@ export default function Questionnaire() {
                       initial={{ scaleX: 0, originX: 0 }}
                       animate={{ scaleX: 1 }}
                       exit={{ scaleX: 0, originX: 1 }}
-                      transition={{ duration: 0.46875, delay: 0.46875, ease: "easeOut" }}
-                      className="absolute bottom-0 left-0 right-0 h-px bg-white"
+                      transition={{ duration: 0.234375, delay: 0.234375, ease: "easeOut" }}
+                      className="absolute bottom-0 left-0 right-0 bg-white"
+                      style={{ height: '1px' }}
                     />
                   </div>
 
@@ -461,7 +471,7 @@ export default function Questionnaire() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.46875 }}
+                transition={{ delay: 0.234375 }}
                 className="mx-auto flex justify-center gap-2 sm:gap-2.5 px-2 py-4 bg-transparent rounded-full"
                 style={{ maxWidth: '320px' }}
               >
@@ -476,7 +486,7 @@ export default function Questionnaire() {
                       key={i}
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
-                      transition={{ delay: 0.625 + (i * 0.03125), type: "spring", stiffness: 300, damping: 20 }}
+                      transition={{ delay: 0.3125 + (i * 0.015625), type: "spring", stiffness: 300, damping: 20 }}
                       whileHover={{ scale: 1.3 }}
                       role="img"
                       aria-label={`Question ${i + 1} ${answered ? 'answered' : 'not answered'}`}

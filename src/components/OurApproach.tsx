@@ -29,13 +29,13 @@ const steps: Step[] = [
     id: 1,
     title: "Onboarding Call",
     subtitle: "Understanding Your Needs",
-    description: "We start with a focused 30-minute video call to understand your organization's current situation and specific needs.",
+    description: "We start with a focused 45-minute video call to understand your organization's current situation and specific needs.",
     icon: <Phone className="w-full h-full" />,
     color: "hsl(251 51% 37%)",
     accentColor: "hsl(251 51% 67%)",
     gradient: "from-primary/20 via-primary/10 to-transparent",
     features: [
-      "30-minute video call",
+      "45-minute video call",
       "Discussion about recent burnout cases",
       "Request for relevant company data"
     ]
@@ -80,8 +80,8 @@ const steps: Step[] = [
     accentColor: "hsl(251 51% 67%)",
     gradient: "from-primary/20 via-primary/10 to-transparent",
     features: [
-      "Dashboard with mean results for management",
-      "30-minute call to discuss findings",
+      "Anonymized results dashboard for management",
+      "1-hour call to discuss findings",
       "Individual results sent to employees",
       "Concrete action plan for the team"
     ]

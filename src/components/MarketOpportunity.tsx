@@ -19,7 +19,7 @@ const MarketOpportunity = () => {
     {
       icon: <Users className="w-8 h-8 text-secondary" />,
       value: "1 out of 5",
-      label: "Employees had a burnout",
+      label: "Dutch employees had burnout complaints",
       color: "secondary"
     },
     {

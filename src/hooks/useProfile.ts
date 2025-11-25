@@ -206,12 +206,18 @@ export const useProfile = () => {
         .delete()
         .eq('auth_user_id', user.id);
 
-      // Sign out - this effectively "deletes" access to the account
-      // Note: The auth.users record will remain but the user won't be able to access it
-      // For complete deletion, you'll need to set up the RPC function in Supabase
+      // Delete the auth.users record completely using RPC function
+      const { error: deleteError } = await supabase.rpc('delete_user');
+    
+      if (deleteError) {
+        console.error('Error deleting auth user:', deleteError);
+        throw deleteError;
+      }
+      
+      // Sign out
       await supabase.auth.signOut();
       
-      alert('Your account data has been deleted and you have been logged out.');
+      alert('Your account has been completely deleted.');
       navigate('/');
     } catch (error: any) {
       console.error('Error deleting account:', error);

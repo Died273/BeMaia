@@ -21,6 +21,7 @@ import DashboardCompany from "./pages/DashbaordCompany";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
+import Surveys from "./pages/Surveys";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -37,6 +38,7 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/surveys" element={<Surveys />} />
             <Route path="/team" element={<Team />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/questionnaire" element={<Questionnaire />} />

@@ -91,15 +91,28 @@ const Header = () => {
             >
               Our Team
             </Link>
-            <Link
-              to="/questionnaire"
-              className={`font-medium text-sm sm:text-base transition-colors
-                ${location.pathname === "/questionnaire" ? "text-secondary" : "text-foreground hover:text-primary"}
-              `}
-              
-            >
-              Questionnaire
-            </Link>
+            
+            {/* Surveys link - Only show if logged in */}
+            {isLoggedIn ? (
+              <Link
+                to="/surveys"
+                className={`font-medium text-sm sm:text-base transition-colors
+                  ${location.pathname === "/surveys" ? "text-secondary" : "text-foreground hover:text-primary"}
+                `}
+              >
+                Surveys
+              </Link>
+            ) : (
+              <Link
+                to="/questionnaire"
+                className={`font-medium text-sm sm:text-base transition-colors
+                  ${location.pathname === "/questionnaire" ? "text-secondary" : "text-foreground hover:text-primary"}
+                `}
+              >
+                Questionnaire
+              </Link>
+            )}
+            
             <Link
               to="/pricing"
               className={`font-medium text-sm sm:text-base transition-colors

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft } from "lucide-react";
 import Footer from "@/components/Footer";
@@ -18,9 +18,15 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import {
   fetchSurveyQuestions,
+  fetchQuestionOptions,
   getCurrentUserId,
   saveResponse,
+  getOrCreateSurveyAttempt,
+  completeSurveyAttempt,
+  loadAttemptResponses,
+  supabase,
   type DbQuestion,
+  type DbQuestionOption,
 } from "@/lib/supabase";
 
 type UiQuestion = { id: number; text: string; dimension?: string };
@@ -37,12 +43,17 @@ const DEFAULT_SURVEY_ID = 1;
 
 export default function DbQuestionnaire() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { openModal } = useContactModal();
   const { toast } = useToast();
 
   const [dbQuestions, setDbQuestions] = useState<DbQuestion[]>([]);
   const [questions, setQuestions] = useState<UiQuestion[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
+  const [attemptId, setAttemptId] = useState<number | null>(null);
+  const [surveyId, setSurveyId] = useState<number>(DEFAULT_SURVEY_ID);
+  const [questionOptions, setQuestionOptions] = useState<Record<number, DbQuestionOption[]>>({});
+  const [showSubmitButton, setShowSubmitButton] = useState(false);
 
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [alertOpen, setAlertOpen] = useState(false);
@@ -78,9 +89,57 @@ export default function DbQuestionnaire() {
         }
         setUserId(uid);
 
-        const qs = await fetchSurveyQuestions(DEFAULT_SURVEY_ID);
+        // Get survey ID from URL params or use default
+        const surveyIdParam = searchParams.get('survey');
+        const currentSurveyId = surveyIdParam ? parseInt(surveyIdParam, 10) : DEFAULT_SURVEY_ID;
+        setSurveyId(currentSurveyId);
+
+        // Get or create a survey attempt (reuses incomplete attempts)
+        const currentAttemptId = await getOrCreateSurveyAttempt(currentSurveyId, uid);
+        setAttemptId(currentAttemptId);
+
+        const qs = await fetchSurveyQuestions(currentSurveyId);
         setDbQuestions(qs);
-        setQuestions(qs.map(q => ({ id: q.question_id, text: q.question_text || "" })));
+        const uiQuestions = qs.map(q => ({ id: q.question_id, text: q.question_text || "" }));
+        setQuestions(uiQuestions);
+
+        // Load options for multiple choice questions
+        const optionsMap: Record<number, DbQuestionOption[]> = {};
+        for (const q of qs) {
+          if (q.question_type === 'multiple_choice') {
+            const options = await fetchQuestionOptions(q.question_id);
+            optionsMap[q.question_id] = options;
+          }
+        }
+        setQuestionOptions(optionsMap);
+
+        // Load existing responses for this attempt (if any)
+        const existingResponses = await loadAttemptResponses(currentAttemptId);
+        if (existingResponses.size > 0) {
+          const loadedResponses: Record<number, string> = {};
+          const answeredIds: number[] = [];
+          
+          existingResponses.forEach((value, questionId) => {
+            loadedResponses[questionId] = value;
+            answeredIds.push(questionId);
+          });
+          
+          setResponses(loadedResponses);
+          setCountedQuestionIds(answeredIds);
+          
+          // Find the first unanswered question to resume from
+          const firstUnansweredIndex = uiQuestions.findIndex(
+            q => !loadedResponses[q.id]
+          );
+          
+          if (firstUnansweredIndex !== -1) {
+            setCurrentQuestion(firstUnansweredIndex);
+          } else {
+            // All questions answered, show submit button
+            setCurrentQuestion(uiQuestions.length - 1);
+            setShowSubmitButton(true);
+          }
+        }
       } catch (error: any) {
         console.error(error);
         toast({
@@ -92,7 +151,7 @@ export default function DbQuestionnaire() {
       }
     };
     init();
-  }, [navigate, toast]);
+  }, [navigate, toast, searchParams]);
 
   function handleResponse(value: string) {
     if (isAnimating) return;
@@ -114,13 +173,38 @@ export default function DbQuestionnaire() {
 
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
-    } else if (allAnswered) {
-      const filtered = { ...responses } as Record<number, string>;
-      delete (filtered as any)[24];
-      navigate('/results', { state: { responses: filtered } });
+    } else {
+      // On last question, show submit button
+      setShowSubmitButton(true);
     }
 
     setIsAnimating(false);
+  }
+
+  async function handleSubmitSurvey() {
+    if (!attemptId || !allAnswered) return;
+
+    try {
+      setIsAnimating(true);
+      await completeSurveyAttempt(attemptId);
+      
+      toast({
+        title: "Survey submitted!",
+        description: "Thank you for completing the survey.",
+      });
+
+      const filtered = { ...responses } as Record<number, string>;
+      delete (filtered as any)[24];
+      navigate('/results', { state: { responses: filtered } });
+    } catch (e: any) {
+      console.error('Failed to submit survey:', e);
+      toast({
+        title: "Could not submit survey",
+        description: e?.message || String(e),
+      });
+    } finally {
+      setIsAnimating(false);
+    }
   }
 
   function handlePrevious() {
@@ -136,11 +220,14 @@ export default function DbQuestionnaire() {
     }
   }
 
-  async function handleOptionClick(value: string) {
+  async function handleOptionClick(value: string, optionId?: number) {
     if (isAnimating) return;
 
     const q = questions[currentQuestion];
-    if (!q || !userId) return;
+    if (!q || !attemptId) return;
+
+    const currentDbQuestion = dbQuestions.find(dbQ => dbQ.question_id === q.id);
+    if (!currentDbQuestion) return;
 
     setPendingSelection(value);
     await new Promise(resolve => setTimeout(resolve, 1));
@@ -148,7 +235,21 @@ export default function DbQuestionnaire() {
     const updatedResponses = { ...responses, [q.id]: value };
 
     try {
-      await saveResponse({ question_id: q.id, user_id: userId, response: value });
+      // Pass option_id for multiple choice questions
+      if (currentDbQuestion.question_type === 'multiple_choice') {
+        await saveResponse({ 
+          question_id: q.id, 
+          attempt_id: attemptId,
+          response: value,
+          option_id: optionId 
+        });
+      } else {
+        await saveResponse({ 
+          question_id: q.id, 
+          attempt_id: attemptId,
+          response: value 
+        });
+      }
     } catch (e: any) {
       console.error(e);
       toast({ title: "Could not save answer", description: e?.message || String(e) });
@@ -168,15 +269,119 @@ export default function DbQuestionnaire() {
       const allAnsweredIds = Object.keys(updatedResponses).map(Number);
       setCountedQuestionIds(prev => Array.from(new Set([...prev, ...allAnsweredIds])));
       setPendingSelection(null);
-      const filtered = { ...updatedResponses } as Record<number, string>;
-      delete (filtered as any)[24];
-      navigate('/results', { state: { responses: filtered } });
+      
+      // On last question, show submit button
+      setShowSubmitButton(true);
     }
 
     setIsAnimating(false);
   }
 
   function renderAnswerArea() {
+    const q = questions[currentQuestion];
+    if (!q) return null;
+
+    const currentDbQuestion = dbQuestions.find(dbQ => dbQ.question_id === q.id);
+    if (!currentDbQuestion) return null;
+
+    const questionType = currentDbQuestion.question_type;
+
+    // Handle open-ended questions
+    if (questionType === 'open_ended') {
+      return (
+        <div className="p-4 md:p-6">
+          <textarea
+            className="w-full min-h-[150px] p-4 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50"
+            placeholder="Type your answer here..."
+            value={responses[q.id] || ''}
+            onChange={(e) => handleResponse(e.target.value)}
+          />
+          <motion.button
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
+            onClick={() => {
+              if (responses[q.id]) {
+                handleOptionClick(responses[q.id]);
+              }
+            }}
+            disabled={!responses[q.id] || isAnimating}
+            className="mt-4 w-full md:w-auto px-8 py-3 rounded-lg bg-white text-primary font-semibold text-lg transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+          >
+            Submit Answer
+          </motion.button>
+        </div>
+      );
+    }
+
+    // Handle multiple choice questions
+    if (questionType === 'multiple_choice') {
+      const options = questionOptions[q.id] || [];
+      
+      return (
+        <>
+          {/* DESKTOP */}
+          <div className="hidden md:grid gap-2 p-4">
+            {options.map((opt, idx) => {
+              const selected = responses[q.id] === opt.option_value || pendingSelection === opt.option_value;
+
+              return (
+                <motion.button
+                  key={opt.option_id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3, delay: idx * 0.05 }}
+                  onClick={() => handleOptionClick(opt.option_value, opt.option_id)}
+                  aria-disabled={isAnimating}
+                  aria-pressed={!!selected}
+                  className="w-full px-6 py-4 rounded-lg border border-white/20 text-white font-semibold text-lg flex items-center justify-center cursor-pointer transition-all hover:bg-white hover:text-primary"
+                  style={{
+                    background: selected ? 'rgba(255,255,255,0.16)' : 'rgba(255,255,255,0.03)',
+                    opacity: isAnimating ? 0.6 : 1,
+                    cursor: isAnimating ? 'not-allowed' : 'pointer',
+                    borderColor: selected ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.2)'
+                  }}
+                >
+                  <span className="text-center">{opt.option_text}</span>
+                </motion.button>
+              );
+            })}
+          </div>
+
+          {/* MOBILE */}
+          <div className="flex md:hidden flex-col gap-3 p-4">
+            {options.map((opt, idx) => {
+              const selected = responses[q.id] === opt.option_value || pendingSelection === opt.option_value;
+
+              return (
+                <motion.button
+                  key={opt.option_id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  transition={{ duration: 0.3, delay: idx * 0.1 }}
+                  onClick={() => handleOptionClick(opt.option_value, opt.option_id)}
+                  aria-disabled={isAnimating}
+                  aria-pressed={!!selected}
+                  className="w-full px-5 py-4 rounded-lg border border-white/20 text-white font-semibold text-base flex items-center justify-center cursor-pointer transition-all"
+                  style={{
+                    background: selected ? 'rgba(255,255,255,0.16)' : 'rgba(255,255,255,0.03)',
+                    opacity: isAnimating ? 0.6 : 1,
+                    cursor: isAnimating ? 'not-allowed' : 'pointer',
+                    borderColor: selected ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.2)'
+                  }}
+                >
+                  <span className="text-center">{opt.option_text}</span>
+                </motion.button>
+              );
+            })}
+          </div>
+        </>
+      );
+    }
+
+    // Handle scale questions (default)
     return (
       <>
         {/* DESKTOP */}
@@ -387,6 +592,26 @@ export default function DbQuestionnaire() {
                 </motion.div>
               </div>
             </AnimatePresence>
+
+            {/* Submit Button - shown when all questions are answered */}
+            {showSubmitButton && allAnswered && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4 }}
+                className="flex justify-center mt-8"
+              >
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={handleSubmitSurvey}
+                  disabled={isAnimating}
+                  className="px-12 py-4 rounded-xl bg-white text-primary font-bold text-xl transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Submit Survey
+                </motion.button>
+              </motion.div>
+            )}
 
             {/* Controls */}
             <div className="w-full flex items-center justify-between mt-2 px-0 md:px-0 mb-24 md:mb-0 z-[61]" style={{ maxWidth: '1020px' }}>

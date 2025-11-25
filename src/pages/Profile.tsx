@@ -13,7 +13,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import { User, Settings, FileText, Lock, LogOut, Menu, X, Eye, EyeOff, Trash2, AlertTriangle } from 'lucide-react';
+import { User, Settings, FileText, Lock, LogOut, Menu, X, Eye, EyeOff, Trash2, AlertTriangle, ChevronRight, Download } from 'lucide-react';
 import { useProfile } from '@/hooks/useProfile';
 
 type MenuSection = 'profile' | 'settings' | 'surveys' | 'security';
@@ -22,6 +22,7 @@ const Profile = () => {
   const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState<MenuSection>('profile');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showMyDataSection, setShowMyDataSection] = useState(false);
   
   const {
     loading,
@@ -59,7 +60,7 @@ const Profile = () => {
   const menuItems = [
     { id: 'profile' as MenuSection, label: 'Profile', icon: User },
     { id: 'surveys' as MenuSection, label: 'My Surveys', icon: FileText },
-    { id: 'security' as MenuSection, label: 'Security', icon: Lock },
+    { id: 'security' as MenuSection, label: 'Password', icon: Lock },
     { id: 'settings' as MenuSection, label: 'Settings', icon: Settings },
   ];
 
@@ -285,45 +286,89 @@ const Profile = () => {
             </div>
             
             <div className="space-y-4">
-              {/* Delete User Data Section */}
-              <div className="bg-orange-50 border border-orange-200 rounded-lg p-6">
-                <div className="flex items-start gap-4">
-                  <AlertTriangle className="w-6 h-6 text-orange-600 flex-shrink-0 mt-1" />
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-foreground mb-2">Delete Survey Data</h3>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      This will permanently delete all your survey responses. This action cannot be undone.
-                    </p>
-                    <Button 
-                      variant="outline" 
-                      onClick={() => setShowDeleteDataDialog(true)}
-                      className="border-orange-300 text-orange-700 hover:bg-orange-100"
-                    >
-                      <Trash2 className="w-4 h-4 mr-2" />
-                      Delete Survey Data
-                    </Button>
-                  </div>
-                </div>
-              </div>
+              {/* My Data Expandable Section */}
+              <div className="border border-border rounded-lg">
+                <button
+                  onClick={() => setShowMyDataSection(!showMyDataSection)}
+                  className="w-full flex items-center justify-between p-4 hover:bg-muted/50 transition-colors rounded-lg"
+                >
+                  <span className="text-lg font-semibold text-foreground">Data Management</span>
+                  <ChevronRight 
+                    className={`w-5 h-5 text-muted-foreground transition-transform ${showMyDataSection ? 'rotate-90' : ''}`} 
+                  />
+                </button>
+                
+                {showMyDataSection && (
+                  <div className="border-t border-border p-4 space-y-4">
+                    {/* Request Data Section */}
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                      <div className="flex items-start gap-4">
+                        <Download className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-foreground mb-2">Request Your Data</h3>
+                          <p className="text-sm text-muted-foreground mb-4">
+                            Request a copy of all your personal data stored in our system. We'll send it to you via email.
+                          </p>
+                          <Button 
+                            variant="outline" 
+                            onClick={() => {
+                              const subject = encodeURIComponent('Data Request');
+                              const body = encodeURIComponent(
+                                `Hello,\n\nI would like to request a copy of all my personal data stored in your system.\n\nThank you.`
+                              );
+                              window.location.href = `mailto:info@bemaia.nl?subject=${subject}&body=${body}`;
+                            }}
+                            className="border-blue-300 text-blue-700 hover:bg-blue-100"
+                          >
+                            <Download className="w-4 h-4 mr-2" />
+                            Request Data
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
 
-              {/* Delete Account Section */}
-              <div className="bg-red-50 border border-red-200 rounded-lg p-6">
-                <div className="flex items-start gap-4">
-                  <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-1" />
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-foreground mb-2">Delete Account</h3>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      This will permanently delete your entire account, including all survey data, profile information, and settings. This action cannot be undone.
-                    </p>
-                    <Button 
-                      variant="destructive" 
-                      onClick={() => setShowDeleteAccountDialog(true)}
-                    >
-                      <Trash2 className="w-4 h-4 mr-2" />
-                      Delete Account
-                    </Button>
+                    {/* Delete User Data Section */}
+                    <div className="bg-orange-50 border border-orange-200 rounded-lg p-6">
+                      <div className="flex items-start gap-4">
+                        <AlertTriangle className="w-6 h-6 text-orange-600 flex-shrink-0 mt-1" />
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-foreground mb-2">Delete Survey Data</h3>
+                          <p className="text-sm text-muted-foreground mb-4">
+                            This will permanently delete all your survey responses. This action cannot be undone.
+                          </p>
+                          <Button 
+                            variant="outline" 
+                            onClick={() => setShowDeleteDataDialog(true)}
+                            className="border-orange-300 text-orange-700 hover:bg-orange-100"
+                          >
+                            <Trash2 className="w-4 h-4 mr-2" />
+                            Delete Survey Data
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Delete Account Section */}
+                    <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+                      <div className="flex items-start gap-4">
+                        <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0 mt-1" />
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-foreground mb-2">Delete Account</h3>
+                          <p className="text-sm text-muted-foreground mb-4">
+                            This will permanently delete your entire account, including all survey data, profile information, and settings. This action cannot be undone.
+                          </p>
+                          <Button 
+                            variant="destructive" 
+                            onClick={() => setShowDeleteAccountDialog(true)}
+                          >
+                            <Trash2 className="w-4 h-4 mr-2" />
+                            Delete Account
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
 

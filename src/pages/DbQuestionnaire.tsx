@@ -16,20 +16,8 @@ import {
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
-import {
-  fetchSurveyQuestions,
-  fetchQuestionOptions,
-  getCurrentUserId,
-  saveResponse,
-  getOrCreateSurveyAttempt,
-  completeSurveyAttempt,
-  loadAttemptResponses,
-  supabase,
-  type DbQuestion,
-  type DbQuestionOption,
-} from "@/lib/supabase";
-
-type UiQuestion = { id: number; text: string; dimension?: string };
+import { useSurveyAttempt } from "@/hooks/useSurveyAttempt";
+import { getCurrentUserId } from "@/lib/supabase";
 
 const scaleOptions = [
   { value: "1", label: "Never" },
@@ -47,155 +35,103 @@ export default function DbQuestionnaire() {
   const { openModal } = useContactModal();
   const { toast } = useToast();
 
-  const [dbQuestions, setDbQuestions] = useState<DbQuestion[]>([]);
-  const [questions, setQuestions] = useState<UiQuestion[]>([]);
+  // Auth state
   const [userId, setUserId] = useState<string | null>(null);
-  const [attemptId, setAttemptId] = useState<number | null>(null);
-  const [surveyId, setSurveyId] = useState<number>(DEFAULT_SURVEY_ID);
-  const [questionOptions, setQuestionOptions] = useState<Record<number, DbQuestionOption[]>>({});
-  const [showSubmitButton, setShowSubmitButton] = useState(false);
+  const [authLoading, setAuthLoading] = useState(true);
 
-  const [currentQuestion, setCurrentQuestion] = useState(0);
+  // Get survey ID from URL
+  const surveyIdParam = searchParams.get('survey');
+  const surveyId = surveyIdParam ? parseInt(surveyIdParam, 10) : DEFAULT_SURVEY_ID;
+
+  // Use survey attempt hook for all business logic
+  const { state: surveyState, actions: surveyActions } = useSurveyAttempt(surveyId, userId);
+
+  // UI state (presentation only)
   const [alertOpen, setAlertOpen] = useState(false);
   const [creditOpen, setCreditOpen] = useState(false);
-  const [responses, setResponses] = useState<Record<number, string>>({});
   const [countedQuestionIds, setCountedQuestionIds] = useState<number[]>([]);
   const [isAnimating, setIsAnimating] = useState(false);
   const [optionDisplayTexts, setOptionDisplayTexts] = useState<string[]>([]);
   const [pendingSelection, setPendingSelection] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
 
+  // Computed values
+  const currentQuestion = surveyState.questions[surveyState.currentQuestionIndex];
   const progressedCount = countedQuestionIds.length;
-  const rawProgress = (progressedCount / Math.max(1, questions.length)) * 100;
+  const rawProgress = (progressedCount / Math.max(1, surveyState.questions.length)) * 100;
   const progress = Math.max(0, Math.min(100, rawProgress));
-  const allAnswered = questions.length > 0 && Object.keys(responses).length === questions.length;
+  const allAnswered = surveyState.questions.length > 0 && surveyState.responses.size === surveyState.questions.length;
 
   // Dimension mapping (optional)
   const questionDimensionMap: Record<number, string> = {};
-  const currentDimension = questionDimensionMap[questions[currentQuestion]?.id] || 'total';
+  const currentDimension = questionDimensionMap[currentQuestion?.question_id] || 'total';
 
+  // Initialize auth
   useEffect(() => {
-    setOptionDisplayTexts(scaleOptions.map(o => o.label));
-  }, [currentQuestion, responses]);
-
-  useEffect(() => {
-    const init = async () => {
+    const initAuth = async () => {
       try {
-        setLoading(true);
         const uid = await getCurrentUserId();
         if (!uid) {
           navigate("/login", { replace: true, state: { from: "/questionnaire/db" } });
           return;
         }
         setUserId(uid);
-
-        // Get survey ID from URL params or use default
-        const surveyIdParam = searchParams.get('survey');
-        const currentSurveyId = surveyIdParam ? parseInt(surveyIdParam, 10) : DEFAULT_SURVEY_ID;
-        setSurveyId(currentSurveyId);
-
-        // Get or create a survey attempt (reuses incomplete attempts)
-        const currentAttemptId = await getOrCreateSurveyAttempt(currentSurveyId, uid);
-        setAttemptId(currentAttemptId);
-
-        const qs = await fetchSurveyQuestions(currentSurveyId);
-        setDbQuestions(qs);
-        const uiQuestions = qs.map(q => ({ id: q.question_id, text: q.question_text || "" }));
-        setQuestions(uiQuestions);
-
-        // Load options for multiple choice questions
-        const optionsMap: Record<number, DbQuestionOption[]> = {};
-        for (const q of qs) {
-          if (q.question_type === 'multiple_choice') {
-            const options = await fetchQuestionOptions(q.question_id);
-            optionsMap[q.question_id] = options;
-          }
-        }
-        setQuestionOptions(optionsMap);
-
-        // Load existing responses for this attempt (if any)
-        const existingResponses = await loadAttemptResponses(currentAttemptId);
-        if (existingResponses.size > 0) {
-          const loadedResponses: Record<number, string> = {};
-          const answeredIds: number[] = [];
-          
-          existingResponses.forEach((value, questionId) => {
-            loadedResponses[questionId] = value;
-            answeredIds.push(questionId);
-          });
-          
-          setResponses(loadedResponses);
-          setCountedQuestionIds(answeredIds);
-          
-          // Find the first unanswered question to resume from
-          const firstUnansweredIndex = uiQuestions.findIndex(
-            q => !loadedResponses[q.id]
-          );
-          
-          if (firstUnansweredIndex !== -1) {
-            setCurrentQuestion(firstUnansweredIndex);
-          } else {
-            // All questions answered, show submit button
-            setCurrentQuestion(uiQuestions.length - 1);
-            setShowSubmitButton(true);
-          }
-        }
-      } catch (error: any) {
-        console.error(error);
-        toast({
-          title: "Failed to load questionnaire",
-          description: error?.message || String(error),
-        });
+      } catch (error) {
+        console.error('Auth error:', error);
+        navigate("/login", { replace: true });
       } finally {
-        setLoading(false);
+        setAuthLoading(false);
       }
     };
-    init();
-  }, [navigate, toast, searchParams]);
+    initAuth();
+  }, [navigate]);
 
-  function handleResponse(value: string) {
-    if (isAnimating) return;
-    const qId = questions[currentQuestion]?.id;
-    if (!qId) return;
-    setResponses(prev => ({ ...prev, [qId]: value }));
-  }
+  // Update counted questions when responses change
+  useEffect(() => {
+    const answeredIds = Array.from(surveyState.responses.keys());
+    setCountedQuestionIds(answeredIds);
+  }, [surveyState.responses]);
 
+  // Update option display texts
+  useEffect(() => {
+    setOptionDisplayTexts(scaleOptions.map(o => o.label));
+  }, [surveyState.currentQuestionIndex]);
+
+  // Handlers
   async function handleNext() {
     if (isAnimating) return;
-
-    const qId = questions[currentQuestion]?.id;
-    if (qId !== undefined && responses[qId] !== undefined && !countedQuestionIds.includes(qId)) {
-      setCountedQuestionIds(prev => [...prev, qId]);
-    }
 
     setIsAnimating(true);
     await new Promise(resolve => setTimeout(resolve, 976));
 
-    if (currentQuestion < questions.length - 1) {
-      setCurrentQuestion(currentQuestion + 1);
+    if (surveyState.currentQuestionIndex < surveyState.questions.length - 1) {
+      surveyActions.setCurrentQuestionIndex(surveyState.currentQuestionIndex + 1);
     } else {
       // On last question, show submit button
-      setShowSubmitButton(true);
+      surveyActions.setShowSubmitButton(true);
     }
 
     setIsAnimating(false);
   }
 
   async function handleSubmitSurvey() {
-    if (!attemptId || !allAnswered) return;
+    if (!allAnswered) return;
 
     try {
       setIsAnimating(true);
-      await completeSurveyAttempt(attemptId);
+      await surveyActions.submitSurvey();
       
       toast({
         title: "Survey submitted!",
         description: "Thank you for completing the survey.",
       });
 
-      const filtered = { ...responses } as Record<number, string>;
-      delete (filtered as any)[24];
-      navigate('/results', { state: { responses: filtered } });
+      // Convert Map to object for navigation state
+      const responsesObj: Record<number, string> = {};
+      surveyState.responses.forEach((value, key) => {
+        responsesObj[key] = value;
+      });
+
+      navigate('/results', { state: { responses: responsesObj } });
     } catch (e: any) {
       console.error('Failed to submit survey:', e);
       toast({
@@ -209,10 +145,10 @@ export default function DbQuestionnaire() {
 
   function handlePrevious() {
     if (isAnimating) return;
-    if (currentQuestion > 0) {
+    if (surveyState.currentQuestionIndex > 0) {
       setIsAnimating(true);
       setTimeout(() => {
-        setCurrentQuestion(currentQuestion - 1);
+        surveyActions.setCurrentQuestionIndex(surveyState.currentQuestionIndex - 1);
         setIsAnimating(false);
       }, 586);
     } else {
@@ -222,90 +158,68 @@ export default function DbQuestionnaire() {
 
   async function handleOptionClick(value: string, optionId?: number) {
     if (isAnimating) return;
-
-    const q = questions[currentQuestion];
-    if (!q || !attemptId) return;
-
-    const currentDbQuestion = dbQuestions.find(dbQ => dbQ.question_id === q.id);
-    if (!currentDbQuestion) return;
+    if (!currentQuestion) return;
 
     setPendingSelection(value);
     await new Promise(resolve => setTimeout(resolve, 1));
 
-    const updatedResponses = { ...responses, [q.id]: value };
-
     try {
-      // Pass option_id for multiple choice questions
-      if (currentDbQuestion.question_type === 'multiple_choice') {
-        await saveResponse({ 
-          question_id: q.id, 
-          attempt_id: attemptId,
-          response: value,
-          option_id: optionId 
-        });
-      } else {
-        await saveResponse({ 
-          question_id: q.id, 
-          attempt_id: attemptId,
-          response: value 
-        });
-      }
+      // Save response
+      await surveyActions.saveAnswer(currentQuestion.question_id, value, optionId);
     } catch (e: any) {
       console.error(e);
       toast({ title: "Could not save answer", description: e?.message || String(e) });
+      setPendingSelection(null);
+      return;
     }
 
     await new Promise(resolve => setTimeout(resolve, 1));
     setIsAnimating(true);
     await new Promise(resolve => setTimeout(resolve, 1));
 
-    if (currentQuestion < questions.length - 1) {
-      setResponses(updatedResponses);
-      setCountedQuestionIds(prev => Array.from(new Set([...prev, q.id])));
+    if (surveyState.currentQuestionIndex < surveyState.questions.length - 1) {
       setPendingSelection(null);
-      setCurrentQuestion(currentQuestion + 1);
+      surveyActions.setCurrentQuestionIndex(surveyState.currentQuestionIndex + 1);
     } else {
-      setResponses(updatedResponses);
-      const allAnsweredIds = Object.keys(updatedResponses).map(Number);
-      setCountedQuestionIds(prev => Array.from(new Set([...prev, ...allAnsweredIds])));
       setPendingSelection(null);
-      
       // On last question, show submit button
-      setShowSubmitButton(true);
+      surveyActions.setShowSubmitButton(true);
     }
 
     setIsAnimating(false);
   }
 
   function renderAnswerArea() {
-    const q = questions[currentQuestion];
-    if (!q) return null;
+    if (!currentQuestion) return null;
 
-    const currentDbQuestion = dbQuestions.find(dbQ => dbQ.question_id === q.id);
-    if (!currentDbQuestion) return null;
-
-    const questionType = currentDbQuestion.question_type;
+    const questionType = currentQuestion.question_type;
 
     // Handle open-ended questions
     if (questionType === 'open_ended') {
+      const currentValue = surveyState.responses.get(currentQuestion.question_id) || '';
+      
       return (
         <div className="p-4 md:p-6">
           <textarea
             className="w-full min-h-[150px] p-4 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50"
             placeholder="Type your answer here..."
-            value={responses[q.id] || ''}
-            onChange={(e) => handleResponse(e.target.value)}
+            value={currentValue}
+            onChange={(e) => {
+              // Update local state immediately for UI responsiveness
+              const newMap = new Map(surveyState.responses);
+              newMap.set(currentQuestion.question_id, e.target.value);
+            }}
           />
           <motion.button
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.1 }}
             onClick={() => {
-              if (responses[q.id]) {
-                handleOptionClick(responses[q.id]);
+              if (currentValue) {
+                handleOptionClick(currentValue);
               }
             }}
-            disabled={!responses[q.id] || isAnimating}
+            disabled={!currentValue || isAnimating}
             className="mt-4 w-full md:w-auto px-8 py-3 rounded-lg bg-white text-primary font-semibold text-lg transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
           >
             Submit Answer
@@ -316,14 +230,15 @@ export default function DbQuestionnaire() {
 
     // Handle multiple choice questions
     if (questionType === 'multiple_choice') {
-      const options = questionOptions[q.id] || [];
+      const options = surveyState.questionOptions[currentQuestion.question_id] || [];
+      const currentValue = surveyState.responses.get(currentQuestion.question_id);
       
       return (
         <>
           {/* DESKTOP */}
           <div className="hidden md:grid gap-2 p-4">
             {options.map((opt, idx) => {
-              const selected = responses[q.id] === opt.option_value || pendingSelection === opt.option_value;
+              const selected = currentValue === opt.option_value || pendingSelection === opt.option_value;
 
               return (
                 <motion.button
@@ -352,7 +267,7 @@ export default function DbQuestionnaire() {
           {/* MOBILE */}
           <div className="flex md:hidden flex-col gap-3 p-4">
             {options.map((opt, idx) => {
-              const selected = responses[q.id] === opt.option_value || pendingSelection === opt.option_value;
+              const selected = currentValue === opt.option_value || pendingSelection === opt.option_value;
 
               return (
                 <motion.button
@@ -382,13 +297,14 @@ export default function DbQuestionnaire() {
     }
 
     // Handle scale questions (default)
+    const currentValue = surveyState.responses.get(currentQuestion.question_id);
+    
     return (
       <>
         {/* DESKTOP */}
         <div className="hidden md:grid" style={{ gridTemplateColumns: 'repeat(' + scaleOptions.length + ', minmax(0, 1fr))' }}>
           {scaleOptions.map((opt, idx) => {
-            const q = questions[currentQuestion];
-            const selected = q && (responses[q.id] === opt.value || pendingSelection === opt.value);
+            const selected = currentValue === opt.value || pendingSelection === opt.value;
 
             return (
               <div key={opt.value} style={{ position: 'relative' }}>
@@ -438,8 +354,7 @@ export default function DbQuestionnaire() {
         {/* MOBILE */}
         <div className="flex md:hidden flex-col gap-3 p-4">
           {scaleOptions.map((opt, idx) => {
-            const q = questions[currentQuestion];
-            const selected = q && (responses[q.id] === opt.value || pendingSelection === opt.value);
+            const selected = currentValue === opt.value || pendingSelection === opt.value;
 
             return (
               <motion.button
@@ -451,7 +366,7 @@ export default function DbQuestionnaire() {
                 onClick={() => handleOptionClick(opt.value)}
                 aria-disabled={isAnimating}
                 aria-pressed={!!selected}
-                className="qa-option-mobile w-full px-5 py-4 rounded-lg border border白/20 text-white font-semibold text-base flex items-center justify-center cursor-pointer transition-all"
+                className="qa-option-mobile w-full px-5 py-4 rounded-lg border border-white/20 text-white font-semibold text-base flex items-center justify-center cursor-pointer transition-all"
                 style={{
                   background: selected ? 'rgba(255,255,255,0.16)' : 'rgba(255,255,255,0.03)',
                   opacity: isAnimating ? 0.6 : 1,
@@ -468,7 +383,8 @@ export default function DbQuestionnaire() {
     );
   }
 
-  if (loading) {
+  // Loading and error states
+  if (authLoading || surveyState.loading) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: 'linear-gradient(180deg, var(--primary), var(--primary-light))' }}>
         <div className="text-white text-lg">Loading questionnaire…</div>
@@ -484,7 +400,15 @@ export default function DbQuestionnaire() {
     );
   }
 
-  if (!questions.length) {
+  if (surveyState.error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'linear-gradient(180deg, var(--primary), var(--primary-light))' }}>
+        <div className="text-white text-lg">Error: {surveyState.error}</div>
+      </div>
+    );
+  }
+
+  if (!surveyState.questions.length) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: 'linear-gradient(180deg, var(--primary), var(--primary-light))' }}>
         <div className="text-white text-lg">No questions found for this survey.</div>
@@ -563,7 +487,7 @@ export default function DbQuestionnaire() {
         <div className="flex justify-center">
           <div className="w-full max-w-[1020px] mt-[25px] mb-8 sm:mb-16 lg:mb-[120px] relative">
             <AnimatePresence mode="wait">
-              <div key={currentQuestion} className="relative">
+              <div key={surveyState.currentQuestionIndex} className="relative">
                 {/* Borders */}
                 <motion.div initial={{ scaleX: 0, originX: 0 }} animate={{ scaleX: 1 }} exit={{ scaleX: 0, originX: 1 }} transition={{ duration: 0.46875, delay: 0.46875, ease: "easeOut" }} className="absolute top-0 left-3 right-3 h-px bg-white z-[2]" />
                 <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0 }} transition={{ duration: 0.3125, delay: 0.46875, ease: "easeOut" }} className="absolute top-0 left-0 w-3 h-3 border-t border-l border-white rounded-tl-xl z-[2]" />
@@ -579,10 +503,10 @@ export default function DbQuestionnaire() {
                   <div className="relative">
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.375 }} className="px-4 py-5 sm:px-6 sm:py-6 lg:px-5 lg:py-[22px] bg-transparent text-white font-bold text-center relative">
                       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 0.95, y: 0 }} transition={{ duration: 0.3125, delay: 0.078125 }} className="text-base sm:text-lg lg:text-xl font-normal opacity-95 mb-2">
-                        Question {currentQuestion + 1} of {questions.length}
+                        Question {surveyState.currentQuestionIndex + 1} of {surveyState.questions.length}
                       </motion.div>
                       <div className="text-lg sm:text-xl lg:text-[26px] max-w-[90%] sm:max-w-[80%] mx-auto min-h-[30px] sm:min-h-[35px]">
-                        {questions[currentQuestion]?.text}
+                        {currentQuestion?.question_text || ''}
                       </div>
                     </motion.div>
                     <motion.div initial={{ scaleX: 0, originX: 0 }} animate={{ scaleX: 1 }} exit={{ scaleX: 0, originX: 1 }} transition={{ duration: 0.46875, delay: 0.46875, ease: "easeOut" }} className="absolute bottom-0 left-0 right-0 h-px bg-white" />
@@ -594,7 +518,7 @@ export default function DbQuestionnaire() {
             </AnimatePresence>
 
             {/* Submit Button - shown when all questions are answered */}
-            {showSubmitButton && allAnswered && (
+            {surveyState.showSubmitButton && allAnswered && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -638,9 +562,9 @@ export default function DbQuestionnaire() {
                 className="mx-auto flex justify-center gap-2 sm:gap-2.5 px-2 py-4 bg-transparent rounded-full"
                 style={{ maxWidth: '320px' }}
               >
-                {questions.map((q, i) => {
-                  const answered = responses[q.id] !== undefined;
-                  const isCurrent = i === currentQuestion;
+                {surveyState.questions.map((q, i) => {
+                  const answered = surveyState.responses.has(q.question_id);
+                  const isCurrent = i === surveyState.currentQuestionIndex;
                   const isFilled = answered;
                   const isOutline = isCurrent && !answered;
 

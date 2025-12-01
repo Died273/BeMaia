@@ -53,6 +53,7 @@ export default function DbQuestionnaire() {
   const [isAnimating, setIsAnimating] = useState(false);
   const [optionDisplayTexts, setOptionDisplayTexts] = useState<string[]>([]);
   const [pendingSelection, setPendingSelection] = useState<string | null>(null);
+  const [openEndedInput, setOpenEndedInput] = useState<string>('');
 
   // Computed values
   const currentQuestion = surveyState.questions[surveyState.currentQuestionIndex];
@@ -95,6 +96,14 @@ export default function DbQuestionnaire() {
   useEffect(() => {
     setOptionDisplayTexts(scaleOptions.map(o => o.label));
   }, [surveyState.currentQuestionIndex]);
+
+  // Update open-ended input when question changes or response loads
+  useEffect(() => {
+    if (currentQuestion && currentQuestion.question_type === 'open_ended') {
+      const savedValue = surveyState.responses.get(currentQuestion.question_id) || '';
+      setOpenEndedInput(savedValue);
+    }
+  }, [surveyState.currentQuestionIndex, currentQuestion, surveyState.responses]);
 
   // Handlers
   async function handleNext() {
@@ -196,30 +205,24 @@ export default function DbQuestionnaire() {
 
     // Handle open-ended questions
     if (questionType === 'open_ended') {
-      const currentValue = surveyState.responses.get(currentQuestion.question_id) || '';
-      
       return (
         <div className="p-4 md:p-6">
           <textarea
             className="w-full min-h-[150px] p-4 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50"
             placeholder="Type your answer here..."
-            value={currentValue}
-            onChange={(e) => {
-              // Update local state immediately for UI responsiveness
-              const newMap = new Map(surveyState.responses);
-              newMap.set(currentQuestion.question_id, e.target.value);
-            }}
+            value={openEndedInput}
+            onChange={(e) => setOpenEndedInput(e.target.value)}
           />
           <motion.button
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.1 }}
             onClick={() => {
-              if (currentValue) {
-                handleOptionClick(currentValue);
+              if (openEndedInput) {
+                handleOptionClick(openEndedInput);
               }
             }}
-            disabled={!currentValue || isAnimating}
+            disabled={!openEndedInput || isAnimating}
             className="mt-4 w-full md:w-auto px-8 py-3 rounded-lg bg-white text-primary font-semibold text-lg transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
           >
             Submit Answer

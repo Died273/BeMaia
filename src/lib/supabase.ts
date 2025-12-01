@@ -126,7 +126,7 @@ export async function saveResponse(payload: DbResponseInsert) {
     throw new Error('attempt_id is required');
   }
 
-  // First, get the question to determine its type
+  // Get the question to determine its type
   const { data: question, error: questionError } = await supabase
     .from('question')
     .select('question_type')
@@ -136,134 +136,77 @@ export async function saveResponse(payload: DbResponseInsert) {
   if (questionError) throw questionError;
   if (!question) throw new Error('Question not found');
 
-  // Check if a response already exists for this question and attempt
-  const { data: existingResponse, error: existingError } = await supabase
-    .from('response')
-    .select('response_id')
-    .eq('question_id', payload.question_id)
-    .eq('attempt_id', payload.attempt_id)
-    .single();
+  // Prepare the response data based on question type
+  const responseData: any = {
+    question_id: payload.question_id,
+    attempt_id: payload.attempt_id,
+    value_text: null,
+    value_int: null,
+    value_option_id: null,
+  };
 
-  let responseId: number;
-
-  if (existingResponse) {
-    // Response exists, we'll update it
-    responseId = existingResponse.response_id;
-  } else {
-    // No existing response, create a new one
-    const { data: responseData, error: responseError } = await supabase
-      .from('response')
-      .insert({
-        question_id: payload.question_id,
-        attempt_id: payload.attempt_id,
-      })
-      .select('response_id')
-      .single();
-
-    if (responseError) throw responseError;
-    if (!responseData) throw new Error('Failed to create response');
-    responseId = responseData.response_id;
-  }
-
-  // Update or insert into the appropriate type-specific table based on question_type
+  // Set the appropriate value field based on question type
   if (question.question_type === 'multiple_choice') {
-    // Use upsert to handle insert or update
-    const { error: mcError } = await supabase
-      .from('response_multiple_choice')
-      .upsert({
-        response_id: responseId,
-        option_id: payload.option_id,
-      }, {
-        onConflict: 'response_id'
-      });
-
-    if (mcError) throw mcError;
+    responseData.value_option_id = payload.option_id;
   } else if (question.question_type === 'scale') {
-    // Use upsert to handle insert or update
-    const { error: scaleError } = await supabase
-      .from('response_scale')
-      .upsert({
-        response_id: responseId,
-        scale_value: Number(payload.response),
-      }, {
-        onConflict: 'response_id'
-      });
-
-    if (scaleError) throw scaleError;
+    responseData.value_int = Number(payload.response);
   } else if (question.question_type === 'open_ended') {
-    // Use upsert to handle insert or update
-    const { error: openError } = await supabase
-      .from('response_open_ended')
-      .upsert({
-        response_id: responseId,
-        text_value: String(payload.response),
-      }, {
-        onConflict: 'response_id'
-      });
-
-    if (openError) throw openError;
+    responseData.value_text = String(payload.response);
   } else {
     throw new Error(`Unknown question type: ${question.question_type}`);
   }
+
+  // Use upsert to handle both insert and update
+  // The unique constraint on (question_id, attempt_id) will handle conflicts
+  const { error } = await supabase
+    .from('response')
+    .upsert(responseData, {
+      onConflict: 'question_id,attempt_id'
+    });
+
+  if (error) throw error;
 }
 
 export async function loadAttemptResponses(attemptId: number): Promise<Map<number, string>> {
   const responses = new Map<number, string>();
 
-  // Get all responses for this attempt
+  // Get all responses for this attempt with question info
   const { data: responseData, error: responseError } = await supabase
     .from('response')
-    .select('response_id, question_id')
+    .select('question_id, value_text, value_int, value_option_id, question(question_type)')
     .eq('attempt_id', attemptId);
 
   if (responseError) throw responseError;
   if (!responseData || responseData.length === 0) return responses;
 
-  // For each response, get the actual answer from the type-specific tables
+  // For each response, extract the appropriate value based on question type
   for (const resp of responseData) {
     const questionId = resp.question_id;
-    const responseId = resp.response_id;
+    const questionType = (resp.question as any)?.question_type;
 
-    // Get question type
-    const { data: question } = await supabase
-      .from('question')
-      .select('question_type')
-      .eq('question_id', questionId)
-      .single();
+    if (!questionType) continue;
 
-    if (!question) continue;
+    let value: string | null = null;
 
-    // Get the actual response value based on type
-    if (question.question_type === 'multiple_choice') {
-      const { data: mcData } = await supabase
-        .from('response_multiple_choice')
-        .select('option_id, question_option(option_value)')
-        .eq('response_id', responseId)
+    if (questionType === 'multiple_choice' && resp.value_option_id) {
+      // Get the option value for multiple choice
+      const { data: optionData } = await supabase
+        .from('question_option')
+        .select('option_value')
+        .eq('option_id', resp.value_option_id)
         .single();
 
-      if (mcData && mcData.question_option) {
-        responses.set(questionId, (mcData.question_option as any).option_value);
+      if (optionData) {
+        value = optionData.option_value;
       }
-    } else if (question.question_type === 'scale') {
-      const { data: scaleData } = await supabase
-        .from('response_scale')
-        .select('scale_value')
-        .eq('response_id', responseId)
-        .single();
+    } else if (questionType === 'scale' && resp.value_int !== null) {
+      value = String(resp.value_int);
+    } else if (questionType === 'open_ended' && resp.value_text) {
+      value = resp.value_text;
+    }
 
-      if (scaleData) {
-        responses.set(questionId, String(scaleData.scale_value));
-      }
-    } else if (question.question_type === 'open_ended') {
-      const { data: openData } = await supabase
-        .from('response_open_ended')
-        .select('text_value')
-        .eq('response_id', responseId)
-        .single();
-
-      if (openData) {
-        responses.set(questionId, openData.text_value);
-      }
+    if (value !== null) {
+      responses.set(questionId, value);
     }
   }
 

@@ -49,22 +49,16 @@ export default function DbQuestionnaire() {
   // UI state (presentation only)
   const [alertOpen, setAlertOpen] = useState(false);
   const [creditOpen, setCreditOpen] = useState(false);
-  const [countedQuestionIds, setCountedQuestionIds] = useState<number[]>([]);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [optionDisplayTexts, setOptionDisplayTexts] = useState<string[]>([]);
   const [pendingSelection, setPendingSelection] = useState<string | null>(null);
-  const [openEndedInput, setOpenEndedInput] = useState<string>('');
+  const [textInput, setTextInput] = useState<string>('');
 
   // Computed values
-  const currentQuestion = surveyState.questions[surveyState.currentQuestionIndex];
-  const progressedCount = countedQuestionIds.length;
-  const rawProgress = (progressedCount / Math.max(1, surveyState.questions.length)) * 100;
+  const currentQuestion = surveyState.questions.find(q => q.question_id === surveyState.currentQuestionId);
+  const progressedCount = surveyState.visitedQuestions.length;
+  const totalQuestions = surveyState.questions.length;
+  const rawProgress = (progressedCount / Math.max(1, totalQuestions)) * 100;
   const progress = Math.max(0, Math.min(100, rawProgress));
-  const allAnswered = surveyState.questions.length > 0 && surveyState.responses.size === surveyState.questions.length;
-
-  // Dimension mapping (optional)
-  const questionDimensionMap: Record<number, string> = {};
-  const currentDimension = questionDimensionMap[currentQuestion?.question_id] || 'total';
 
   // Initialize auth
   useEffect(() => {
@@ -86,45 +80,18 @@ export default function DbQuestionnaire() {
     initAuth();
   }, [navigate]);
 
-  // Update counted questions when responses change
-  useEffect(() => {
-    const answeredIds = Array.from(surveyState.responses.keys());
-    setCountedQuestionIds(answeredIds);
-  }, [surveyState.responses]);
 
-  // Update option display texts
-  useEffect(() => {
-    setOptionDisplayTexts(scaleOptions.map(o => o.label));
-  }, [surveyState.currentQuestionIndex]);
 
-  // Update open-ended input when question changes or response loads
+  // Update text input when question changes or response loads
   useEffect(() => {
-    if (currentQuestion && currentQuestion.question_type === 'open_ended') {
+    if (currentQuestion && currentQuestion.question_type === 'text') {
       const savedValue = surveyState.responses.get(currentQuestion.question_id) || '';
-      setOpenEndedInput(savedValue);
+      setTextInput(savedValue);
     }
-  }, [surveyState.currentQuestionIndex, currentQuestion, surveyState.responses]);
+  }, [surveyState.currentQuestionId, currentQuestion, surveyState.responses]);
 
-  // Handlers
-  async function handleNext() {
-    if (isAnimating) return;
-
-    setIsAnimating(true);
-    await new Promise(resolve => setTimeout(resolve, 976));
-
-    if (surveyState.currentQuestionIndex < surveyState.questions.length - 1) {
-      surveyActions.setCurrentQuestionIndex(surveyState.currentQuestionIndex + 1);
-    } else {
-      // On last question, show submit button
-      surveyActions.setShowSubmitButton(true);
-    }
-
-    setIsAnimating(false);
-  }
-
+  // Handlers - now using the new navigation logic
   async function handleSubmitSurvey() {
-    if (!allAnswered) return;
-
     try {
       setIsAnimating(true);
       await surveyActions.submitSurvey();
@@ -134,13 +101,7 @@ export default function DbQuestionnaire() {
         description: "Thank you for completing the survey.",
       });
 
-      // Convert Map to object for navigation state
-      const responsesObj: Record<number, string> = {};
-      surveyState.responses.forEach((value, key) => {
-        responsesObj[key] = value;
-      });
-
-      navigate('/results', { state: { responses: responsesObj } });
+      navigate('/surveys');
     } catch (e: any) {
       console.error('Failed to submit survey:', e);
       toast({
@@ -154,10 +115,10 @@ export default function DbQuestionnaire() {
 
   function handlePrevious() {
     if (isAnimating) return;
-    if (surveyState.currentQuestionIndex > 0) {
+    if (surveyState.visitedQuestions.length > 1) {
       setIsAnimating(true);
       setTimeout(() => {
-        surveyActions.setCurrentQuestionIndex(surveyState.currentQuestionIndex - 1);
+        surveyActions.goToPreviousQuestion();
         setIsAnimating(false);
       }, 586);
     } else {
@@ -173,29 +134,16 @@ export default function DbQuestionnaire() {
     await new Promise(resolve => setTimeout(resolve, 1));
 
     try {
-      // Save response
-      await surveyActions.saveAnswer(currentQuestion.question_id, value, optionId);
+      // Save response and let the hook determine next question
+      setIsAnimating(true);
+      await surveyActions.saveAnswerAndNavigate(currentQuestion.question_id, value, optionId);
     } catch (e: any) {
       console.error(e);
       toast({ title: "Could not save answer", description: e?.message || String(e) });
+    } finally {
       setPendingSelection(null);
-      return;
+      setIsAnimating(false);
     }
-
-    await new Promise(resolve => setTimeout(resolve, 1));
-    setIsAnimating(true);
-    await new Promise(resolve => setTimeout(resolve, 1));
-
-    if (surveyState.currentQuestionIndex < surveyState.questions.length - 1) {
-      setPendingSelection(null);
-      surveyActions.setCurrentQuestionIndex(surveyState.currentQuestionIndex + 1);
-    } else {
-      setPendingSelection(null);
-      // On last question, show submit button
-      surveyActions.setShowSubmitButton(true);
-    }
-
-    setIsAnimating(false);
   }
 
   function renderAnswerArea() {
@@ -203,26 +151,26 @@ export default function DbQuestionnaire() {
 
     const questionType = currentQuestion.question_type;
 
-    // Handle open-ended questions
-    if (questionType === 'open_ended') {
+    // Handle text questions
+    if (questionType === 'text') {
       return (
         <div className="p-4 md:p-6">
           <textarea
             className="w-full min-h-[150px] p-4 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/50"
             placeholder="Type your answer here..."
-            value={openEndedInput}
-            onChange={(e) => setOpenEndedInput(e.target.value)}
+            value={textInput}
+            onChange={(e) => setTextInput(e.target.value)}
           />
           <motion.button
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: 0.1 }}
             onClick={() => {
-              if (openEndedInput) {
-                handleOptionClick(openEndedInput);
+              if (textInput) {
+                handleOptionClick(textInput);
               }
             }}
-            disabled={!openEndedInput || isAnimating}
+            disabled={!textInput || isAnimating}
             className="mt-4 w-full md:w-auto px-8 py-3 rounded-lg bg-white text-primary font-semibold text-lg transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
           >
             Submit Answer
@@ -346,7 +294,7 @@ export default function DbQuestionnaire() {
                   }}
                 >
                   <span className="qa-label">
-                    {optionDisplayTexts[idx] || ""}
+                    {opt.label}
                   </span>
                 </motion.button>
               </div>
@@ -421,21 +369,6 @@ export default function DbQuestionnaire() {
 
   return (
     <div style={{ position: 'relative', minHeight: '100vh', background: 'linear-gradient(180deg, var(--primary), var(--primary-light))', overflow: 'hidden' }}>
-      {/* Background tint layers */}
-      <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
-        {currentDimension === 'exhaustion' && (
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, var(--primary), var(--primary-light))', opacity: 0.12 }} />
-        )}
-        {currentDimension === 'mental_distance' && (
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, var(--sidebar-accent), var(--sidebar-primary))', opacity: 0.12 }} />
-        )}
-        {currentDimension === 'cognitive' && (
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, var(--accent), var(--accent-foreground))', opacity: 0.12 }} />
-        )}
-        {currentDimension === 'emotional' && (
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, var(--secondary), var(--secondary-foreground))', opacity: 0.12 }} />
-        )}
-      </div>
 
       <style>{`
         @media (min-width: 768px) {
@@ -490,7 +423,7 @@ export default function DbQuestionnaire() {
         <div className="flex justify-center">
           <div className="w-full max-w-[1020px] mt-[25px] mb-8 sm:mb-16 lg:mb-[120px] relative">
             <AnimatePresence mode="wait">
-              <div key={surveyState.currentQuestionIndex} className="relative">
+              <div key={surveyState.currentQuestionId} className="relative">
                 {/* Borders */}
                 <motion.div initial={{ scaleX: 0, originX: 0 }} animate={{ scaleX: 1 }} exit={{ scaleX: 0, originX: 1 }} transition={{ duration: 0.46875, delay: 0.46875, ease: "easeOut" }} className="absolute top-0 left-3 right-3 h-px bg-white z-[2]" />
                 <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0 }} transition={{ duration: 0.3125, delay: 0.46875, ease: "easeOut" }} className="absolute top-0 left-0 w-3 h-3 border-t border-l border-white rounded-tl-xl z-[2]" />
@@ -506,7 +439,7 @@ export default function DbQuestionnaire() {
                   <div className="relative">
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.375 }} className="px-4 py-5 sm:px-6 sm:py-6 lg:px-5 lg:py-[22px] bg-transparent text-white font-bold text-center relative">
                       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 0.95, y: 0 }} transition={{ duration: 0.3125, delay: 0.078125 }} className="text-base sm:text-lg lg:text-xl font-normal opacity-95 mb-2">
-                        Question {surveyState.currentQuestionIndex + 1} of {surveyState.questions.length}
+                        Question {surveyState.visitedQuestions.length}
                       </motion.div>
                       <div className="text-lg sm:text-xl lg:text-[26px] max-w-[90%] sm:max-w-[80%] mx-auto min-h-[30px] sm:min-h-[35px]">
                         {currentQuestion?.question_text || ''}
@@ -521,7 +454,7 @@ export default function DbQuestionnaire() {
             </AnimatePresence>
 
             {/* Submit Button - shown when all questions are answered */}
-            {surveyState.showSubmitButton && allAnswered && (
+            {surveyState.showSubmitButton && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -565,15 +498,15 @@ export default function DbQuestionnaire() {
                 className="mx-auto flex justify-center gap-2 sm:gap-2.5 px-2 py-4 bg-transparent rounded-full"
                 style={{ maxWidth: '320px' }}
               >
-                {surveyState.questions.map((q, i) => {
-                  const answered = surveyState.responses.has(q.question_id);
-                  const isCurrent = i === surveyState.currentQuestionIndex;
+                {surveyState.visitedQuestions.map((questionId, i) => {
+                  const answered = surveyState.responses.has(questionId);
+                  const isCurrent = questionId === surveyState.currentQuestionId;
                   const isFilled = answered;
                   const isOutline = isCurrent && !answered;
 
                   return (
                     <motion.div
-                      key={i}
+                      key={questionId}
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       transition={{ delay: 0.625 + (i * 0.03125), type: "spring", stiffness: 300, damping: 20 }}

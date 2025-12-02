@@ -19,7 +19,19 @@ export type DbQuestion = {
   question_id: number;
   survey_id: number;
   question_text: string;
-  question_type: string; // 'scale', 'multiple_choice', 'open_ended'
+  question_type: string; // 'scale', 'multiple_choice', 'text'
+  default_next_question_id?: number | null; // The default path if no logic rules apply
+  created_at?: string;
+};
+
+export type DbSurveyLogic = {
+  logic_id: number;
+  survey_id: number;
+  question_id: number;
+  operator: string; // 'equals', 'not_equals', 'greater_than', 'less_than', etc.
+  logic_value: string; // The value to compare against
+  next_question_id: number; // Where to go if this rule matches
+  sort_order?: number; // Priority order for checking rules
   created_at?: string;
 };
 
@@ -66,6 +78,80 @@ export async function fetchQuestionOptions(questionId: number) {
 
   if (error) throw error;
   return (data || []) as DbQuestionOption[];
+}
+
+export async function fetchSurveyLogic(surveyId: number) {
+  const { data, error } = await supabase
+    .from('survey_logic')
+    .select('*')
+    .eq('survey_id', surveyId)
+    .order('question_id', { ascending: true })
+    .order('sort_order', { ascending: true });
+
+  if (error) throw error;
+  return (data || []) as DbSurveyLogic[];
+}
+
+export async function determineNextQuestion(
+  currentQuestionId: number,
+  userAnswer: string,
+  surveyLogic: DbSurveyLogic[],
+  questions: DbQuestion[]
+): Promise<number | null> {
+  // Get rules for the current question, sorted by priority
+  const rules = surveyLogic.filter(logic => logic.question_id === currentQuestionId);
+
+  // Check each rule in order
+  for (const rule of rules) {
+    const matches = evaluateLogicRule(rule.operator, userAnswer, rule.logic_value);
+    
+    if (matches) {
+      // This rule matches! Return the next question from this rule
+      return rule.next_question_id;
+    }
+  }
+
+  // No rules matched, use the default path
+  const currentQuestion = questions.find(q => q.question_id === currentQuestionId);
+  
+  if (currentQuestion?.default_next_question_id) {
+    return currentQuestion.default_next_question_id;
+  }
+
+  // No default either - this might be the last question
+  return null;
+}
+
+function evaluateLogicRule(operator: string, userAnswer: string, logicValue: string): boolean {
+  const userNum = Number(userAnswer);
+  const logicNum = Number(logicValue);
+
+  switch (operator) {
+    case 'equals':
+      return userAnswer === logicValue;
+    
+    case 'not_equals':
+      return userAnswer !== logicValue;
+    
+    case 'greater_than':
+      return !isNaN(userNum) && !isNaN(logicNum) && userNum > logicNum;
+    
+    case 'less_than':
+      return !isNaN(userNum) && !isNaN(logicNum) && userNum < logicNum;
+    
+    case 'greater_than_or_equal':
+      return !isNaN(userNum) && !isNaN(logicNum) && userNum >= logicNum;
+    
+    case 'less_than_or_equal':
+      return !isNaN(userNum) && !isNaN(logicNum) && userNum <= logicNum;
+    
+    case 'contains':
+      return userAnswer.toLowerCase().includes(logicValue.toLowerCase());
+    
+    default:
+      console.warn(`Unknown operator: ${operator}`);
+      return false;
+  }
 }
 
 export async function createSurveyAttempt(surveyId: number, userId: string | null) {
@@ -150,7 +236,7 @@ export async function saveResponse(payload: DbResponseInsert) {
     responseData.value_option_id = payload.option_id;
   } else if (question.question_type === 'scale') {
     responseData.value_int = Number(payload.response);
-  } else if (question.question_type === 'open_ended') {
+  } else if (question.question_type === 'text') {
     responseData.value_text = String(payload.response);
   } else {
     throw new Error(`Unknown question type: ${question.question_type}`);
@@ -201,7 +287,7 @@ export async function loadAttemptResponses(attemptId: number): Promise<Map<numbe
       }
     } else if (questionType === 'scale' && resp.value_int !== null) {
       value = String(resp.value_int);
-    } else if (questionType === 'open_ended' && resp.value_text) {
+    } else if (questionType === 'text' && resp.value_text) {
       value = resp.value_text;
     }
 

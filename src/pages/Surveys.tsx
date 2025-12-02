@@ -82,25 +82,11 @@ const Surveys = () => {
                   <CardTitle className="text-xl mt-4">{survey.survey_name}</CardTitle>
                   <CardDescription>
                     {survey.is_started 
-                      ? `Continue survey - ${survey.progress}% complete` 
-                      : 'Click to start this survey'}
+                      ? 'In Progress' 
+                      : 'Not Started'}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  {survey.is_started && survey.progress && survey.progress > 0 && (
-                    <div className="mb-3">
-                      <div className="flex justify-between text-xs text-muted-foreground mb-1">
-                        <span>Progress</span>
-                        <span>{survey.progress}%</span>
-                      </div>
-                      <div className="w-full bg-muted rounded-full h-2">
-                        <div 
-                          className="bg-primary rounded-full h-2 transition-all" 
-                          style={{ width: `${survey.progress}%` }}
-                        />
-                      </div>
-                    </div>
-                  )}
                   <Button className="w-full" variant="outline">
                     {survey.is_started ? (
                       <>

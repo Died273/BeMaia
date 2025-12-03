@@ -18,7 +18,6 @@ import Questionnaire from "./pages/Questionnaire";
 import DbQuestionnaire from "./pages/DbQuestionnaire";
 import Results from "./pages/Results";
 import DashboardCompany from "./pages/DashbaordCompany";
-import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Surveys from "./pages/Surveys";
@@ -36,7 +35,6 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/surveys" element={<Surveys />} />
             <Route path="/team" element={<Team />} />

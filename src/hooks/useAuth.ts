@@ -1,13 +1,6 @@
 import { useState } from 'react';
 import { supabase } from '@/lib/supabase';
 
-export interface SignupData {
-  email: string;
-  password: string;
-  company: string;
-  role: string;
-}
-
 export interface LoginData {
   email: string;
   password: string;
@@ -20,30 +13,6 @@ export interface AuthResponse {
 
 export const useAuth = () => {
   const [isLoading, setIsLoading] = useState(false);
-
-  const signUp = async (userData: SignupData): Promise<AuthResponse> => {
-    setIsLoading(true);
-    
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email: userData.email,
-        password: userData.password,
-        options: {
-          data: {
-            company_id: Number(1), // TODO: Map company string to actual ID
-            role: userData.role,
-          }
-        }
-      });
-
-      return { data, error };
-    } catch (error) {
-      console.error('Signup error:', error);
-      return { data: null, error: { message: 'An unexpected error occurred. Please try again.' } };
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const signIn = async (loginData: LoginData): Promise<AuthResponse> => {
     setIsLoading(true);
@@ -98,7 +67,6 @@ export const useAuth = () => {
   };
 
   return {
-    signUp,
     signIn,
     signOut,
     getCurrentUser,

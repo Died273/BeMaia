@@ -29,96 +29,70 @@ export const useSurveys = (userId: string | null) => {
     try {
       setLoading(true);
 
-      // Fetch all surveys
-      const { data: allSurveys, error: surveysError } = await supabase
-        .from('survey')
-        .select('survey_id, survey_name, created_at')
-        .order('survey_name');
+      // Fetch allowed surveys using RPC function
+      const { data: allowedSurveys, error: surveysError } = await supabase
+        .rpc('get_allowed_surveys');
 
       if (surveysError) {
         console.error('Error fetching surveys:', surveysError);
         return;
       }
 
-      if (!allSurveys || allSurveys.length === 0) {
+      if (!allowedSurveys || allowedSurveys.length === 0) {
         setAvailableSurveys([]);
         return;
       }
 
-      // Fetch user's survey attempts
+      // Fetch user's in-progress attempts for these surveys
+      const surveyIds = allowedSurveys.map(s => s.survey_id);
       const { data: userAttempts, error: attemptsError } = await supabase
         .from('survey_attempt')
-        .select('attempt_id, survey_id, completed_at')
-        .eq('user_id', userId);
+        .select('attempt_id, survey_id')
+        .eq('user_id', userId)
+        .in('survey_id', surveyIds)
+        .is('completed_at', null); // Only in-progress attempts
 
       if (attemptsError) {
         console.error('Error fetching user attempts:', attemptsError);
         return;
       }
 
-      // Get completed survey IDs (surveys with completed_at set)
-      const completedSurveyIds = new Set(
-        userAttempts?.filter(a => a.completed_at).map(a => a.survey_id) || []
-      );
-
-      // Get in-progress attempts (started but not completed)
-      const inProgressAttempts = userAttempts?.filter(a => !a.completed_at) || [];
-
-      // Get all questions for each survey to determine completion
-      const surveyCompletion = new Map<number, { total: number; answered: number }>();
-
-      for (const survey of allSurveys) {
-        const { data: questions, error: questionsError } = await supabase
-          .from('question')
-          .select('question_id')
-          .eq('survey_id', survey.survey_id);
-
-        if (!questionsError && questions) {
-          const totalQuestions = questions.length;
-          
-          // Find in-progress attempt for this survey
-          const inProgressAttempt = inProgressAttempts.find(
+      // Calculate progress for each survey
+      const surveysWithProgress = await Promise.all(
+        allowedSurveys.map(async (survey) => {
+          const inProgressAttempt = userAttempts?.find(
             a => a.survey_id === survey.survey_id
           );
 
-          let answeredQuestions = 0;
-          if (inProgressAttempt) {
-            // Count responses for this attempt
-            const { data: responses, error: responsesError } = await supabase
-              .from('response')
-              .select('question_id')
-              .eq('attempt_id', inProgressAttempt.attempt_id);
-
-            if (!responsesError && responses) {
-              answeredQuestions = responses.length;
-            }
+          if (!inProgressAttempt) {
+            return { ...survey, progress: 0, is_started: false };
           }
 
-          surveyCompletion.set(survey.survey_id, {
-            total: totalQuestions,
-            answered: answeredQuestions,
-          });
-        }
-      }
+          // Get total questions
+          const { data: questions } = await supabase
+            .from('question')
+            .select('question_id')
+            .eq('survey_id', survey.survey_id);
 
-      // Map surveys with progress information
-      // Show all surveys - users can complete them multiple times
-      const surveysWithProgress = allSurveys.map((survey) => {
-        const completion = surveyCompletion.get(survey.survey_id);
-        if (!completion) {
-          return { ...survey, progress: 0, is_started: false };
-        }
-        
-        const progress = completion.total > 0 
-          ? Math.round((completion.answered / completion.total) * 100) 
-          : 0;
-        
-        return {
-          ...survey,
-          progress,
-          is_started: completion.answered > 0,
-        };
-      });
+          // Get answered questions
+          const { data: responses } = await supabase
+            .from('response')
+            .select('question_id')
+            .eq('attempt_id', inProgressAttempt.attempt_id);
+
+          const totalQuestions = questions?.length || 0;
+          const answeredQuestions = responses?.length || 0;
+          const progress = totalQuestions > 0 
+            ? Math.round((answeredQuestions / totalQuestions) * 100) 
+            : 0;
+
+          return {
+            ...survey,
+            progress,
+            is_started: answeredQuestions > 0,
+          };
+        })
+      );
 
       setAvailableSurveys(surveysWithProgress);
     } catch (error) {

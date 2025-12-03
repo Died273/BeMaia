@@ -11,7 +11,6 @@ import BeMaiaLogo from "@/assets/logo.svg";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
-    firstName: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -40,7 +39,6 @@ const Signup = () => {
     passwordsMatch &&
     !!formData.company &&
     !!formData.role &&
-    !!formData.firstName &&
     !!formData.email &&
     acceptTerms &&
     !isLoading;
@@ -85,7 +83,6 @@ const Signup = () => {
     }
     
     const { data, error } = await signUp({
-      firstName: formData.firstName,
       email: formData.email,
       password: formData.password,
       company: formData.company,
@@ -126,23 +123,6 @@ const Signup = () => {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
-              {/* First Name Field */}
-              <div className="space-y-2">
-                <Label htmlFor="firstName" className="text-sm font-medium">
-                  First Name
-                </Label>
-                <Input
-                  id="firstName"
-                  name="firstName"
-                  type="text"
-                  placeholder="John"
-                  value={formData.firstName}
-                  onChange={handleInputChange}
-                  required
-                  className="h-11"
-                />
-              </div>
-
               {/* Email Field */}
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-sm font-medium">

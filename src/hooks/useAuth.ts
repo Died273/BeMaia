@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { supabase } from '@/lib/supabase';
 
 export interface SignupData {
-  firstName: string;
   email: string;
   password: string;
   company: string;
@@ -31,7 +30,6 @@ export const useAuth = () => {
         password: userData.password,
         options: {
           data: {
-            username: userData.firstName,
             company_id: Number(1), // TODO: Map company string to actual ID
             role: userData.role,
           }

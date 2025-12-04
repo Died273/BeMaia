@@ -14,37 +14,19 @@ const Security = () => {
     {
       icon: Shield,
       title: "GDPR Compliant",
-      description: "Full compliance with EU General Data Protection Regulation. All data processing activities are documented and auditable.",
+      description: "Full compliance with EU General Data Protection Regulation. All data processing activities are documented and transparent.",
       color: "from-primary to-secondary"
-    },
-    {
-      icon: Lock,
-      title: "End-to-End Encryption",
-      description: "AES-256 encryption for data at rest and TLS 1.3 for data in transit. Your sensitive information is always protected.",
-      color: "from-secondary to-accent"
-    },
-    {
-      icon: Key,
-      title: "Multi-Factor Authentication",
-      description: "Advanced MFA implementation ensures only authorized personnel can access your organization's data.",
-      color: "from-accent to-primary"
-    },
-    {
-      icon: Eye,
-      title: "Anonymous Data Collection",
-      description: "Employee responses are fully anonymized. Individual identities are never linked to survey answers.",
-      color: "from-primary to-secondary"
-    },
-    {
-      icon: FileCheck,
-      title: "Regular Security Audits",
-      description: "Third-party penetration testing and security assessments conducted quarterly to maintain the highest standards.",
-      color: "from-secondary to-accent"
     },
     {
       icon: Users,
-      title: "Role-Based Access Control",
-      description: "Granular permission systems ensure team members only access data relevant to their responsibilities.",
+      title: "Anonymous Individual Results",
+      description: "Individual survey responses are never shown to managers or HR professionals. Only aggregated, anonymized insights are provided.",
+      color: "from-secondary to-accent"
+    },
+    {
+      icon: Database,
+      title: "EU Data Residency",
+      description: "All data is stored exclusively on secure servers located within the European Union, ensuring compliance with EU data protection laws.",
       color: "from-accent to-primary"
     }
   ];
@@ -57,13 +39,13 @@ const Security = () => {
     },
     {
       icon: Globe,
-      title: "EU Data Residency",
-      description: "All data is stored exclusively on servers located within the European Union.",
+      title: "EU Servers Only",
+      description: "All data is stored and processed exclusively on servers located within the European Union.",
     },
     {
-      icon: Award,
-      title: "ISO 27001 Ready",
-      description: "Security practices aligned with ISO 27001 information security standards.",
+      icon: Eye,
+      title: "Employee Privacy First",
+      description: "Individual responses remain completely anonymous and are never accessible to management.",
     }
   ];
 
@@ -118,7 +100,7 @@ const Security = () => {
                 ease: [0.39, 1.69, 0.36, 1]
               }}
             >
-              Your data security and employee privacy are our highest priorities. BeMaia implements enterprise-grade security measures and maintains full GDPR compliance for all EU organizations.
+              Your data security and employee privacy are our highest priorities. BeMaia is fully GDPR compliant, with all data stored on EU servers. Individual survey responses remain completely anonymous and are never accessible to managers or HR professionals.
             </motion.p>
           </div>
         </div>
@@ -140,10 +122,10 @@ const Security = () => {
               }}
             >
               <h2 className="text-4xl sm:text-5xl font-bold mb-6">
-                Enterprise-Grade Security
+                Privacy & Security Features
               </h2>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Multi-layered security architecture protecting your organization's sensitive data at every level.
+                BeMaia protects employee privacy while providing valuable organizational insights through anonymized data.
               </p>
             </motion.div>
 
@@ -307,7 +289,7 @@ const Security = () => {
                     <h3 className="text-2xl font-bold">Data Collection</h3>
                   </div>
                   <p className="text-muted-foreground">
-                    We collect only the minimum data necessary to provide burnout prevention insights. Employee survey responses are anonymized at the point of collection, with no personally identifiable information stored alongside responses.
+                    We collect only the minimum data necessary to provide burnout prevention insights. Employee survey responses are completely anonymized, with no personally identifiable information stored alongside responses.
                   </p>
                 </div>
 
@@ -317,17 +299,17 @@ const Security = () => {
                     <h3 className="text-2xl font-bold">Data Storage</h3>
                   </div>
                   <p className="text-muted-foreground">
-                    All data is stored on ISO 27001-certified servers located in Amsterdam, Netherlands. Data is encrypted using AES-256 encryption and access is restricted through multi-factor authentication and role-based permissions.
+                    All data is stored on secure servers located within the European Union. We maintain strict data residency policies to ensure compliance with EU data protection regulations.
                   </p>
                 </div>
 
                 <div>
                   <div className="flex items-center gap-3 mb-4">
                     <Eye className="w-6 h-6 text-accent" />
-                    <h3 className="text-2xl font-bold">Data Access</h3>
+                    <h3 className="text-2xl font-bold">Data Access & Privacy</h3>
                   </div>
                   <p className="text-muted-foreground">
-                    Only authorized personnel with legitimate business needs can access data. All access is logged and audited. We never sell, rent, or share your data with third parties for marketing purposes.
+                    Individual survey responses are never shown to managers or HR professionals. Only aggregated, anonymized insights are provided to protect employee privacy. We never sell, rent, or share your data with third parties for marketing purposes.
                   </p>
                 </div>
 
@@ -337,7 +319,7 @@ const Security = () => {
                     <h3 className="text-2xl font-bold">Data Retention</h3>
                   </div>
                   <p className="text-muted-foreground">
-                    Data is retained only as long as necessary to provide services or as required by law. Organizations can request complete data deletion at any time, and we will comply within 30 days.
+                    Data is retained only as long as necessary to provide services or as required by law. Organizations can request complete data deletion at any time.
                   </p>
                 </div>
               </Card>
@@ -366,58 +348,16 @@ const Security = () => {
                     <Shield className="w-8 h-8 text-white" />
                   </div>
                   <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-                    Security Incident Response
+                    Questions About Security?
                   </h2>
                   <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                    In the unlikely event of a security incident, we follow strict protocols to protect your data and maintain transparency.
+                    We're committed to transparency and are happy to answer any questions about how we protect your data and maintain employee privacy.
                   </p>
-                </div>
-
-                <div className="space-y-6">
-                  <div className="flex gap-4">
-                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-1">
-                      <span className="text-sm font-bold text-primary">1</span>
-                    </div>
-                    <div>
-                      <h4 className="font-bold mb-2">Immediate Detection & Containment</h4>
-                      <p className="text-sm text-muted-foreground">24/7 monitoring systems detect and contain threats in real-time.</p>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-4">
-                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-1">
-                      <span className="text-sm font-bold text-primary">2</span>
-                    </div>
-                    <div>
-                      <h4 className="font-bold mb-2">Assessment & Investigation</h4>
-                      <p className="text-sm text-muted-foreground">Our security team immediately investigates the scope and impact of any incident.</p>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-4">
-                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-1">
-                      <span className="text-sm font-bold text-primary">3</span>
-                    </div>
-                    <div>
-                      <h4 className="font-bold mb-2">Notification Within 72 Hours</h4>
-                      <p className="text-sm text-muted-foreground">We notify affected parties and supervisory authorities within 72 hours as required by GDPR.</p>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-4">
-                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-1">
-                      <span className="text-sm font-bold text-primary">4</span>
-                    </div>
-                    <div>
-                      <h4 className="font-bold mb-2">Remediation & Prevention</h4>
-                      <p className="text-sm text-muted-foreground">We implement corrective measures and enhance security protocols to prevent recurrence.</p>
-                    </div>
-                  </div>
                 </div>
 
                 <div className="mt-8 pt-6 border-t border-border/50 text-center">
                   <p className="text-sm text-muted-foreground mb-4">
-                    Report a security concern
+                    Contact us for more information
                   </p>
                   <a 
                     href="mailto:info@bemaia.nl" 

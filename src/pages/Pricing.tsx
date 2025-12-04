@@ -56,7 +56,7 @@ const Pricing = () => {
                 }}
               >
                 <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r text-primary">
-                  Early Access – <span className="text-secondary">€0</span>
+                  Early Access – <span className="text-secondary font-number" style={{ fontFamily: 'Arial, sans-serif' }}>€0</span>
                 </h2>
                 <p className="text-lg text-muted-foreground mb-4">
                   Enjoy <span className="font-bold text-primary">all features</span>,

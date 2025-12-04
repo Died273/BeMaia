@@ -2,24 +2,24 @@ import { TrendingUp, Users, Building2, Euro } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
 
-// Animation delays
-const headlineDelay = 0.05;
-const descDelay = headlineDelay + 0.2;
-const getCardDelay = (idx: number) => descDelay + 0.2 + idx * 0.12;
-const bottomCardDelay = getCardDelay(3) + 0.15;
+// Animation delays - faster and more energetic
+const headlineDelay = 0;
+const descDelay = headlineDelay + 0.08;
+const getCardDelay = (idx: number) => descDelay + 0.1 + idx * 0.06;
+const bottomCardDelay = getCardDelay(3) + 0.08;
 
 const MarketOpportunity = () => {
   const stats = [
     {
       icon: <Euro className="w-8 h-8 text-primary" />,
-      value: "€4B+",
-      label: "Annual cost in the Netherlands",
+      value: "€4 Billion",
+      label: "Burnout cost in the Netherlands",
       color: "primary"
     },
     {
       icon: <Users className="w-8 h-8 text-secondary" />,
-      value: "50%+",
-      label: "Employees experience burnout",
+      value: "1 out of 5",
+      label: "Dutch employees had burnout complaints",
       color: "secondary"
     },
     {
@@ -37,7 +37,7 @@ const MarketOpportunity = () => {
   ];
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden page-bg pt-24 sm:pt-20">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden page-bg pt-24 sm:pt-20 pb-24">
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
@@ -48,9 +48,9 @@ const MarketOpportunity = () => {
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ 
-                duration: 0.9, 
+                duration: 0.5, 
                 delay: headlineDelay,
-                ease: [0.39, 1.69, 0.36, 1]
+                ease: [0.25, 0.46, 0.45, 0.94]
               }}
             >
               The Burnout Crisis is Real
@@ -61,9 +61,9 @@ const MarketOpportunity = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ 
-                duration: 0.9, 
+                duration: 0.5, 
                 delay: descDelay,
-                ease: [0.39, 1.69, 0.36, 1]
+                ease: [0.25, 0.46, 0.45, 0.94]
               }}
             >
               Employee burnout costs billions annually. Organizations that act now gain a competitive advantage
@@ -79,16 +79,16 @@ const MarketOpportunity = () => {
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ 
-                  duration: 1.1, 
+                  duration: 0.5, 
                   delay: getCardDelay(index),
-                  ease: [0.39, 1.69, 0.36, 1]
+                  ease: [0.25, 0.46, 0.45, 0.94]
                 }}
               >
                 <Card className="p-6 text-center bg-card hover:shadow-xl transition-all duration-300 border-2 hover:scale-105 hover:border-primary/40">
                   <div className={`w-16 h-16 rounded-full bg-${stat.color}/10 flex items-center justify-center mx-auto mb-4`}>
                     {stat.icon}
                   </div>
-                  <p className={`text-3xl font-bold text-${stat.color} mb-2`}>{stat.value}</p>
+                  <p className={`text-3xl font-bold text-${stat.color} mb-2`} style={{ fontFamily: 'Arial, sans-serif' }}>{stat.value}</p>
                   <p className="text-sm text-muted-foreground">{stat.label}</p>
                 </Card>
               </motion.div>
@@ -100,9 +100,9 @@ const MarketOpportunity = () => {
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ 
-              duration: 1.1, 
+              duration: 0.5, 
               delay: bottomCardDelay,
-              ease: [0.39, 1.69, 0.36, 1]
+              ease: [0.25, 0.46, 0.45, 0.94]
             }}
           >
             <Card className="p-8 md:p-12 from-primary/5 via-secondary/5 to-accent/5 border-2 border-primary/20 hover:scale-105 hover:shadow-xl hover:border-primary/40 transition-all duration-300">
@@ -116,15 +116,15 @@ const MarketOpportunity = () => {
                 </p>
                 <div className="flex flex-wrap justify-center gap-8 pt-6 border-t border-border/50">
                   <div>
-                    <p className="text-3xl font-bold text-primary">40%</p>
+                    <p className="text-3xl font-bold text-primary" style={{ fontFamily: 'Arial, sans-serif' }}>40%</p>
                     <p className="text-sm text-muted-foreground">Lower turnover</p>
                   </div>
                   <div>
-                    <p className="text-3xl font-bold text-secondary">25%</p>
+                    <p className="text-3xl font-bold text-secondary" style={{ fontFamily: 'Arial, sans-serif' }}>25%</p>
                     <p className="text-sm text-muted-foreground">More productive</p>
                   </div>
                   <div>
-                    <p className="text-3xl font-bold text-accent">60%</p>
+                    <p className="text-3xl font-bold text-accent" style={{ fontFamily: 'Arial, sans-serif' }}>60%</p>
                     <p className="text-sm text-muted-foreground">Higher engagement</p>
                   </div>
                 </div>

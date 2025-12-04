@@ -17,10 +17,11 @@ import Mission from "./pages/Mission";
 import Questionnaire from "./pages/Questionnaire";
 import DbQuestionnaire from "./pages/DbQuestionnaire";
 import Results from "./pages/Results";
-import DashboardCompany from "./pages/DashbaordCompany";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Surveys from "./pages/Surveys";
+import DashboardCompany from "./pages/Dashboard";
+import TestMicro from "./pages/TestMicro";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -47,6 +48,7 @@ const App = () => (
             <Route path="/terms" element={<TermsOfService />} />
             <Route path="/mission" element={<Mission />} />
             <Route path="/dashboard-company" element={<DashboardCompany />} />
+            <Route path="/microsurveys" element={<TestMicro />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

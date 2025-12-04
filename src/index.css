@@ -81,6 +81,43 @@
   --tw-gradient-to: var(--primary-light);
 }
 
+/* ===== NUMBER FONT ===== */
+@layer utilities {
+  .font-number {
+    font-family: Arial, sans-serif;
+  }
+}
+
+/* ===== GLOBAL NUMBER STYLING ===== */
+/* Apply Arial font to all numeric characters throughout the website */
+@layer base {
+  /* Target numbers in common contexts */
+  span[class*="font-number"],
+  .font-number {
+    font-family: Arial, sans-serif !important;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Universal selector for numeric content - applies Arial to any element displaying numbers */
+@layer components {
+  /* This ensures all standalone numbers get Arial font */
+  body {
+    font-variant-numeric: proportional-nums;
+  }
+  
+  /* Style numeric values with Arial */
+  [data-numeric="true"],
+  .numeric,
+  input[type="number"],
+  .score,
+  .value,
+  .count,
+  .number {
+    font-family: Arial, sans-serif !important;
+  }
+}
+
 /* ===== TYPOGRAPHY ===== */
 @layer base {
   * { 

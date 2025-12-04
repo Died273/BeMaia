@@ -14,7 +14,6 @@ const Footer = () => {
     { href: "/pricing", label: "Pricing" },
     { href: "/security", label: "Security" },
     { href: "/mission", label: "Mission" },
-    { href: "/microsurveys", label: "Microsurveys" },
   ];
 
   const companyLinks = [

@@ -18,7 +18,6 @@ import Mission from "./pages/Mission";
 import Questionnaire from "./pages/Questionnaire";
 import Results from "./pages/Results";
 import DashboardCompany from "./pages/Dashboard";
-import TestMicro from "./pages/TestMicro";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -41,7 +40,6 @@ const App = () => (
             <Route path="/terms" element={<TermsOfService />} />
             <Route path="/mission" element={<Mission />} />
             <Route path="/dashboard-company" element={<DashboardCompany />} />
-            <Route path="/microsurveys" element={<TestMicro />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

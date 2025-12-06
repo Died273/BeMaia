@@ -14,7 +14,20 @@ export default defineConfig(({ mode }) => ({
   build: {
     outDir: 'docs',
   },
-  plugins: [react()],
+  plugins: [
+    react(),
+    {
+      name: 'html-transform',
+      transformIndexHtml(html) {
+        // Replace placeholder with environment variable (no hardcoded fallback)
+        const gaId = process.env.VITE_GA_MEASUREMENT_ID || '';
+        return html.replace(
+          '%VITE_GA_MEASUREMENT_ID%',
+          gaId
+        );
+      },
+    },
+  ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

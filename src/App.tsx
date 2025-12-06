@@ -18,6 +18,8 @@ import Mission from "./pages/Mission";
 import Questionnaire from "./pages/Questionnaire";
 import Results from "./pages/Results";
 import DashboardCompany from "./pages/Dashboard";
+import CookieConsent from "@/components/CookieConsent";
+import CookiePolicy from "./pages/CookiePolicy";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -27,6 +29,7 @@ const App = () => (
       <Sonner />
       <ContactModalProvider>
         <ContactModal />
+        <CookieConsent />
         <BrowserRouter>
           <ScrollToTop />
           <Routes>
@@ -38,6 +41,7 @@ const App = () => (
             <Route path="/security" element={<Security />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />
             <Route path="/terms" element={<TermsOfService />} />
+            <Route path="/cookies" element={<CookiePolicy />} />
             <Route path="/mission" element={<Mission />} />
             <Route path="/dashboard-company" element={<DashboardCompany />} />
             <Route path="*" element={<NotFound />} />

@@ -147,6 +147,9 @@ const Footer = () => {
               <a href="/terms" className="text-background/80 hover:text-background transition-colors hover:underline">
                 Terms of Service
               </a>
+              <a href="/cookies" className="text-background/80 hover:text-background transition-colors hover:underline">
+                Cookie Policy
+              </a>
             </div>
           </motion.div>
         </div>

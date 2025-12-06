@@ -20,13 +20,54 @@
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 <link rel="stylesheet" crossorigin href="/assets/index-CUwuTP6x.css">
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-F9QETY52YV"></script>
+<!-- Google Analytics - Loads always but respects cookie consent -->
+<script>
+  const envId = '%VITE_GA_MEASUREMENT_ID%';
+  window.GA_MEASUREMENT_ID = (envId.startsWith('%') ? '' : envId);
+
+  // Only load GA script if we have a valid ID
+  if (window.GA_MEASUREMENT_ID) {
+    const gaScript = document.createElement('script');
+    gaScript.async = true;
+    gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=' + window.GA_MEASUREMENT_ID;
+    document.head.appendChild(gaScript);
+  } else {
+    console.warn('Google Analytics ID not configured. Set VITE_GA_MEASUREMENT_ID in your .env.local file.');
+  }
+</script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-F9QETY52YV');
+  // Only initialize GA if we have an ID
+  if (window.GA_MEASUREMENT_ID) {
+    // Set default consent to denied for GDPR compliance
+    gtag('consent', 'default', {
+      'analytics_storage': 'denied',
+      'wait_for_update': 500
+    });
+
+    // Configure GA4 but don't track until consent is given
+    gtag('config', window.GA_MEASUREMENT_ID, {
+      'anonymize_ip': true
+    });
+  }
+
+  // Update consent based on stored preferences
+  try {
+    const consent = localStorage.getItem('cookieConsent');
+    if (consent) {
+      const prefs = JSON.parse(consent);
+      if (prefs.analytics && window.GA_MEASUREMENT_ID) {
+        gtag('consent', 'update', {
+          'analytics_storage': 'granted'
+        });
+      }
+    }
+  } catch (e) {
+    console.log('No cookie consent found yet');
+  }
 </script>
 
 </head>

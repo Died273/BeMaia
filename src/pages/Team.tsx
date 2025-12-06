@@ -138,7 +138,7 @@ const Team = () => {
                       <img
                         src={founder.photo}
                         alt={founder.name}
-                        className="w-40 h-48 rounded-3xl object-cover shadow-xl group-hover:scale-105 transition-transform duration-500"
+                        className="w-40 h-48 rounded-[15px] object-cover shadow-xl group-hover:scale-105 transition-transform duration-500"
                       />
                     </div>
                     <div className="space-y-4">
@@ -153,7 +153,7 @@ const Team = () => {
                       <div className="flex gap-4 pt-4 flex-wrap">
                         {founder.linkedin && (
                           <a href={founder.linkedin} target="_blank" rel="noopener noreferrer">
-                            <Button variant="hero" size="lg" className="group text-white">
+                            <Button variant="hero" size="lg" className="group">
                               <Linkedin className="mr-2 w-5 h-5" />
                               LinkedIn
                             </Button>
@@ -162,7 +162,6 @@ const Team = () => {
                         <Button
                           variant="secondary"
                           size="lg"
-                          className="text-white relative overflow-hidden group before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:-translate-x-full hover:before:translate-x-full before:transition-transform before:duration-700"
                           onClick={() => openModal(founder.email)}
                         >
                           <Mail className="mr-2 w-5 h-5" />
@@ -229,7 +228,7 @@ const Team = () => {
                       <img
                         src={advisor.photo}
                         alt={advisor.name}
-                        className="w-44 h-60 rounded-3xl object-cover shadow-xl group-hover:scale-105 transition-transform duration-500"
+                        className="w-44 h-60 rounded-[15px] object-cover shadow-xl group-hover:scale-105 transition-transform duration-500"
                       />
                     </div>
                     <div className="space-y-4">

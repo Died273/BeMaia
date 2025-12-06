@@ -31,8 +31,8 @@ const steps: Step[] = [
     subtitle: "Understanding Your Needs",
     description: "We start with a focused 45-minute video call to understand your organization's current situation and specific needs.",
     icon: <Phone className="w-full h-full" />,
-    color: "hsl(251 51% 37%)",
-    accentColor: "hsl(251 51% 67%)",
+    color: "var(--primary)",
+    accentColor: "var(--primary-light)",
     gradient: "from-primary/20 via-primary/10 to-transparent",
     features: [
       "45-minute video call",
@@ -46,8 +46,8 @@ const steps: Step[] = [
     subtitle: "Tailored to Your Organization",
     description: "We create a customized survey specifically designed for your company, based on the information and needs identified in our initial conversation.",
     icon: <Settings className="w-full h-full" />,
-    color: "hsl(343 85% 51%)",
-    accentColor: "hsl(343 85% 65%)",
+    color: "var(--secondary)",
+    accentColor: "var(--secondary-lighter)",
     gradient: "from-secondary/20 via-secondary/10 to-transparent",
     features: [
       "Tailored survey design",
@@ -61,8 +61,8 @@ const steps: Step[] = [
     subtitle: "Easy Distribution",
     description: "We provide a simple link that your contact person can easily share with team members to complete the assessment.",
     icon: <Send className="w-full h-full" />,
-    color: "hsl(43 98% 53%)",
-    accentColor: "hsl(43 98% 70%)",
+    color: "var(--accent)",
+    accentColor: "var(--accent-light)",
     gradient: "from-accent/20 via-accent/10 to-transparent",
     features: [
       "Shareable survey link",
@@ -76,8 +76,8 @@ const steps: Step[] = [
     subtitle: "Insights and Action Plans",
     description: "Comprehensive results delivered through multiple channels: a management dashboard, a follow-up discussion call, individual feedback, and a concrete action plan.",
     icon: <TrendingUp className="w-full h-full" />,
-    color: "hsl(251 51% 37%)",
-    accentColor: "hsl(251 51% 67%)",
+    color: "var(--primary)",
+    accentColor: "var(--primary-light)",
     gradient: "from-primary/20 via-primary/10 to-transparent",
     features: [
       "Anonymized results dashboard for management",
@@ -92,8 +92,8 @@ const steps: Step[] = [
     subtitle: "Continuous Support",
     description: "Optional ongoing tracking and the flexibility to explore new features based on what your organization finds most valuable and helpful.",
     icon: <CheckCircle2 className="w-full h-full" />,
-    color: "hsl(343 85% 51%)",
-    accentColor: "hsl(343 85% 65%)",
+    color: "var(--secondary)",
+    accentColor: "var(--secondary-lighter)",
     gradient: "from-secondary/20 via-secondary/10 to-transparent",
     features: [
       "Potential continuous tracking",
@@ -149,13 +149,13 @@ const StepCard = ({ step, index }: { step: Step; index: number }) => {
         {/* Right side - Content Card */}
         <div className="flex-1 pb-12 lg:pb-16">
           <motion.div
-            className="group relative bg-white backdrop-blur-sm rounded-2xl border border-border/50 p-6 lg:p-8 hover:border-border transition-all duration-300 cursor-pointer shadow-sm hover:shadow-md"
+            className="group relative bg-white backdrop-blur-sm rounded-[15px] border border-border/50 p-6 lg:p-8 hover:border-border transition-all duration-300 cursor-pointer shadow-sm hover:shadow-md"
             whileHover={{ y: -4 }}
             onClick={() => setIsExpanded(!isExpanded)}
           >
             {/* Subtle gradient overlay on hover */}
             <div 
-              className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+              className="absolute inset-0 rounded-[15px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
               style={{
                 background: `radial-gradient(circle at top left, ${step.color}08 0%, transparent 60%)`
               }}
@@ -165,7 +165,7 @@ const StepCard = ({ step, index }: { step: Step; index: number }) => {
               {/* Icon and Title Row */}
               <div className="flex items-start gap-4 mb-4">
                 <div
-                  className="flex-shrink-0 w-12 h-12 lg:w-14 lg:h-14 rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
+                  className="flex-shrink-0 w-12 h-12 lg:w-14 lg:h-14 rounded-[15px] flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
                   style={{ backgroundColor: `${step.color}15` }}
                 >
                   <div className="w-6 h-6 lg:w-7 lg:h-7" style={{ color: step.color }}>

@@ -7,6 +7,7 @@ import OurApproach from "@/components/OurApproach";
 import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
 
+
 const Index = () => {
   return (
   <div className="min-h-screen page-bg">

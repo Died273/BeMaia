@@ -23,7 +23,7 @@ export default function HorizontalBarChart({
     <div className="space-y-3" style={{ maxHeight: `${height}px`, overflowY: 'auto' }}>
       {sortedData.map((item, i) => {
         const percentage = (item.value / maxValue) * 100;
-        const color = item.color || '#6366f1';
+        const color = item.color || 'var(--chart-blue)';
         
         return (
           <div key={i} className="space-y-1">
@@ -31,13 +31,13 @@ export default function HorizontalBarChart({
               <span className="text-sm font-semibold text-foreground">
                 {item.label}
               </span>
-              <span className="text-sm font-bold font-number text-muted-foreground" style={{ fontFamily: 'Arial, sans-serif' }}>
+              <span className="text-sm font-bold text-muted-foreground">
                 {item.value}
               </span>
             </div>
-            <div className="w-full h-8 bg-muted/30 rounded-lg overflow-hidden">
+            <div className="w-full h-8 bg-muted/30 rounded-[15px] overflow-hidden">
               <motion.div
-                className="h-full flex items-center px-3 rounded-lg"
+                className="h-full flex items-center px-3 rounded-[15px]"
                 style={{ backgroundColor: color }}
                 initial={{ width: 0 }}
                 animate={{ width: `${percentage}%` }}

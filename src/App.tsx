@@ -18,6 +18,8 @@ import Mission from "./pages/Mission";
 import Questionnaire from "./pages/Questionnaire";
 import Results from "./pages/Results";
 import DashboardCompany from "./pages/Dashboard";
+import TestMicro from "./pages/TestMicro";
+import { OurApproach } from "./pages/Science";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -40,6 +42,8 @@ const App = () => (
             <Route path="/terms" element={<TermsOfService />} />
             <Route path="/mission" element={<Mission />} />
             <Route path="/dashboard-company" element={<DashboardCompany />} />
+            <Route path="/test-micro" element={<TestMicro />} />
+            <Route path="/our-approach" element={<OurApproach />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

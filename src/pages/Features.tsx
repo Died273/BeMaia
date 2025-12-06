@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, BarChart3, Activity, UserCheck, Users, Lightbulb, ShieldCheck } from "lucide-react";
+import { BarChart3, Activity, UserCheck, Users, Lightbulb, ShieldCheck } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -71,7 +71,7 @@ const Features = () => (
               style={{ animationDelay: `${getDelay(idx)}s` }}
             >
               <div className="flex items-center mb-4">
-                <div className="rounded-2xl bg-white/60 p-3 shadow backdrop-blur">{f.icon}</div>
+                <div className="rounded-[15px] bg-white/60 p-3 shadow backdrop-blur">{f.icon}</div>
               </div>
               <h3 className="text-2xl font-bold mb-2 text-foreground">{f.title}</h3>
               <p className="text-muted-foreground">{f.desc}</p>
@@ -82,12 +82,11 @@ const Features = () => (
           <Button
             variant="hero"
             size="lg"
-            className="group text-white animate-fade-up"
+            className="group animate-fade-up"
             style={{ animationDelay: `${buttonDelay}s` }}
             onClick={() => window.open('https://calendly.com/l-boeker-bemaia/30min', '_blank')}
           >
             Book a Demo
-            <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
           </Button>
         </div>
 

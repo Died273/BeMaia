@@ -36,7 +36,7 @@ export default function ContactModal() {
           onClick={closeModal}
         >
           <motion.div 
-            className="bg-card p-8 rounded-2xl shadow-2xl max-w-md w-full mx-4 border-2 border-primary/20 relative"
+            className="bg-card p-8 rounded-[15px] shadow-2xl max-w-md w-full mx-4 border-2 border-primary/20 relative"
             initial={{ opacity: 0, y: -38, scale: 0.94 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 38, scale: 0.94 }}
@@ -69,18 +69,18 @@ export default function ContactModal() {
               <Button
                 variant="secondary"
                 size="lg"
-                className="w-full text-white relative overflow-hidden group before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:-translate-x-full hover:before:translate-x-full before:transition-transform before:duration-700"
+                className="w-full"
                 onClick={handleCopy}
                 disabled={copied}
               >
-                <Copy className="text-white mr-2 w-5 h-5" />
+                <Copy className="mr-2 w-5 h-5" />
                 {copied ? "Copied!" : "Copy Email Address"}
               </Button>
             </div>
             <AnimatePresence>
               {copied && (
                 <motion.div 
-                  className="absolute left-[0%] -translate-x-1/2 mt-5 bottom-[-85px] min-w-[450px] bg-gradient-to-r from-primary to-secondary text-white py-3 px-8 rounded-xl shadow-xl font-semibold text-lg flex items-center gap-3"
+                  className="absolute left-[0%] -translate-x-1/2 mt-5 bottom-[-85px] min-w-[450px] bg-gradient-to-r from-primary to-secondary text-white py-3 px-8 rounded-[15px] shadow-xl font-semibold text-lg flex items-center gap-3"
                   initial={{ opacity: 0, y: -20, scale: 0.9 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -10, scale: 0.95 }}

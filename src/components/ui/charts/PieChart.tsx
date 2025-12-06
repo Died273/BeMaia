@@ -86,7 +86,6 @@ export default function PieChart({
                 textAnchor="middle"
                 dominantBaseline="middle"
                 className="text-sm font-bold fill-white pointer-events-none"
-                style={{ fontFamily: 'Arial, sans-serif' }}
               >
                 {slice.percentage}%
               </text>
@@ -106,7 +105,7 @@ export default function PieChart({
             <span className="text-sm font-semibold text-foreground flex-1">
               {item.label}
             </span>
-            <span className="text-sm font-bold font-number text-muted-foreground" style={{ fontFamily: 'Arial, sans-serif' }}>
+            <span className="text-sm font-bold text-muted-foreground">
               {item.value}
             </span>
           </div>

@@ -33,14 +33,14 @@ const Mission = () => {
         <div className="group relative flex justify-center items-center h-16 w-16">
           <div
             className={`
-            absolute inset-0 z-0 rounded-full bg-gradient-to-br ${"from-secondary to-accent"}
+            absolute inset-0 z-0 rounded-full bg-gradient-to-br ${"from-primary to-secondary"}
             transition-transform duration-200 group-hover:scale-150
           `}
           />
           <Heart className="w-8 h-8 text-white z-10 transition-transform duration-200 group-hover:scale-150" />
         </div>
       ),
-      gradient: "from-secondary to-accent",
+      gradient: "from-primary to-secondary",
       title: "Empathetic",
       description: "Put people first with privacy-protected insights"
     },
@@ -102,9 +102,7 @@ const Mission = () => {
                   ease: [0.39, 1.69, 0.36, 1]
                 }}
               >
-                BeMaia was founded on the belief that employee burnout is preventable. By combining cutting-edge data science
-                with deep organizational psychology insights, we empower companies to create workplaces where people thrive—and
-                businesses prosper.
+                Our mission is to empower organizations with real-time, data-driven insights into company health, enabling proactive decision-making that reduces burnout, improves employee well-being, and drives sustainable financial performance.
               </motion.p>
             </div>
 

@@ -170,8 +170,8 @@ export default function Questionnaire() {
                       left: 0,
                       top: 0,
                       bottom: 0,
-                      width: '1px',
-                      background: 'var(--primary-foreground)',
+                      width: '2px',
+                      background: 'var(--foreground)',
                       zIndex: 1
                     }}
                   />
@@ -185,10 +185,11 @@ export default function Questionnaire() {
                   onClick={() => handleOptionClick(opt.value)}
                   aria-disabled={isAnimating}
                   aria-pressed={selected}
-                  className="qa-option w-full h-[76px] border-none text-white font-semibold text-2xl flex items-center justify-center cursor-pointer transition-all"
+                  className="qa-option w-full h-[76px] border-none font-semibold text-2xl flex items-center justify-center cursor-pointer transition-all"
                   style={{
                     padding: '20px 12px',
-                    background: selected ? 'rgba(255,255,255,0.12)' : 'transparent',
+                    background: selected ? 'var(--accent-light)' : 'var(--background-accent)',
+                    color: selected ? 'var(--foreground)' : 'var(--foreground)',
                     opacity: isAnimating ? 0.6 : 1,
                     cursor: isAnimating ? 'not-allowed' : 'pointer'
                   }}
@@ -217,12 +218,13 @@ export default function Questionnaire() {
                 onClick={() => handleOptionClick(opt.value)}
                 aria-disabled={isAnimating}
                 aria-pressed={selected}
-                className="qa-option-mobile w-full px-5 py-4 rounded-lg border border-white/20 text-white font-semibold text-base flex items-center justify-center cursor-pointer transition-all"
+                className="qa-option-mobile w-full px-5 py-4 rounded-[15px] border-2 font-semibold text-base flex items-center justify-center cursor-pointer transition-all"
                   style={{
-                  background: selected ? 'rgba(255,255,255,0.16)' : 'rgba(255,255,255,0.03)',
+                  background: selected ? 'var(--accent-light)' : 'var(--background-accent)',
+                  color: 'var(--foreground)',
                   opacity: isAnimating ? 0.6 : 1,
                   cursor: isAnimating ? 'not-allowed' : 'pointer',
-                  borderColor: selected ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.2)'
+                  borderColor: selected ? 'var(--foreground)' : 'var(--foreground)'
                 }}
               >
                 <span className="text-center">{opt.label}</span>
@@ -235,20 +237,20 @@ export default function Questionnaire() {
   }
 
   return (
-    <div style={{ position: 'relative', minHeight: '100vh', background: 'linear-gradient(180deg, var(--primary), var(--primary-light))', overflow: 'hidden' }}>
+    <div style={{ position: 'relative', minHeight: '100vh', background: 'var(--background)', overflow: 'hidden' }}>
       {/* Background tint layers based on dimension */}
       <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
         {currentDimension === 'exhaustion' && (
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, var(--primary), var(--primary-light))', opacity: 0.12 }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'var(--background)', opacity: 1 }} />
         )}
         {currentDimension === 'mental_distance' && (
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, var(--sidebar-accent), var(--sidebar-primary))', opacity: 0.12 }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'var(--background)', opacity: 1 }} />
         )}
         {currentDimension === 'cognitive' && (
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, var(--accent), var(--accent-foreground))', opacity: 0.12 }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'var(--background)', opacity: 1 }} />
         )}
         {currentDimension === 'emotional' && (
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, var(--secondary), var(--secondary-foreground))', opacity: 0.12 }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'var(--background)', opacity: 1 }} />
         )}
       </div>
       
@@ -264,14 +266,10 @@ export default function Questionnaire() {
           }
           
           .qa-option:hover { 
-            background: white !important; 
+            background: hsla(35, 94%, 84%, 0.5) !important; 
           }
           .qa-option:hover .qa-label { 
-            color: transparent !important;
-            background: linear-gradient(180deg, var(--primary), var(--primary-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--foreground) !important;
           }
         }
 
@@ -282,15 +280,12 @@ export default function Questionnaire() {
           }
           /* Mirror desktop hover effect for touch/devices that support hover on mobile/tablet */
           .qa-option-mobile:hover {
-            background: white !important;
+            background: hsla(35, 94%, 84%, 0.5) !important;
+            border-color: var(--foreground) !important;
           }
           .qa-option-mobile:hover .qa-label,
           .qa-option-mobile:hover span {
-            color: transparent !important;
-            background: linear-gradient(180deg, var(--primary), var(--primary-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--foreground) !important;
           }
         }
         
@@ -323,8 +318,8 @@ export default function Questionnaire() {
                   animate={{ scaleX: 1 }}
                   exit={{ scaleX: 0, originX: 1 }}
                   transition={{ duration: 0.234375, delay: 0.234375, ease: "easeOut" }}
-                  className="absolute top-0 left-3 right-3 bg-white z-[2]"
-                  style={{ height: '1px' }}
+                  className="absolute top-0 left-3 right-3 z-[2]"
+                  style={{ height: '2px', background: 'var(--foreground)' }}
                 />
                 
                 {/* Top-left corner */}
@@ -333,8 +328,8 @@ export default function Questionnaire() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0 }}
                   transition={{ duration: 0.15625, delay: 0.234375, ease: "easeOut" }}
-                  className="absolute top-0 left-0 w-3 h-3 border-white rounded-tl-xl z-[2]"
-                  style={{ borderTopWidth: '1px', borderLeftWidth: '1px' }}
+                  className="absolute top-0 left-0 w-3 h-3 rounded-tl-xl z-[2]"
+                  style={{ borderTopWidth: '2px', borderLeftWidth: '2px', borderColor: 'var(--foreground)' }}
                 />
                 
                 {/* Top-right corner */}
@@ -343,8 +338,8 @@ export default function Questionnaire() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0 }}
                   transition={{ duration: 0.15625, delay: 0.46875, ease: "easeOut" }}
-                  className="absolute top-0 right-0 w-3 h-3 border-white rounded-tr-xl z-[2]"
-                  style={{ borderTopWidth: '1px', borderRightWidth: '1px' }}
+                  className="absolute top-0 right-0 w-3 h-3 rounded-tr-xl z-[2]"
+                  style={{ borderTopWidth: '2px', borderRightWidth: '2px', borderColor: 'var(--foreground)' }}
                 />
                 
                 {/* Right border */}
@@ -353,8 +348,8 @@ export default function Questionnaire() {
                   animate={{ scaleY: 1 }}
                   exit={{ scaleY: 0, originY: 1 }}
                   transition={{ duration: 0.234375, delay: 0.46875, ease: "easeOut" }}
-                  className="absolute top-3 right-0 bottom-3 bg-white z-[2]"
-                  style={{ width: '1px' }}
+                  className="absolute top-3 right-0 bottom-3 z-[2]"
+                  style={{ width: '2px', background: 'var(--foreground)' }}
                 />
                 
                 {/* Bottom-right corner */}
@@ -363,8 +358,8 @@ export default function Questionnaire() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0 }}
                   transition={{ duration: 0.15625, delay: 0.46875, ease: "easeOut" }}
-                  className="absolute bottom-0 right-0 w-3 h-3 border-white rounded-br-xl z-[2]"
-                  style={{ borderBottomWidth: '1px', borderRightWidth: '1px' }}
+                  className="absolute bottom-0 right-0 w-3 h-3 rounded-br-xl z-[2]"
+                  style={{ borderBottomWidth: '2px', borderRightWidth: '2px', borderColor: 'var(--foreground)' }}
                 />
                 
                 {/* Bottom border */}
@@ -373,8 +368,8 @@ export default function Questionnaire() {
                   animate={{ scaleX: 1 }}
                   exit={{ scaleX: 0, originX: 0 }}
                   transition={{ duration: 0.234375, delay: 0.234375, ease: "easeOut" }}
-                  className="absolute bottom-0 left-3 right-3 bg-white z-[2]"
-                  style={{ height: '1px' }}
+                  className="absolute bottom-0 left-3 right-3 z-[2]"
+                  style={{ height: '2px', background: 'var(--foreground)' }}
                 />
                 
                 {/* Bottom-left corner */}
@@ -383,8 +378,8 @@ export default function Questionnaire() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0 }}
                   transition={{ duration: 0.15625, delay: 0.234375, ease: "easeOut" }}
-                  className="absolute bottom-0 left-0 w-3 h-3 border-white rounded-bl-xl z-[2]"
-                  style={{ borderBottomWidth: '1px', borderLeftWidth: '1px' }}
+                  className="absolute bottom-0 left-0 w-3 h-3 rounded-bl-xl z-[2]"
+                  style={{ borderBottomWidth: '2px', borderLeftWidth: '2px', borderColor: 'var(--foreground)' }}
                 />
                 
                 {/* Left border */}
@@ -393,8 +388,8 @@ export default function Questionnaire() {
                   animate={{ scaleY: 1 }}
                   exit={{ scaleY: 0, originY: 1 }}
                   transition={{ duration: 0.234375, delay: 0, ease: "easeOut" }}
-                  className="absolute top-3 left-0 bottom-3 bg-white z-[2]"
-                  style={{ width: '1px' }}
+                  className="absolute top-3 left-0 bottom-3 z-[2]"
+                  style={{ width: '2px', background: 'var(--foreground)' }}
                 />
 
                 {/* Question Card */}
@@ -403,7 +398,7 @@ export default function Questionnaire() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.15625 }}
-                  className="rounded-xl overflow-hidden relative"
+                  className="rounded-[15px] overflow-hidden relative"
                 >
                   {/* Question Header Section - Responsive */}
                   <div className="relative">
@@ -412,22 +407,22 @@ export default function Questionnaire() {
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       transition={{ duration: 0.1875 }}
-                      className="px-4 py-5 sm:px-6 sm:py-6 lg:px-5 lg:py-[22px] bg-transparent text-white font-bold text-center relative"
+                      className="px-4 py-5 sm:px-6 sm:py-6 lg:px-5 lg:py-[22px] text-foreground font-bold text-center relative rounded-t-xl"
+                      style={{ background: 'var(--background-accent)' }}
                     >
                       {/* Question Counter - Responsive */}
-                      <motion.div 
+                      <motion.div
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 0.95, y: 0 }}
                         transition={{ duration: 0.15625, delay: 0.0390625 }}
-                        className="text-base sm:text-lg lg:text-xl font-normal opacity-95 mb-2 font-number"
-                        style={{ fontFamily: 'Arial, sans-serif' }}
+                        className="text-base sm:text-lg lg:text-xl font-normal mb-2"
+                        style={{ color: 'var(--foreground)' }}
                       >
                         Question {currentQuestion + 1} of {questions.length}
-                      </motion.div>
-                      
-                      {/* Question Text - Responsive */}
+                      </motion.div>                      {/* Question Text - Responsive */}
                       <div 
                         className="text-lg sm:text-xl lg:text-[26px] max-w-[90%] sm:max-w-[80%] mx-auto min-h-[30px] sm:min-h-[35px]"
+                        style={{ color: 'var(--foreground)' }}
                       >
                         {displayText}
                       </div>
@@ -439,8 +434,8 @@ export default function Questionnaire() {
                       animate={{ scaleX: 1 }}
                       exit={{ scaleX: 0, originX: 1 }}
                       transition={{ duration: 0.234375, delay: 0.234375, ease: "easeOut" }}
-                      className="absolute bottom-0 left-0 right-0 bg-white"
-                      style={{ height: '1px' }}
+                      className="absolute bottom-0 left-0 right-0"
+                      style={{ height: '2px', background: 'var(--foreground)' }}
                     />
                   </div>
 
@@ -459,7 +454,8 @@ export default function Questionnaire() {
                 whileHover={{ scale: 1.12 }}
                 onClick={handlePrevious}
                 disabled={isAnimating}
-                className="bg-transparent text-white border-none px-2 py-2 sm:px-2.5 sm:py-2 font-bold text-xs sm:text-sm lg:text-base cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                className="bg-transparent border-none px-2 py-2 sm:px-2.5 sm:py-2 font-bold text-xs sm:text-sm lg:text-base cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{ color: 'var(--accent)' }}
                 aria-label="Previous question"
               >
                 <span className="hidden sm:inline">Previous question</span>
@@ -492,9 +488,9 @@ export default function Questionnaire() {
                       aria-label={`Question ${i + 1} ${answered ? 'answered' : 'not answered'}`}
                       className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full transition-all duration-200"
                       style={{
-                        background: isFilled ? 'white' : 'transparent',
-                        border: isOutline ? '2px solid white' : (isFilled ? 'none' : '1px solid rgba(255,255,255,0.2)'),
-                        opacity: isCurrent ? 1 : 0.95
+                        background: isFilled ? 'var(--accent)' : 'transparent',
+                        border: isOutline ? '2px solid var(--accent)' : (isFilled ? 'none' : '1px solid var(--accent-light)'),
+                        opacity: isCurrent ? 1 : 0.7
                       }}
                     />
                   );
@@ -511,7 +507,8 @@ export default function Questionnaire() {
                     whileHover={{ scale: 1.12 }}
                     disabled={isAnimating}
                     onClick={() => setAlertOpen(true)}
-                    className="bg-transparent text-white border-none px-2 py-6 sm:px-2.5 sm:py-2 font-bold text-xs sm:text-sm lg:text-base cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="bg-transparent border-none px-2 py-6 sm:px-2.5 sm:py-2 font-bold text-xs sm:text-sm lg:text-base cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                    style={{ color: 'var(--accent)' }}
                     aria-label="Further information"
                   >
                     <span className="hidden sm:inline">Further Info</span>

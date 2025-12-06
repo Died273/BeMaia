@@ -16,7 +16,7 @@ interface LineChartProps {
 export default function LineChart({ 
   data, 
   height = 240, 
-  color = "#6366f1",
+  color = "var(--chart-blue)",
   showGrid = true 
 }: LineChartProps) {
   const maxValue = Math.max(...data.map(d => d.value));

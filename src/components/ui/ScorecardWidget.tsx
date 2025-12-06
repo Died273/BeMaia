@@ -50,9 +50,9 @@ export default function ScorecardWidget({
   
   // Helper to get color based on score
   const getScoreColor = (score: number): string => {
-    if (score <= 2.5) return '#4ade80'; // Green - Healthy
-    if (score <= 3.5) return '#fbbf24'; // Yellow - At Risk
-    return '#EB5F43'; // Red - Critical
+    if (score <= 2.5) return 'var(--success-bright)'; // Green - Healthy
+    if (score <= 3.5) return 'var(--warning)'; // Yellow - At Risk
+    return 'var(--danger)'; // Red - Critical
   };
   
   // Helper to get score explanation
@@ -97,7 +97,7 @@ export default function ScorecardWidget({
     <>
       <div className="relative w-full max-w-md mx-auto lg:mx-0">
         <div 
-          className="relative rounded-2xl shadow-lg border border-border/60 p-5 bg-card cursor-pointer transition-all duration-200 hover:shadow-xl hover:border-primary/20"
+          className="relative rounded-[15px] shadow-lg border border-border/60 p-5 bg-card cursor-pointer transition-all duration-200 hover:shadow-xl hover:border-primary/20"
           onClick={() => setIsTrendOpen(true)}
         >
           <div className="flex flex-col items-center gap-4">
@@ -117,7 +117,7 @@ export default function ScorecardWidget({
                   cx="80"
                   cy="80"
                   r={radius}
-                  stroke="var(--primary)"
+                  stroke={getScoreColor(currentScore)}
                   strokeWidth="10"
                   fill="none"
                   strokeDasharray={`${circumference} ${circumference}`}
@@ -127,8 +127,8 @@ export default function ScorecardWidget({
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
                 <p
-                  className="text-4xl font-black font-number text-primary"
-                  style={{ fontFamily: "Arial, sans-serif" }}
+                  className="text-4xl font-black"
+                  style={{ color: getScoreColor(currentScore) }}
                 >
                   {animatedScore.toFixed(2)}
                 </p>
@@ -139,19 +139,19 @@ export default function ScorecardWidget({
             </div>
 
             <div className="grid grid-cols-2 gap-3 w-full">
-              <div className="rounded-xl border border-border/60 bg-card p-3 text-center">
+              <div className="rounded-[15px] border border-border/60 bg-card p-3 text-center">
                 <p className="text-[10px] font-bold uppercase tracking-wide text-muted-foreground mb-1 flex items-center justify-center gap-1">
                   <Clock className="w-3 h-3" /> Prior
                 </p>
-                <p className="text-xl font-black text-foreground font-number">
+                <p className="text-xl font-black text-foreground">
                   {previousScore.toFixed(2)}
                 </p>
               </div>
-              <div className="rounded-xl border border-border/60 bg-card p-3 text-center">
+              <div className="rounded-[15px] border border-border/60 bg-card p-3 text-center">
                 <p className="text-[10px] font-bold uppercase tracking-wide text-muted-foreground mb-1 flex items-center justify-center gap-1">
                   <TrendIcon className="w-3 h-3" style={{ color: trendColor }} /> Change
                 </p>
-                <p className="text-xl font-black font-number" style={{ color: trendColor }}>
+                <p className="text-xl font-black" style={{ color: trendColor }}>
                   {isImproving ? "-" : "+"}
                   {Math.abs(scoreChange).toFixed(2)}
                 </p>
@@ -181,7 +181,7 @@ export default function ScorecardWidget({
               exit={{ scale: 0.9, opacity: 0 }}
               transition={{ type: "spring", duration: 0.5 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-white rounded-3xl shadow-2xl"
+              className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-white rounded-[15px] shadow-2xl"
             >
               <button
                 onClick={() => setIsTrendOpen(false)}
@@ -198,7 +198,7 @@ export default function ScorecardWidget({
                   </p>
                 </div>
 
-                <div className="bg-muted/30 rounded-3xl p-12">
+                <div className="bg-muted/30 rounded-[15px] p-12">
                   <svg width="100%" height={chartHeight + 60} viewBox={`0 0 ${chartWidth} ${chartHeight + 60}`} preserveAspectRatio="xMidYMid meet">
                     {/* Y-axis line */}
                     <line
@@ -330,7 +330,6 @@ export default function ScorecardWidget({
                             textAnchor="middle"
                             className="text-base font-black"
                             fill="white"
-                            style={{ fontFamily: "Arial, sans-serif" }}
                           >
                             {point.score.toFixed(2)}
                           </text>
@@ -382,7 +381,7 @@ export default function ScorecardWidget({
               exit={{ scale: 0.9, opacity: 0 }}
               transition={{ type: "spring", duration: 0.5 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-white rounded-3xl shadow-2xl"
+              className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-white rounded-[15px] shadow-2xl"
             >
               <button
                 onClick={() => setSelectedPoint(null)}
@@ -395,7 +394,7 @@ export default function ScorecardWidget({
                 <div className="mb-8">
                   <div className="flex items-center gap-4 mb-4">
                     <div 
-                      className="w-16 h-16 rounded-2xl flex items-center justify-center text-white text-2xl font-black"
+                      className="w-16 h-16 rounded-[15px] flex items-center justify-center text-white text-2xl font-black"
                       style={{ backgroundColor: getScoreColor(selectedPoint.score) }}
                     >
                       {selectedPoint.score.toFixed(1)}
@@ -415,7 +414,7 @@ export default function ScorecardWidget({
                   </p>
                 </div>
 
-                <div className="mt-6 p-4 bg-primary/5 border border-primary/20 rounded-xl">
+                <div className="mt-6 p-4 bg-primary/5 border border-primary/20 rounded-[15px]">
                   <p className="text-xs text-foreground/60 leading-relaxed">
                     <strong className="text-foreground font-semibold">About BAT Scores:</strong> The BAT-12 (Burnout Assessment Tool) is used under the Creative Commons Attribution 4.0 International License (CC BY 4.0), developed by Wilmar Schaufeli and collaborators. Lower scores indicate healthier teams with better engagement and reduced burnout risk.{' '}
                     <a 

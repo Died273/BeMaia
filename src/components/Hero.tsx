@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, TrendingUp } from "lucide-react";
+import { TrendingUp } from "lucide-react";
 import { motion } from "framer-motion";
 import { useContactModal } from '@/contexts/ContactModalContext';
 
@@ -66,21 +66,18 @@ const Hero = () => {
               <Button
                 variant="hero"
                 size="lg"
-                className="group text-white"
+                className="group"
                 onClick={() => window.open('https://calendly.com/l-boeker-bemaia/30min', '_blank')}
               >
                 Book a Demo
-                <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
 
               <Button
                 variant="secondary"
                 size="lg"
-                className="text-white relative overflow-hidden group before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:-translate-x-full hover:before:translate-x-full before:transition-transform before:duration-700"
                 onClick={() => openModal('info@bemaia.nl')}
               >
                 Get in Touch
-                <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
             </motion.div>
 

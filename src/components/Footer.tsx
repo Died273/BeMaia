@@ -30,7 +30,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-primary text-background py-12">
+    <footer className="text-foreground py-12" style={{ background: 'var(--background-light)' }}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-8">
@@ -46,12 +46,12 @@ const Footer = () => {
                 ease: [0.39, 1.69, 0.36, 1]
               }}
             >
-              <div className="flex items-center gap-2 mb-4">
-                <div className="bg-white rounded-2xl p-4 flex items-center justify-center mx-auto md:mx-0 h-16 w-full max-w-[425px]">
-                  <img src={BeMaiaLogo} alt="BeMaia Logo" className="w-auto h-16 sm:h-12 md:h-16" />
+              <div className="flex items-start mb-4 -ml-4">
+                <div className="relative flex items-left justify-left mx-auto md:mx-0 h-16 w-full max-w-[425px]">
+                  <img src={BeMaiaLogo} alt="BeMaia Logo" className="w-auto h-16" />
                 </div>
               </div>
-              <p className="text-background/80 max-w-md mx-auto md:mx-0">
+              <p className="text-foreground/80 max-w-md mx-auto md:mx-0">
                 Empowering organizations to prevent burnout before it starts, through real-time
                 data-driven company health analytics.
               </p>
@@ -73,7 +73,7 @@ const Footer = () => {
               <ul className="space-y-2">
                 {productLinks.map((link) => (
                   <li key={link.label}>
-                    <Link to={link.href} className="text-background/80 hover:text-background transition-colors hover:underline">
+                    <Link to={link.href} className="text-foreground/80 hover:text-foreground transition-colors hover:underline">
                       {link.label}
                     </Link>
                   </li>
@@ -100,7 +100,7 @@ const Footer = () => {
                     {link.onClick ? (
                       // keep the onClick handler (contact opens modal)
                       <button
-                        className="text-background/80 hover:text-background transition-colors hover:underline cursor-pointer"
+                        className="text-foreground/80 hover:text-foreground transition-colors hover:underline cursor-pointer"
                         onClick={link.onClick}
                       >
                         {link.label}
@@ -108,14 +108,14 @@ const Footer = () => {
                     ) : link.external ? (
                       <a
                         href={link.href}
-                        className="text-background/80 hover:text-background transition-colors hover:underline"
+                        className="text-foreground/80 hover:text-foreground transition-colors hover:underline"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
                         {link.label}
                       </a>
                     ) : (
-                      <Link to={link.href} className="text-background/80 hover:text-background transition-colors hover:underline">
+                      <Link to={link.href} className="text-foreground/80 hover:text-foreground transition-colors hover:underline">
                         {link.label}
                       </Link>
                     )}
@@ -127,7 +127,7 @@ const Footer = () => {
 
           {/* Bottom Bar */}
           <motion.div
-            className="pt-8 border-t border-background/20 flex flex-col md:flex-row justify-between items-center gap-4"
+            className="pt-8 border-t border-foreground flex flex-col md:flex-row justify-between items-center gap-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
@@ -137,14 +137,14 @@ const Footer = () => {
               ease: [0.39, 1.69, 0.36, 1]
             }}
           >
-            <p className="text-background/60 text-sm text-center md:text-left">
+            <p className="text-foreground/60 text-sm text-center md:text-left">
               © 2025 BeMaia. All rights reserved.
             </p>
             <div className="flex gap-6 text-sm justify-center md:justify-start">
-              <a href="/privacy" className="text-background/80 hover:text-background transition-colors hover:underline">
+              <a href="/privacy" className="text-foreground/80 hover:text-foreground transition-colors hover:underline">
                 Privacy Policy
               </a>
-              <a href="/terms" className="text-background/80 hover:text-background transition-colors hover:underline">
+              <a href="/terms" className="text-foreground/80 hover:text-foreground transition-colors hover:underline">
                 Terms of Service
               </a>
             </div>

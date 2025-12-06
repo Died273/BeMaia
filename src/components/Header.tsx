@@ -68,7 +68,7 @@ const Header = () => {
             <Link
               to="/team"
               className={`font-medium text-sm sm:text-base transition-colors
-                ${location.pathname === "/team" ? "text-secondary" : "text-foreground hover:text-primary"}
+                ${location.pathname === "/team" ? "text-primary" : "text-foreground hover:text-primary"}
               `}
             >
               Our Team
@@ -76,7 +76,7 @@ const Header = () => {
             <Link
               to="/questionnaire"
               className={`font-medium text-sm sm:text-base transition-colors
-                ${location.pathname === "/questionnaire" ? "text-secondary" : "text-foreground hover:text-primary"}
+                ${location.pathname === "/questionnaire" ? "text-primary" : "text-foreground hover:text-primary"}
               `}
               
             >
@@ -85,7 +85,7 @@ const Header = () => {
             <Link
               to="/dashboard-company"
               className={`font-medium text-sm sm:text-base transition-colors
-                ${location.pathname === "/dashboard-company" ? "text-secondary" : "text-foreground hover:text-primary"}
+                ${location.pathname === "/dashboard-company" ? "text-primary" : "text-foreground hover:text-primary"}
               `}
             >
               Demo Dashboard
@@ -93,13 +93,13 @@ const Header = () => {
             <Link
               to="/pricing"
               className={`font-medium text-sm sm:text-base transition-colors
-                ${location.pathname === "/pricing" ? "text-secondary" : "text-foreground hover:text-primary"}
+                ${location.pathname === "/pricing" ? "text-primary" : "text-foreground hover:text-primary"}
               `}
   
             >
               Pricing
             </Link>
-            <Button variant="hero" size="sm" className="text-white" onClick={() => openModal('info@bemaia.nl')}>
+            <Button variant="hero" size="sm" onClick={() => openModal('info@bemaia.nl')}>
               Contact
             </Button>
           </div>
@@ -130,7 +130,7 @@ const Header = () => {
         {/* Mobile menu panel */}
         {menuOpen && (
           <div className="md:hidden px-4 pb-6">
-            <div className="backdrop-blur rounded-xl p-4 border border-primary">
+            <div className="backdrop-blur rounded-[15px] p-4 border border-primary">
               <div className="flex flex-col gap-3">
                 <Link
                   to="/team"
@@ -160,7 +160,7 @@ const Header = () => {
                 >
                   Pricing
                 </Link>
-                <Button variant="hero" size="sm" className="text-white mt-2" onClick={() => { openModal('info@bemaia.nl'); setMenuOpen(false); }}>
+                <Button variant="hero" size="sm" className="mt-2" onClick={() => { openModal('info@bemaia.nl'); setMenuOpen(false); }}>
                   Contact
                 </Button>
               </div>

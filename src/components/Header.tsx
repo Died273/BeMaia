@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import BeMaiaLogo from "@/assets/logo.svg";
 import { useContactModal } from '@/contexts/ContactModalContext';
+import { supabase } from '@/lib/supabase';
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -10,12 +11,29 @@ const Header = () => {
   const location = useLocation();
   const { openModal } = useContactModal();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Check if user is logged in
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setIsLoggedIn(!!user);
+    };
+    checkUser();
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsLoggedIn(!!session?.user);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   // close mobile menu when route changes
@@ -73,23 +91,28 @@ const Header = () => {
             >
               Our Team
             </Link>
-            <Link
-              to="/questionnaire"
-              className={`font-medium text-sm sm:text-base transition-colors
-                ${location.pathname === "/questionnaire" ? "text-secondary" : "text-foreground hover:text-primary"}
-              `}
-              
-            >
-              Demo Questionnaire
-            </Link>
-            <Link
-              to="/dashboard-company"
-              className={`font-medium text-sm sm:text-base transition-colors
-                ${location.pathname === "/dashboard-company" ? "text-secondary" : "text-foreground hover:text-primary"}
-              `}
-            >
-              Demo Dashboard
-            </Link>
+            
+            {/* Surveys link - Only show if logged in */}
+            {isLoggedIn ? (
+              <Link
+                to="/surveys"
+                className={`font-medium text-sm sm:text-base transition-colors
+                  ${location.pathname === "/surveys" ? "text-secondary" : "text-foreground hover:text-primary"}
+                `}
+              >
+                Surveys
+              </Link>
+            ) : (
+              <Link
+                to="/questionnaire"
+                className={`font-medium text-sm sm:text-base transition-colors
+                  ${location.pathname === "/questionnaire" ? "text-secondary" : "text-foreground hover:text-primary"}
+                `}
+              >
+                Questionnaire
+              </Link>
+            )}
+            
             <Link
               to="/pricing"
               className={`font-medium text-sm sm:text-base transition-colors
@@ -99,8 +122,19 @@ const Header = () => {
             >
               Pricing
             </Link>
-            <Button variant="hero" size="sm" className="text-white" onClick={() => openModal('info@bemaia.nl')}>
+            <button
+              onClick={() => openModal('info@bemaia.nl')}
+              className={`font-medium text-sm sm:text-base transition-colors text-foreground hover:text-primary`}
+            >
               Contact
+            </button>
+            <Button 
+              variant="hero" 
+              size="sm" 
+              className="text-white" 
+              onClick={() => navigate(isLoggedIn ? '/profile' : '/login')}
+            >
+              {isLoggedIn ? 'Profile' : 'Login'}
             </Button>
           </div>
 
@@ -160,8 +194,19 @@ const Header = () => {
                 >
                   Pricing
                 </Link>
-                <Button variant="hero" size="sm" className="text-white mt-2" onClick={() => { openModal('info@bemaia.nl'); setMenuOpen(false); }}>
+                <button
+                  onClick={() => { openModal('info@bemaia.nl'); setMenuOpen(false); }}
+                  className="font-medium text-base text-primary text-left"
+                >
                   Contact
+                </button>
+                <Button 
+                  variant="hero" 
+                  size="sm" 
+                  className="text-white mt-2" 
+                  onClick={() => { navigate(isLoggedIn ? '/profile' : '/login'); setMenuOpen(false); }}
+                >
+                  {isLoggedIn ? 'Profile' : 'Login'}
                 </Button>
               </div>
             </div>

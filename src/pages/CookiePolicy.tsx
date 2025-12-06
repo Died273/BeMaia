@@ -18,7 +18,7 @@ const CookiePolicy = () => {
               Last updated December 06, 2025
             </p>
             <Button onClick={resetCookieConsent} variant="outline">
-              Manage Cookie Preferences
+              Change Cookie Settings
             </Button>
           </div>
 
@@ -136,10 +136,10 @@ const CookiePolicy = () => {
               <div className="bg-muted/50 p-4 rounded-lg my-4">
                 <h4 className="font-semibold text-foreground mb-2">Using Our Cookie Consent Tool</h4>
                 <p className="mb-3">
-                  You can manage your cookie preferences at any time using our cookie consent tool. Click the button below to update your preferences:
+                  You can change your cookie preferences at any time using our cookie consent tool. Click the button below to update your preferences:
                 </p>
                 <Button onClick={resetCookieConsent} variant="default">
-                  Manage Cookie Preferences
+                  Change Cookie Settings
                 </Button>
               </div>
 

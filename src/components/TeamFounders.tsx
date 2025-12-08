@@ -84,7 +84,7 @@ export default function TeamFounders() {
   });
 
   return (
-  <div ref={containerRef} className="bg-background flex flex-col items-center px-4 sm:px-6 md:px-8 py-8 pb-24" style={{ minHeight: "260vh" }}>
+  <div ref={containerRef} className="bg-background flex flex-col items-center px-4 sm:px-6 md:px-8 py-8 pb-24" style={{ minHeight: "350vh" }}>
       {/* Founders Section */}
       <div className="max-w-6xl w-full sticky top-24">
         <div className="flex flex-col-reverse lg:flex-row gap-6 md:gap-8 items-start">
@@ -93,8 +93,8 @@ export default function TeamFounders() {
             {founders.map((founder, index) => {
               // Reverse the animation order - last person (index 4) moves first
               const reverseIndex = founders.length - 1 - index;
-              const startProgress = reverseIndex * 0.15;
-              const endProgress = (reverseIndex + 0.5) * 0.15;
+              const startProgress = reverseIndex * 0.10; // Reduced from 0.15 to 0.10 for slower animation
+              const endProgress = (reverseIndex + 1) * 0.10; // Increased duration for slower movement
               
               // Calculate final position - cards stack with responsive spacing
               const finalPosition = index * cardSpacing;

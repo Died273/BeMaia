@@ -41,7 +41,7 @@ const Login = () => {
           <img
             src={BeMaiaLogo}
             alt="BeMaia Logo"
-            className="w-20 h-16 transition-transform duration-200 hover:scale-105"
+            className="h-32 w-auto transition-transform duration-200 hover:scale-105"
           />
         </div>
 

@@ -1,122 +1,39 @@
-import { Button } from "@/components/ui/button";
-import { ArrowRight, TrendingUp } from "lucide-react";
-import { motion } from "framer-motion";
-import { useContactModal } from '@/contexts/ContactModalContext';
-
-// Animation delays - faster and more energetic
-const headlineDelay = 0;
-const descDelay = headlineDelay + 0.1;
-const buttonsDelay = descDelay + 0.1;
-const statsDelay = buttonsDelay + 0.1;
-
-const Hero = () => {
-  const { openModal } = useContactModal();
+export default function Hero() {
   return (
-    <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden pt-36 pb-12">
-      {/* background is provided by pages via .page-bg; removed local gradient so hero doesn't influence page background */}
-      
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="flex items-center justify-center">
-          {/* Centered Content */}
-          <div className="space-y-8 max-w-4xl mx-auto text-center">
-            <motion.h1 
-              className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.3] pb-2 overflow-visible"
-              style={{ lineHeight: '1.3' }}
-              initial={{ opacity: 0, y: -38, scale: 0.94 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ 
-                duration: 0.5, 
-                delay: headlineDelay,
-                ease: [0.25, 0.46, 0.45, 0.94]
-              }}
-            >
-              Make Wellbeing
-              <span className="block bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent pb-2">
-                Your Advantage
-              </span>
-            </motion.h1>
+    <div className="min-h-screen bg-background">
+      {/* Hero Section */}
+      <section className="flex flex-col items-center justify-center text-center px-4 sm:px-6 md:px-10 py-16 md:py-24">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight tracking-tight mb-6 md:mb-10 text-foreground">
+          Make Wellbeing<br />Your Advantage
+        </h1>
+        <p className="text-lg sm:text-xl md:text-2xl text-foreground mb-8 md:mb-12 max-w-3xl px-4">
+          Ensuring you have the tools to retain Gen Z employees in your organization.
+        </p>
+        <button 
+          onClick={() => window.open('https://calendly.com/l-boeker-bemaia/30min', '_blank')}
+          className="bg-[#5EAB8C] text-white px-6 py-2.5 sm:px-7 sm:py-3 rounded-lg font-medium hover:bg-[#4D9474] transition-colors text-base sm:text-lg cursor-pointer"
+        >
+          Book a demo
+        </button>
+      </section>
 
-            <motion.p 
-              className="text-xl text-muted-foreground max-w-2xl mx-auto"
-              initial={{ opacity: 0, y: -30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ 
-                duration: 0.5, 
-                delay: descDelay,
-                ease: [0.25, 0.46, 0.45, 0.94]
-              }}
-            >
-              We turn insights into recommended changes that actively boost employee well-being
-              and company performance. Real data. Real recommendations. Real results.
-            </motion.p>
-
-            <motion.div 
-              className="flex flex-col sm:flex-row gap-4 justify-center"
-              initial={{ opacity: 0, y: 22 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ 
-                duration: 0.5, 
-                delay: buttonsDelay,
-                ease: [0.25, 0.46, 0.45, 0.94]
-              }}
-            >
-              <Button
-                variant="hero"
-                size="lg"
-                className="group text-white"
-                onClick={() => window.open('https://calendly.com/l-boeker-bemaia/30min', '_blank')}
-              >
-                Book a Demo
-                <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
-              </Button>
-
-              <Button
-                variant="secondary"
-                size="lg"
-                className="text-white relative overflow-hidden group before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:-translate-x-full hover:before:translate-x-full before:transition-transform before:duration-700"
-                onClick={() => openModal('info@bemaia.nl')}
-              >
-                Get in Touch
-                <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </motion.div>
-
-            {/* Quick Stats */}
-            <motion.div 
-              className="grid grid-cols-3 gap-6 pt-8 border-t border-border/50 max-w-3xl mx-auto"
-              initial={{ opacity: 0, y: -38, scale: 0.94 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ 
-                duration: 0.5, 
-                delay: statsDelay,
-                ease: [0.25, 0.46, 0.45, 0.94]
-              }}
-            >
-              <div className="space-y-1">
-                <div className="flex items-center gap-2 text-2xl font-bold text-primary justify-center">
-                  <TrendingUp className="w-5 h-5" />
-                  €20k
-                </div>
-                <p className="text-sm text-muted-foreground">Cost per person on Burnout</p>
-              </div>
-              <div className="space-y-1">
-                <div className="text-2xl font-bold text-secondary">Continuous</div>
-                <p className="text-sm text-muted-foreground">Insights delivered</p>
-              </div>
-              <div className="space-y-1">
-                <div className="text-2xl font-bold text-accent">Proactive</div>
-                <p className="text-sm text-muted-foreground">Early intervention</p>
-              </div>
-            </motion.div>
-          </div>
+      {/* Features Section */}
+      <section className="flex flex-col sm:flex-row gap-4 sm:gap-6 md:gap-8 px-4 sm:px-8 md:px-16 py-6 md:py-8 max-w-7xl mx-auto">
+        <div className="bg-white border-[3px] border-black rounded-2xl p-8 sm:p-12 md:p-16 flex-1 text-center relative overflow-hidden flex items-center justify-center min-h-[150px] sm:min-h-[200px]">
+          <div className="absolute top-0 left-0 right-0 h-3 bg-[#5EAB8C] rounded-t-xl"></div>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold">Analyze</h2>
         </div>
-      </div>
-    </section>
-  );
-};
 
-export default Hero;
+        <div className="bg-white border-[3px] border-black rounded-2xl p-8 sm:p-12 md:p-16 flex-1 text-center relative overflow-hidden flex items-center justify-center min-h-[150px] sm:min-h-[200px]">
+          <div className="absolute top-0 left-0 right-0 h-3 bg-[#7DB5D8] rounded-t-xl"></div>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold">Advise</h2>
+        </div>
+
+        <div className="bg-white border-[3px] border-black rounded-2xl p-8 sm:p-12 md:p-16 flex-1 text-center relative overflow-hidden flex items-center justify-center min-h-[150px] sm:min-h-[200px]">
+          <div className="absolute top-0 left-0 right-0 h-3 bg-[#E8B67A] rounded-t-xl"></div>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold">Adapt</h2>
+        </div>
+      </section>
+    </div>
+  );
+}

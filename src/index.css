@@ -2,56 +2,107 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Prevent layout shift when scrollbar appears/disappears */
+html {
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
+}
+
 @layer base {
   :root {
     /* ===== CORE COLORS (store full hsl() strings so editors/sliders work) ===== */
-    --background: hsl(217 77% 93%);         /* Light blue #E1EAFB */
-    --foreground: hsl(251 51% 27%);         /* Deep purple #402E8D */
+    --background: #fff0db;         /* Warm cream #fff0db */
+    --background-light: #fff8ef;   /* Lighter cream #fff8ef*/
+    --background-accent:#FDDCAE;   /* Warm peach #FDDCAE */
+    --foreground: hsl(0 0% 0%);             /* Pure black #000000 */
+    --white: hsl(0 0% 100%);                /* Pure white */
     
-    --primary: hsl(251 51% 37%);            /* Deep purple #402E8D */
+    --primary: hsl(148 34% 48%);            /* Fresh green #51A578 */
     --primary-foreground: hsl(0 0% 100%);   /* White */
-    --primary-light: hsl(251 51% 67%);      /* Lighter purple */
+    --primary-light: hsl(155 34% 65%);      /* Lighter green */
+    --primary-medium: hsl(155 34% 57%);     /* Medium green */
+    --primary-dark: hsl(155 34% 40%);       /* Darker green */
     
-    --secondary: hsl(343 85% 51%);          /* Bright pink #EC1A57 */
-    --secondary-foreground: hsl(0 0% 100%); /* White */
+    --secondary: hsl(204, 64%, 72%);          /* Sky blue #88C0E5 */
+    --secondary-foreground: hsl(0 0% 0%);   /* Black */
+    --secondary-light: hsl(201 62% 82%);    /* Lighter blue */
+    --secondary-lighter: hsl(201 62% 88%);  /* Even lighter blue */
+    --secondary-dark: hsl(201 62% 60%);     /* Darker blue */
     
-    --accent: hsl(43 98% 53%);              /* Yellow/gold #FDBC11 */
-    --accent-foreground: hsl(251 51% 27%);  /* Deep purple */
+    --accent: hsl(31 96% 69%);              /* Warm orange #FCB366 */
+    --accent-foreground: hsl(0 0% 0%);      /* Black */
+    --accent-light: hsl(30 97% 80%);        /* Lighter orange */
+    --accent-dark: hsl(30 97% 60%);         /* Darker orange */
+    
+    /* ===== STATUS COLORS (adjusted for new palette) ===== */
+    --success: hsl(155 34% 49%);            /* Use primary green for success */
+    --success-bright: hsl(155 34% 57%);     /* Brighter green */
+    --success-bg: hsla(155 34% 49% / 0.1);  /* Green background transparent */
+    --success-border: hsla(155 34% 49% / 0.3); /* Green border transparent */
+    
+    --warning: hsl(30 97% 70%);             /* Use accent orange for warning */
+    --warning-dark: hsl(30 97% 60%);        /* Darker orange */
+    --warning-bg: hsla(30 97% 70% / 0.15);  /* Orange background transparent */
+    
+    --danger: hsl(0 75% 60%);               /* Coral red for danger */
+    --danger-dark: hsl(0 75% 50%);          /* Dark red */
+    --danger-bright: hsl(0 75% 65%);        /* Bright red */
+    --danger-bg: hsla(0 75% 60% / 0.15);    /* Red background transparent */
+    --danger-border: hsla(0 75% 60% / 0.3); /* Red border transparent */
+    
+    /* ===== CHART COLORS ===== */
+    --chart-primary: hsl(155 34% 49%);      /* Primary green for charts */
+    --chart-secondary: hsl(201 62% 72%);    /* Secondary blue for charts */
+    --chart-accent: hsl(30 97% 70%);        /* Accent orange for charts */
+    --chart-blue: hsl(201 62% 72%);         /* Blue for charts */
+    
+    /* ===== PARTNER/BRAND COLORS ===== */
+    --partner-green: hsl(155 34% 49%);      /* Use primary green for partners */
+    
+    /* ===== OVERLAY COLORS (adjusted for warm palette) ===== */
+    --overlay-light: hsla(0 0% 0% / 0.03);      /* Light dark overlay */
+    --overlay-medium: hsla(0 0% 0% / 0.08);     /* Medium dark overlay */
+    --overlay-strong: hsla(0 0% 0% / 0.12);     /* Strong dark overlay */
+    
+    /* ===== BORDER COLORS (adjusted for warm palette) ===== */
+    --border-light: hsla(0 0% 0% / 0.1);        /* Light border */
+    --border-medium: hsla(0 0% 0% / 0.2);       /* Medium border */
     
     /* ===== Card COLORS ===== */
-    --card: hsl(0 0% 100%);
-    --card-foreground: hsl(251 51% 27%);
+    --card: hsl(40 100% 97%);               /* Light cream for cards */
+    --card-foreground: hsl(0 0% 0%);        /* Black text */
     
     /* ===== SIDEBAR COLORS ===== */
-    --sidebar-background: hsl(219 76% 97%);
-    --sidebar-foreground: hsl(251 51% 27%);
-    --sidebar-primary: hsl(343 85% 51%);
-    --sidebar-primary-foreground: hsl(0 0% 100%);
-    --sidebar-accent: hsl(219 76% 90%);
-    --sidebar-accent-foreground: hsl(251 51% 27%);
-    --sidebar-border: hsl(219 76% 85%);
-    --sidebar-ring: hsl(251 51% 37%);
+    --sidebar-background: hsl(40 100% 97%);     /* Light cream background */
+    --sidebar-foreground: hsl(0 0% 0%);         /* Black text */
+    --sidebar-primary: hsl(155 34% 49%);        /* Primary green */
+    --sidebar-primary-foreground: hsl(0 0% 100%); /* White */
+    --sidebar-accent: hsl(36 97% 84%);          /* Warm peach accent */
+    --sidebar-accent-foreground: hsl(0 0% 0%);  /* Black */
+    --sidebar-border: hsl(36 50% 85%);          /* Soft warm border */
+    --sidebar-ring: hsl(155 34% 49%);           /* Primary green ring */
     
     /* ===== EFFECTS & UTILITIES ===== */
-    --page-gradient: linear-gradient(180deg, var(--background) 0%, #ffffff 100%);
-    --shadow-glow: 0 0 30px rgba(253, 188, 17, 0.24);
+    --shadow-glow: 0 0 30px hsla(30 97% 70% / 0.24);
+    --shadow-soft: 0 2px 8px hsla(0 0% 0% / 0.08);
+    --shadow-medium: 0 4px 16px hsla(0 0% 0% / 0.12);
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     
     /* ===== TYPOGRAPHY ===== */
-    --font-family-base: 'KitSans', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --font-family-base: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     
     /* ===== OTHER VARIABLES ===== */
     --radius: 1rem;
     /* Tailwind theme variables (provide sensible defaults so color utilities resolve) */
-    --border: hsl(219 76% 85%);
-    --input: hsl(0 0% 100%);
-    --ring: hsl(251 51% 37%);
-    --muted: hsl(220 16% 88%);
-    --muted-foreground: hsl(251 51% 45%);
-    --popover: hsl(0 0% 100%);
+    --border: hsl(36 50% 85%);              /* Warm border */
+    --input: hsl(40 100% 97%);              /* Light cream input */
+    --ring: hsl(155 34% 49%);               /* Primary green ring */
+    --muted: hsl(36 40% 90%);               /* Warm muted */
+    --muted-foreground: hsl(0 0% 30%);      /* Dark gray text */
+    --popover: hsl(40 100% 97%);            /* Light cream popover */
     --popover-foreground: var(--foreground);
-    --destructive: hsl(0 85% 60%);
-    --destructive-foreground: hsl(0 0% 100%);
+    --destructive: hsl(0 75% 60%);          /* Coral red */
+    --destructive-foreground: hsl(0 0% 100%); /* White */
   }
 }
 
@@ -81,43 +132,6 @@
   --tw-gradient-to: var(--primary-light);
 }
 
-/* ===== NUMBER FONT ===== */
-@layer utilities {
-  .font-number {
-    font-family: Arial, sans-serif;
-  }
-}
-
-/* ===== GLOBAL NUMBER STYLING ===== */
-/* Apply Arial font to all numeric characters throughout the website */
-@layer base {
-  /* Target numbers in common contexts */
-  span[class*="font-number"],
-  .font-number {
-    font-family: Arial, sans-serif !important;
-    font-variant-numeric: tabular-nums;
-  }
-}
-
-/* Universal selector for numeric content - applies Arial to any element displaying numbers */
-@layer components {
-  /* This ensures all standalone numbers get Arial font */
-  body {
-    font-variant-numeric: proportional-nums;
-  }
-  
-  /* Style numeric values with Arial */
-  [data-numeric="true"],
-  .numeric,
-  input[type="number"],
-  .score,
-  .value,
-  .count,
-  .number {
-    font-family: Arial, sans-serif !important;
-  }
-}
-
 /* ===== TYPOGRAPHY ===== */
 @layer base {
   * { 
@@ -134,44 +148,47 @@
 
     /* Use the foreground token directly (it's a full color string) */
     color: var(--foreground);
-    font-family: var(--font-family-base);
-    font-weight: 200;  /* KitSans ExtraLight */
-    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;  /* Inter Regular */
+    font-size: 20px;   /* Medium text */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  h1 {
-    font-family: var(--font-family-base);
-    font-weight: 700;  /* KitSans Bold */
-    font-size: 36px;
+  /* Typography utility classes */
+  .text-hero { 
+    font-family: 'Inter', sans-serif; 
+    font-weight: 600;  /* Inter SemiBold */
+    font-size: 110px;  /* Large Header Hero Section */
     line-height: 1.1;
   }
-
-  h2 {
-    font-family: var(--font-family-base);
-    font-weight: 400;  /* KitSans Regular */
-    font-size: 24px;
+  
+  .text-header { 
+    font-family: 'Inter', sans-serif; 
+    font-weight: 600;  /* Inter SemiBold */
+    font-size: 96px;   /* Medium Header Text */
+    line-height: 1.1;
+  }
+  
+  .text-large { 
+    font-family: 'Inter', sans-serif; 
+    font-weight: 400;  /* Inter Regular */
+    font-size: 32px;   /* Large text */
+    line-height: 1.4;
+  }
+  
+  .text-button { 
+    font-family: 'Inter', sans-serif; 
+    font-weight: 600;  /* Inter SemiBold */
+    font-size: 24px;   /* Button text */
     line-height: 1.2;
   }
-
-  /* Typography utility classes */
-  .site-header { 
-    font-family: var(--font-family-base); 
-    font-weight: 700; 
-    font-size: 36px; 
-  }
   
-  .site-subheader { 
-    font-family: var(--font-family-base); 
-    font-weight: 400; 
-    font-size: 24px; 
-  }
-  
-  .site-text { 
-    font-family: var(--font-family-base); 
-    font-weight: 200; 
-    font-size: 16px; 
+  .text-medium { 
+    font-family: 'Inter', sans-serif; 
+    font-weight: 400;  /* Inter Regular */
+    font-size: 20px;   /* Medium text */
+    line-height: 1.5;
   }
 }
 

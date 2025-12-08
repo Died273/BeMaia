@@ -89,7 +89,7 @@ const Header = () => {
                 ${location.pathname === "/team" ? "text-secondary" : "text-foreground hover:text-primary"}
               `}
             >
-              Our Team
+              About us
             </Link>
             
             {/* Surveys link - Only show if logged in */}
@@ -109,10 +109,20 @@ const Header = () => {
                   ${location.pathname === "/questionnaire" ? "text-secondary" : "text-foreground hover:text-primary"}
                 `}
               >
-                Questionnaire
+                Demo Questionnaire
               </Link>
             )}
             
+            <Link
+              to="/dashboard-company"
+              className={`font-medium text-sm sm:text-base transition-colors
+                ${location.pathname === "/dashboard-company" ? "text-secondary" : "text-foreground hover:text-primary"}
+              `}
+            >
+              Demo Dashboard
+            </Link>
+            
+            {/* Pricing - Hidden for now
             <Link
               to="/pricing"
               className={`font-medium text-sm sm:text-base transition-colors
@@ -122,6 +132,8 @@ const Header = () => {
             >
               Pricing
             </Link>
+            */}
+            
             <button
               onClick={() => openModal('info@bemaia.nl')}
               className={`font-medium text-sm sm:text-base transition-colors text-foreground hover:text-primary`}
@@ -171,7 +183,7 @@ const Header = () => {
                   onClick={() => setMenuOpen(false)}
                   className="font-medium text-base text-primary"
                 >
-                  Our Team
+                  About us
                 </Link>
                 <Link
                   to="/questionnaire"
@@ -187,6 +199,7 @@ const Header = () => {
                 >
                   Demo Dashboard
                 </Link>
+                {/* Pricing - Hidden for now
                 <Link
                   to="/pricing"
                   onClick={() => setMenuOpen(false)}
@@ -194,6 +207,7 @@ const Header = () => {
                 >
                   Pricing
                 </Link>
+                */}
                 <button
                   onClick={() => { openModal('info@bemaia.nl'); setMenuOpen(false); }}
                   className="font-medium text-base text-primary text-left"

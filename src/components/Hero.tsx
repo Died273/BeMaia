@@ -1,6 +1,6 @@
 export default function Hero() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pt-20">
       {/* Hero Section */}
       <section className="flex flex-col items-center justify-center text-center px-4 sm:px-6 md:px-10 py-16 md:py-24">
         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight tracking-tight mb-6 md:mb-10 text-foreground">

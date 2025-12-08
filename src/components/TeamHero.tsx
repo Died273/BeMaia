@@ -4,7 +4,7 @@ export default function TeamHero() {
   const { openModal } = useContactModal();
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-8">
+    <div className="min-h-screen bg-background flex items-center justify-center p-8 pt-28">
       <div className="text-center max-w-4xl">
         {/* Main Heading */}
         <h1 className="text-7xl md:text-8xl font-bold text-foreground mb-8 leading-tight">

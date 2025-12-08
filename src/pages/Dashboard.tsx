@@ -61,7 +61,7 @@ const mockData = {
       status: "critical",
       icon: Zap,
       description: "Energy & Fatigue levels",
-      color: "hsl(343 85% 51%)", // secondary pink for critical (>3.5)
+      color: "var(--secondary)", // secondary pink for critical (>3.5)
       trend: "worsening",
       historicalData: [
         { month: "Aug", score: 3.8 },
@@ -79,7 +79,7 @@ const mockData = {
       status: "healthy",
       icon: Wind,
       description: "Engagement with work",
-      color: "hsl(251 51% 37%)", // primary purple for healthy (0-2.5)
+      color: "var(--primary)", // primary purple for healthy (0-2.5)
       trend: "improving",
       historicalData: [
         { month: "Aug", score: 2.1 },
@@ -97,7 +97,7 @@ const mockData = {
       status: "at-risk",
       icon: Brain,
       description: "Focus & Concentration",
-      color: "hsl(43 98% 53%)", // accent yellow for at-risk (2.6-3.5)
+      color: "var(--accent)", // accent yellow for at-risk (2.6-3.5)
       trend: "worsening",
       historicalData: [
         { month: "Aug", score: 2.7 },
@@ -115,7 +115,7 @@ const mockData = {
       status: "healthy",
       icon: Heart,
       description: "Emotional regulation",
-      color: "hsl(251 51% 37%)", // primary purple for healthy (0-2.5)
+      color: "var(--primary)", // primary purple for healthy (0-2.5)
       trend: "improving",
       historicalData: [
         { month: "Aug", score: 2.4 },
@@ -224,28 +224,28 @@ const microsurveyData = {
     {
       label: "Week 1",
       values: [
-        { category: "Rarely", value: 15, color: "hsl(343 85% 51%)" },
-        { category: "Sometimes", value: 35, color: "hsl(43 98% 53%)" },
-        { category: "Often", value: 30, color: "hsl(251 51% 50%)" },
-        { category: "Always", value: 20, color: "hsl(251 51% 37%)" }
+        { category: "Rarely", value: 15, color: "var(--secondary)" },
+        { category: "Sometimes", value: 35, color: "var(--accent)" },
+        { category: "Often", value: 30, color: "var(--primary-medium)" },
+        { category: "Always", value: 20, color: "var(--primary)" }
       ]
     },
     {
       label: "Week 2",
       values: [
-        { category: "Rarely", value: 20, color: "hsl(343 85% 51%)" },
-        { category: "Sometimes", value: 30, color: "hsl(43 98% 53%)" },
-        { category: "Often", value: 28, color: "hsl(251 51% 50%)" },
-        { category: "Always", value: 22, color: "hsl(251 51% 37%)" }
+        { category: "Rarely", value: 20, color: "var(--secondary)" },
+        { category: "Sometimes", value: 30, color: "var(--accent)" },
+        { category: "Often", value: 28, color: "var(--primary-medium)" },
+        { category: "Always", value: 22, color: "var(--primary)" }
       ]
     },
     {
       label: "Week 3",
       values: [
-        { category: "Rarely", value: 12, color: "hsl(343 85% 51%)" },
-        { category: "Sometimes", value: 38, color: "hsl(43 98% 53%)" },
-        { category: "Often", value: 32, color: "hsl(251 51% 50%)" },
-        { category: "Always", value: 18, color: "hsl(251 51% 37%)" }
+        { category: "Rarely", value: 12, color: "var(--secondary)" },
+        { category: "Sometimes", value: 38, color: "var(--accent)" },
+        { category: "Often", value: 32, color: "var(--primary-medium)" },
+        { category: "Always", value: 18, color: "var(--primary)" }
       ]
     }
   ],
@@ -272,40 +272,40 @@ const microsurveyData = {
   ],
   
   moodTriggers: [
-    { label: "Workload Issues", value: 45, color: "hsl(343 85% 51%)" },
-    { label: "Work Relationships", value: 30, color: "hsl(43 98% 53%)" },
-    { label: "Personal Life", value: 25, color: "hsl(251 51% 37%)" }
+    { label: "Workload Issues", value: 45, color: "var(--secondary)" },
+    { label: "Work Relationships", value: 30, color: "var(--accent)" },
+    { label: "Personal Life", value: 25, color: "var(--primary)" }
   ],
   
   challengeTypes: [
-    { label: "High Workload", value: 42, color: "hsl(343 85% 51%)" },
-    { label: "Tight Deadlines", value: 38, color: "hsl(343 85% 60%)" },
-    { label: "Unclear Expectations", value: 28, color: "hsl(43 98% 53%)" },
-    { label: "Lack of Support", value: 22, color: "hsl(251 51% 45%)" },
-    { label: "Technical Challenges", value: 18, color: "hsl(251 51% 37%)" }
+    { label: "High Workload", value: 42, color: "var(--secondary)" },
+    { label: "Tight Deadlines", value: 38, color: "var(--secondary-light)" },
+    { label: "Unclear Expectations", value: 28, color: "var(--accent)" },
+    { label: "Lack of Support", value: 22, color: "var(--muted-foreground)" },
+    { label: "Technical Challenges", value: 18, color: "var(--primary)" }
   ],
   
   // 3. Team Dynamics & Psychological Safety
   weeklySupport: 3.8,
   psychologicalSafety: [
-    { label: "Yes", value: 72, color: "hsl(251 51% 37%)" },
-    { label: "No", value: 28, color: "hsl(343 85% 51%)" }
+    { label: "Yes", value: 72, color: "var(--primary)" },
+    { label: "No", value: 28, color: "var(--secondary)" }
   ],
   feelingConnected: 3.5,
   inputNotConsidered: [
-    { label: "No", value: 68, color: "hsl(251 51% 37%)" },
-    { label: "Yes", value: 32, color: "hsl(343 85% 51%)" }
+    { label: "No", value: 68, color: "var(--primary)" },
+    { label: "Yes", value: 32, color: "var(--secondary)" }
   ],
   
   // 4. Leadership & Recognition
   managerApproachability: 4.2,
   receivedRecognition: [
-    { label: "Yes", value: 58, color: "hsl(251 51% 37%)" },
-    { label: "No", value: 42, color: "hsl(343 85% 51%)" }
+    { label: "Yes", value: 58, color: "var(--primary)" },
+    { label: "No", value: 42, color: "var(--secondary)" }
   ],
   workAppreciated: [
-    { label: "Yes", value: 65, color: "hsl(251 51% 37%)" },
-    { label: "No", value: 35, color: "hsl(343 85% 51%)" }
+    { label: "Yes", value: 65, color: "var(--primary)" },
+    { label: "No", value: 35, color: "var(--secondary)" }
   ],
   clarityOfGoals: 3.6,
   
@@ -321,22 +321,22 @@ const microsurveyData = {
   ],
   
   unclearInstructions: [
-    { label: "No", value: 62, color: "hsl(251 51% 37%)" },
-    { label: "Yes", value: 38, color: "hsl(343 85% 51%)" }
+    { label: "No", value: 62, color: "var(--primary)" },
+    { label: "Yes", value: 38, color: "var(--secondary)" }
   ],
   roleClarity: [
-    { label: "Yes", value: 75, color: "hsl(251 51% 37%)" },
-    { label: "No", value: 25, color: "hsl(343 85% 51%)" }
+    { label: "Yes", value: 75, color: "var(--primary)" },
+    { label: "No", value: 25, color: "var(--secondary)" }
   ],
   
   // 6. Career & Growth
   careerStagnation: [
-    { label: "No", value: 55, color: "hsl(251 51% 37%)" },
-    { label: "Yes", value: 45, color: "hsl(343 85% 51%)" }
+    { label: "No", value: 55, color: "var(--primary)" },
+    { label: "Yes", value: 45, color: "var(--secondary)" }
   ],
   skillsUnderutilized: [
-    { label: "No", value: 60, color: "hsl(251 51% 37%)" },
-    { label: "Yes", value: 40, color: "hsl(343 85% 51%)" }
+    { label: "No", value: 60, color: "var(--primary)" },
+    { label: "Yes", value: 40, color: "var(--secondary)" }
   ],
   
   // 7. Remote & Hybrid Work
@@ -344,17 +344,17 @@ const microsurveyData = {
     {
       label: "Current",
       values: [
-        { category: "Full Remote", value: 30, color: "hsl(251 51% 37%)" },
-        { category: "Hybrid", value: 50, color: "hsl(251 51% 50%)" },
-        { category: "Full Office", value: 20, color: "hsl(343 85% 51%)" }
+        { category: "Full Remote", value: 30, color: "var(--primary)" },
+        { category: "Hybrid", value: 50, color: "var(--primary-medium)" },
+        { category: "Full Office", value: 20, color: "var(--secondary)" }
       ]
     },
     {
       label: "Preferred",
       values: [
-        { category: "Full Remote", value: 45, color: "hsl(251 51% 37%)" },
-        { category: "Hybrid", value: 40, color: "hsl(251 51% 50%)" },
-        { category: "Full Office", value: 15, color: "hsl(343 85% 51%)" }
+        { category: "Full Remote", value: 45, color: "var(--primary)" },
+        { category: "Hybrid", value: 40, color: "var(--primary-medium)" },
+        { category: "Full Office", value: 15, color: "var(--secondary)" }
       ]
     }
   ],
@@ -817,9 +817,9 @@ export default function DashboardCompany() {
   
   // Helper function to get color based on score (lower is better for burnout)
   const getScoreColor = (score: number): string => {
-    if (score <= 2.5) return '#4ade80'; // Green - Healthy
-    if (score <= 3.5) return '#fbbf24'; // Yellow - At Risk
-    return '#EB5F43'; // Red - Critical
+    if (score <= 2.5) return 'var(--success-bright)'; // Green - Healthy
+    if (score <= 3.5) return 'var(--warning)'; // Yellow - At Risk
+    return 'var(--danger)'; // Red - Critical
   };
   
   // Animate score on mount
@@ -861,7 +861,7 @@ export default function DashboardCompany() {
               transition={{ duration: 0.7, ease: [0.39, 1.69, 0.36, 1] }}
               className="mb-6 relative"
             >
-              <div className="relative rounded-3xl border border-border/50 bg-white shadow-lg p-6 lg:p-8">
+              <div className="relative rounded-[15px] shadow-lg p-6 lg:p-8" style={{ background: 'var(--background-light)', borderColor: 'var(--foreground)', border: '1.5px solid' }}>
                 <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-8">
                   {/* Left: Title, Date, and Info */}
                   <div className="flex-1 text-center lg:text-left lg:pl-20">
@@ -890,7 +890,7 @@ export default function DashboardCompany() {
                   {/* Right: Quick Stats */}
                   <div className="flex-1 text-center lg:text-right lg:pr-16">
                     <div className="inline-flex flex-col gap-2 lg:items-end items-center">
-                      <div className="px-4 py-2 rounded-xl bg-muted/30">
+                      <div className="px-4 py-2 rounded-[15px] bg-muted/30">
                         <p className="text-[10px] font-bold uppercase tracking-wide text-muted-foreground mb-0.5">
                           Health Status
                         </p>
@@ -915,7 +915,7 @@ export default function DashboardCompany() {
                 transition={{ duration: 0.6 }}
                 className="relative min-h-0"
               >
-                <div className="relative h-full rounded-3xl border border-border/50 bg-white shadow-lg p-6 flex flex-col">
+                <div className="relative h-full rounded-[15px] shadow-lg p-6 flex flex-col" style={{ background: 'var(--background-light)', borderColor: 'var(--foreground)', border: '1.5px solid' }}>
                   <div className="flex items-center justify-between gap-3 mb-4">
                     <div className="flex items-center gap-3">
                       <Target className="w-5 h-5 text-primary" />
@@ -936,12 +936,13 @@ export default function DashboardCompany() {
                           viewport={{ once: true, margin: "-60px" }}
                           transition={{ duration: 0.5, delay: index * 0.05 }}
                           onClick={() => setSelectedDimension(category)}
-                          className="relative rounded-2xl p-4 transition-all duration-300 border border-border/50 bg-card shadow-sm hover:shadow-md cursor-pointer"
+                          className="relative rounded-[15px] p-4 transition-all duration-300 bg-card shadow-sm hover:shadow-md cursor-pointer"
+                          style={{ borderColor: 'var(--foreground)', border: '1.5px solid' }}
                         >
                           <div className="flex items-start justify-between gap-3">
                             <div className="flex items-center gap-3">
                               <div
-                                className="p-2.5 rounded-xl bg-muted/50"
+                                className="p-2.5 rounded-[15px] bg-muted/50"
                               >
                                 <Icon className="w-5 h-5 text-primary" />
                               </div>
@@ -953,12 +954,12 @@ export default function DashboardCompany() {
 
                           <div className="flex items-end gap-2 mt-4">
                             <span
-                              className="text-3xl font-black font-number"
-                              style={{ color: scoreColor, fontFamily: 'Arial, sans-serif' }}
+                              className="text-3xl font-black"
+                              style={{ color: scoreColor }}
                             >
                               {category.score.toFixed(1)}
                             </span>
-                            <span className="text-sm font-semibold uppercase font-number text-muted-foreground">
+                            <span className="text-sm font-semibold uppercase text-muted-foreground">
                               /5
                             </span>
                           </div>
@@ -996,7 +997,7 @@ export default function DashboardCompany() {
                 transition={{ duration: 0.6 }}
                 className="relative min-h-0"
               >
-                <div className="relative h-full rounded-3xl border border-border/50 bg-white shadow-lg p-6 flex flex-col">
+                <div className="relative h-full rounded-[15px] shadow-lg p-6 flex flex-col" style={{ background: 'var(--background-light)', borderColor: 'var(--foreground)', border: '1.5px solid' }}>
                   <div className="flex items-center gap-3 mb-4">
                     <Sparkles className="w-5 h-5 text-accent" />
                     <h2 className="text-xl font-black text-primary">Manager Action Plan</h2>
@@ -1015,10 +1016,10 @@ export default function DashboardCompany() {
                           initial={{ opacity: 0, y: 12 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: index * 0.1 }}
-                          className="rounded-2xl overflow-hidden transition-all duration-300 border bg-card shadow-sm hover:shadow-md"
+                          className="rounded-[15px] overflow-hidden transition-all duration-300 border bg-card shadow-sm hover:shadow-md"
                           style={{
                             borderColor: isExpanded ? dimensionColor : 'hsl(var(--border) / 0.5)',
-                            borderWidth: isExpanded ? '2px' : '1px'
+                            borderWidth: isExpanded ? '1.5px' : '1.5px'
                           }}
                         >
                           <button
@@ -1029,22 +1030,22 @@ export default function DashboardCompany() {
                             <div className="flex items-start justify-between gap-3 mb-2">
                               <div className="flex items-center gap-2">
                                 <span
-                                  className="px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wide"
+                                  className="px-2.5 py-1 rounded-[15px] text-[10px] font-black uppercase tracking-wide"
                                   style={{
                                     backgroundColor: rec.priority === 'critical'
-                                      ? 'rgba(239, 68, 68, 0.15)'
+                                      ? 'var(--danger-bg)'
                                       : rec.priority === 'high'
-                                      ? 'rgba(234, 179, 8, 0.15)'
+                                      ? 'var(--warning-bg)'
                                       : rec.priority === 'medium'
-                                      ? 'rgba(234, 179, 8, 0.15)'
-                                      : 'rgba(34, 197, 94, 0.15)',
+                                      ? 'var(--warning-bg)'
+                                      : 'var(--success-bg)',
                                     color: rec.priority === 'critical'
-                                      ? '#dc2626'
+                                      ? 'var(--danger-dark)'
                                       : rec.priority === 'high'
-                                      ? '#ca8a04'
+                                      ? 'var(--warning-dark)'
                                       : rec.priority === 'medium'
-                                      ? '#ca8a04'
-                                      : '#16a34a'
+                                      ? 'var(--warning-dark)'
+                                      : 'var(--success)'
                                   }}
                                 >
                                   Priority: {rec.priority}
@@ -1072,7 +1073,7 @@ export default function DashboardCompany() {
                                 transition={{ duration: 0.3 }}
                                 className="overflow-hidden"
                               >
-                                <div className="px-4 pb-4 space-y-4 border-t border-border/50">
+                                <div className="px-4 pb-4 space-y-4" style={{ borderTopColor: 'var(--foreground)', borderTop: '1.5px solid' }}>
   <div className="pt-4 mx-4">
     <div className="flex items-start gap-2 mb-3">
       <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-accent" />
@@ -1086,7 +1087,7 @@ export default function DashboardCompany() {
   </div>
 
   {rec.priority !== 'low' && (
-    <div className="rounded-xl p-4 bg-muted/50">
+    <div className="rounded-[15px] p-4 bg-muted/50">
       <div className="flex items-start gap-2 mb-3">
         <CheckCircle2 className="w-4 h-4 mt-0.5 flex-shrink-0 text-foreground" />
         <p className="text-xs font-bold uppercase tracking-wide text-foreground">
@@ -1096,7 +1097,7 @@ export default function DashboardCompany() {
       <ul className="space-y-2">
         {rec.howTo.map((step, i) => (
           <li key={i} className="flex items-start gap-2 text-sm text-foreground/80">
-            <span className="text-base font-black font-number text-foreground" style={{ fontFamily: 'Arial, sans-serif' }}>
+            <span className="text-base font-black text-foreground">
               {i + 1}.
             </span>
             <NumberText className="leading-relaxed">{step}</NumberText>
@@ -1144,7 +1145,8 @@ export default function DashboardCompany() {
               exit={{ scale: 0.9, opacity: 0 }}
               transition={{ type: "spring", duration: 0.5 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-white rounded-3xl shadow-2xl"
+              className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-[15px] shadow-2xl"
+              style={{ background: 'var(--background-light)' }}
             >
               {/* Close Button */}
               <button
@@ -1157,26 +1159,29 @@ export default function DashboardCompany() {
               <div className="p-8">
                 {/* Header */}
                 <div className="flex items-start gap-4 mb-6">
-                  <div className="p-3 rounded-2xl bg-muted/50">
-                    {React.createElement(selectedDimension.icon, { className: "w-8 h-8 text-primary" })}
+                  <div className="p-3 rounded-[15px] bg-muted/50">
+                    {React.createElement(selectedDimension.icon, { 
+                      className: "w-8 h-8",
+                      style: { color: getScoreColor(selectedDimension.score) }
+                    })}
                   </div>
                   <div className="flex-1">
-                    <h2 className="text-3xl font-black text-primary mb-2">
+                    <h2 className="text-3xl font-black mb-2" style={{ color: getScoreColor(selectedDimension.score) }}>
                       {selectedDimension.description}
                     </h2>
                     <div className="flex items-center gap-4">
                       <div className="flex items-end gap-2">
                         <span
-                          className="text-5xl font-black font-number"
-                          style={{ color: getScoreColor(selectedDimension.score), fontFamily: 'Arial, sans-serif' }}
+                          className="text-5xl font-black"
+                          style={{ color: getScoreColor(selectedDimension.score) }}
                         >
                           {selectedDimension.score.toFixed(1)}
                         </span>
-                        <span className="text-xl font-semibold uppercase font-number text-muted-foreground pb-1">
+                        <span className="text-xl font-semibold uppercase text-muted-foreground pb-1">
                           /5
                         </span>
                       </div>
-                      <div className="px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide"
+                      <div className="px-3 py-1.5 rounded-[15px] text-xs font-bold uppercase tracking-wide"
                         style={{
                           backgroundColor: `${getScoreColor(selectedDimension.score)}20`,
                           color: getScoreColor(selectedDimension.score)
@@ -1189,7 +1194,7 @@ export default function DashboardCompany() {
                 </div>
 
                 {/* Interpretation */}
-                <div className="mb-8 p-6 rounded-2xl bg-muted/30">
+                <div className="mb-8 p-6 rounded-[15px] bg-muted/30">
                   <h3 className="text-sm font-bold uppercase tracking-wide text-muted-foreground mb-3">
                     Score Interpretation
                   </h3>
@@ -1203,7 +1208,7 @@ export default function DashboardCompany() {
                   <h3 className="text-sm font-bold uppercase tracking-wide text-muted-foreground mb-4">
                     3-Month Trend
                   </h3>
-                  <div className="relative h-64 p-6 bg-muted/30 rounded-2xl">
+                  <div className="relative h-64 p-6 bg-muted/30 rounded-[15px]">
                     {/* Y-axis labels */}
                     <div className="absolute left-0 top-6 bottom-6 flex flex-col justify-between text-xs font-semibold text-muted-foreground">
                       <span>5.0</span>
@@ -1230,8 +1235,8 @@ export default function DashboardCompany() {
                                 style={{ backgroundColor: color }}
                               >
                                 <span
-                                  className="absolute -top-6 left-1/2 -translate-x-1/2 text-sm font-bold font-number whitespace-nowrap"
-                                  style={{ color: color, fontFamily: 'Arial, sans-serif' }}
+                                  className="absolute -top-6 left-1/2 -translate-x-1/2 text-sm font-bold whitespace-nowrap"
+                                  style={{ color: color }}
                                 >
                                   {data.score.toFixed(1)}
                                 </span>
@@ -1249,15 +1254,15 @@ export default function DashboardCompany() {
                   {/* Legend */}
                   <div className="mt-4 flex items-center justify-center gap-6 text-xs">
                     <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded-full" style={{ backgroundColor: 'hsl(251 51% 37%)' }}></div>
+                      <div className="w-3 h-3 rounded-full" style={{ backgroundColor: 'var(--success-bright)' }}></div>
                       <span className="text-muted-foreground">Healthy (0-2.5)</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded-full" style={{ backgroundColor: 'hsl(43 98% 53%)' }}></div>
+                      <div className="w-3 h-3 rounded-full" style={{ backgroundColor: 'var(--warning)' }}></div>
                       <span className="text-muted-foreground">At Risk (2.6-3.5)</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded-full" style={{ backgroundColor: 'hsl(343 85% 51%)' }}></div>
+                      <div className="w-3 h-3 rounded-full" style={{ backgroundColor: 'var(--danger)' }}></div>
                       <span className="text-muted-foreground">Critical (3.6-5.0)</span>
                     </div>
                   </div>

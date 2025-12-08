@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
+import { ContactFormInput, ContactFormTextarea } from "@/components/ui/contactform";
 import { 
   TrendingUp, 
   Award, 
@@ -20,8 +21,7 @@ import {
   Mail,
   User,
   Phone,
-  Send,
-  ArrowRight
+  Send
 } from "lucide-react";
 
 
@@ -281,19 +281,19 @@ export default function Results() {
   }
 
   const zoneColors = {
-    green: { bg: 'rgba(34, 197, 94, 0.1)', text: 'rgb(34, 197, 94)', border: 'rgba(34, 197, 94, 0.3)' },
-    orange: { bg: 'rgba(251, 191, 36, 0.1)', text: 'rgb(251, 191, 36)', border: 'rgba(251, 191, 36, 0.3)' },
-    red: { bg: 'rgba(239, 68, 68, 0.1)', text: 'rgb(239, 68, 68)', border: 'rgba(239, 68, 68, 0.3)' }
+    green: { bg: 'var(--success-bg)', text: 'var(--success-bright)', border: 'var(--success-border)' },
+    orange: { bg: 'var(--warning-bg)', text: 'var(--warning)', border: 'var(--warning-bg)' },
+    red: { bg: 'var(--danger-bg)', text: 'var(--danger-bright)', border: 'var(--danger-border)' }
   };
 
   return (
     <>
       <Header />
-      <div className="min-h-screen w-full relative flex flex-col overflow-hidden page-bg">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-primary/30 rounded-full blur-3xl" />
-          <div className="absolute top-1/2 right-0 w-96 h-96 bg-secondary/30 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-accent/30 rounded-full blur-3xl" />
+      <div className="min-h-screen w-full relative flex flex-col overflow-hidden" style={{ background: 'var(--background)' }}>
+        <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-10">
+          <div className="absolute top-0 left-0 w-96 h-96 bg-primary/20 rounded-full blur-3xl" />
+          <div className="absolute top-1/2 right-0 w-96 h-96 bg-secondary/20 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-accent/20 rounded-full blur-3xl" />
         </div>
 
         <div className="flex-1 relative z-10 flex flex-col pt-32 pb-6">
@@ -306,7 +306,7 @@ export default function Results() {
               transition={{ duration: 0.6 }}
               className="mb-8"
             >
-              <div className="relative rounded-3xl border border-border/50 bg-white shadow-lg p-8 lg:p-10">
+              <div className="relative rounded-[15px] border-2 shadow-lg p-8 lg:p-10" style={{ borderColor: 'var(--foreground)', background: 'var(--background-light)' }}>
                 <div className="text-center">
                   <motion.div
                     initial={{ scale: 0 }}
@@ -317,8 +317,8 @@ export default function Results() {
                     <Award className="w-16 h-16 text-primary mx-auto" />
                   </motion.div>
 
-                  <h1 className="text-3xl lg:text-4xl font-black text-primary mb-8">
-                    Your Well-being Score
+                  <h1 className="text-3xl lg:text-4xl font-black text-foreground mb-8">
+                    Your overall well-being score
                   </h1>
 
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4">
@@ -326,17 +326,16 @@ export default function Results() {
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       transition={{ delay: 0.5, type: "spring", stiffness: 150 }}
-                      className="inline-block px-12 py-6 rounded-2xl border-2"
+                      className="inline-block px-12 py-6 rounded-[15px] border-2"
                       style={{
                         background: zoneColors[totalZone.color].bg,
                         borderColor: zoneColors[totalZone.color].border
                       }}
                     >
-                      <div 
-                        className="text-7xl font-black"
+                      <div
+                        className="text-5xl font-black"
                         style={{ 
-                          color: zoneColors[totalZone.color].text,
-                          fontFamily: 'Arial, sans-serif'
+                          color: zoneColors[totalZone.color].text
                         }}
                       >
                         {animatedScores.total.toFixed(2)}
@@ -373,7 +372,7 @@ export default function Results() {
                 {Object.entries(dimensionInfo).map(([key, info], idx) => {
                   const zone = getZone(key as keyof typeof cutoff, finalScores[key]);
                   const Icon = info.icon;
-                  const isExpanded = flippedCards[key];
+                  const isFlipped = flippedCards[key] || false;
                   const dimensionAdviceText = getDimensionAdvice(key, zone.label);
                   
                   return (
@@ -382,15 +381,30 @@ export default function Results() {
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: 0.3 + idx * 0.1 }}
-                      onClick={() => toggleFlip(key)}
-                      className="relative rounded-3xl border border-border/50 bg-white shadow-lg p-5 cursor-pointer transition-all duration-300 hover:shadow-xl"
+                      className="relative h-[280px]"
+                      style={{ perspective: '1000px' }}
                     >
-                      {!isExpanded ? (
-                        <>
-                          {/* Score View */}
+                      <motion.div
+                        onClick={() => toggleFlip(key)}
+                        className="relative w-full h-full cursor-pointer"
+                        style={{ transformStyle: 'preserve-3d' }}
+                        animate={{ rotateY: isFlipped ? 180 : 0 }}
+                        transition={{ duration: 0.6, ease: "easeInOut" }}
+                      >
+                        {/* Front of card */}
+                        <div
+                          className="absolute inset-0 rounded-[15px] border-2 shadow-lg p-5 flex flex-col hover:shadow-xl transition-shadow"
+                          style={{ 
+                            borderColor: 'var(--foreground)',
+                            background: 'var(--background-light)',
+                            backfaceVisibility: 'hidden',
+                            WebkitBackfaceVisibility: 'hidden'
+                          }}
+                        >
+                          {/* Score View - Front of card */}
                           <div className="flex items-start justify-between gap-3 mb-4">
                             <div className="flex items-center gap-3">
-                              <div className="p-2.5 rounded-xl bg-muted/50">
+                              <div className="p-2.5 rounded-[15px] bg-muted/50">
                                 <Icon className="w-5 h-5 text-primary" />
                               </div>
                               <div>
@@ -403,19 +417,18 @@ export default function Results() {
                             <span
                               className="text-4xl font-black"
                               style={{ 
-                                color: zoneColors[zone.color].text,
-                                fontFamily: 'Arial, sans-serif'
+                                color: zoneColors[zone.color].text
                               }}
                             >
                               {animatedScores[key].toFixed(2)}
                             </span>
-                            <span className="text-sm font-semibold uppercase text-muted-foreground pb-1">
+                            <span className="text-base font-semibold uppercase text-muted-foreground pb-1.5">
                               /5
                             </span>
                           </div>
 
                           <div 
-                            className="px-3 py-1.5 rounded-full text-xs font-bold inline-flex items-center gap-1.5 mb-3"
+                            className="px-3 py-1.5 rounded-full text-sm font-bold inline-flex items-center gap-1.5 mb-4 w-fit"
                             style={{
                               background: zoneColors[zone.color].bg,
                               border: `1px solid ${zoneColors[zone.color].border}`,
@@ -425,7 +438,7 @@ export default function Results() {
                             {zone.label}
                           </div>
 
-                          <div className="w-full h-2 bg-muted/30 rounded-full overflow-hidden">
+                          <div className="w-full h-2.5 bg-muted/30 rounded-full overflow-hidden mb-3">
                             <motion.div
                               initial={{ width: 0 }}
                               animate={{ width: `${(animatedScores[key] / 5) * 100}%` }}
@@ -435,31 +448,43 @@ export default function Results() {
                             />
                           </div>
 
-                          <div className="flex items-center justify-center gap-2 mt-4 text-muted-foreground text-xs font-semibold">
-                            <Lightbulb className="w-3.5 h-3.5" />
+                          <div className="flex-grow" />
+
+                          <div className="flex items-center justify-center gap-2 text-muted-foreground text-sm font-semibold">
+                            <Lightbulb className="w-4 h-4" />
                             Click for advice
                           </div>
-                        </>
-                      ) : (
-                        <>
-                          {/* Advice View */}
+                        </div>
+
+                        {/* Back of card */}
+                        <div
+                          className="absolute inset-0 rounded-[15px] border-2 shadow-lg p-5 flex flex-col hover:shadow-xl transition-shadow"
+                          style={{ 
+                            borderColor: 'var(--foreground)',
+                            background: 'var(--background-light)',
+                            backfaceVisibility: 'hidden',
+                            WebkitBackfaceVisibility: 'hidden',
+                            transform: 'rotateY(180deg)'
+                          }}
+                        >
+                          {/* Advice View - Back of card */}
                           <div className="flex items-center gap-2.5 mb-4">
-                            <div className="p-2 rounded-lg bg-primary/10">
+                            <div className="p-2 rounded-[15px] bg-primary/10">
                               <Lightbulb className="w-5 h-5 text-primary" />
                             </div>
                             <h3 className="text-sm font-bold text-primary">Personalized Advice</h3>
                           </div>
 
-                          <p className="text-sm leading-relaxed text-foreground/80 mb-6 min-h-[120px]">
+                          <p className="text-sm leading-relaxed text-foreground/80 flex-grow">
                             {dimensionAdviceText}
                           </p>
 
-                          <div className="flex items-center justify-center gap-2 text-muted-foreground text-xs font-semibold">
-                            <RotateCcw className="w-3.5 h-3.5" />
+                          <div className="flex items-center justify-center gap-2 mt-4 text-muted-foreground text-sm font-semibold">
+                            <RotateCcw className="w-4 h-4" />
                             Click to see score
                           </div>
-                        </>
-                      )}
+                        </div>
+                      </motion.div>
                     </motion.div>
                   );
                 })}
@@ -473,7 +498,7 @@ export default function Results() {
               transition={{ duration: 0.6, delay: 0.8 }}
               className="mb-8"
             >
-              <div className="relative rounded-3xl border border-border/50 bg-white shadow-lg p-8 lg:p-10">
+              <div className="relative rounded-[15px] border-2 shadow-lg p-8 lg:p-10" style={{ borderColor: 'var(--foreground)', background: 'var(--background-light)' }}>
                 <motion.div
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
@@ -483,7 +508,7 @@ export default function Results() {
                   <Building2 className="w-12 h-12 text-primary mx-auto" />
                 </motion.div>
 
-                <h2 className="text-2xl lg:text-3xl font-black text-primary mb-4 text-center">
+                <h2 className="text-2xl lg:text-3xl font-black text-foreground mb-4 text-center">
                   We can improve the well-being of organizations!
                 </h2>
 
@@ -512,7 +537,7 @@ export default function Results() {
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.9 }}
-                      className="p-8 bg-green-50 border-2 border-green-200 rounded-2xl text-center"
+                      className="p-8 bg-green-50 border-2 border-green-200 rounded-[15px] text-center"
                     >
                       <CheckCircle2 className="w-12 h-12 text-green-600 mx-auto mb-4" />
                       <h3 className="text-foreground text-xl font-bold mb-2">
@@ -530,122 +555,76 @@ export default function Results() {
                       className="max-w-2xl mx-auto"
                     >
                       <div className="grid grid-cols-1 gap-5 mb-5">
-                        {/* Email Input (required) */}
-                        <div>
-                          <div className="flex justify-between items-center mb-2">
-                            <label className="text-foreground text-sm font-bold">
-                              Email <span className="text-red-500">*</span>
-                            </label>
-                            {contactErrors.email && (
-                              <div className="text-red-500 text-sm font-semibold">
-                                {contactErrors.email}
-                              </div>
-                            )}
-                          </div>
+                        {/* Name Input */}
+                        <ContactFormInput
+                          type="text"
+                          label="Your name"
+                          placeholder="John Doe"
+                          value={contactForm.name}
+                          onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
+                        />
 
-                          <div className="relative">
-                            <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                              <Mail className="w-5 h-5 text-muted-foreground" />
-                            </div>
-                            <input
-                              ref={emailRef}
-                              type="email"
-                              placeholder="your.email@company.com"
-                              value={contactForm.email}
-                              onChange={(e) => {
-                                setContactForm({ ...contactForm, email: e.target.value });
-                                if (contactErrors.email) setContactErrors({});
-                              }}
-                              className={`w-full pl-12 pr-4 py-3.5 bg-blue-50 border ${
-                                contactErrors.email ? 'border-red-500' : 'border-border'
-                              } rounded-xl text-foreground font-medium transition-all focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary`}
-                            />
-                          </div>
-                        </div>
+                        {/* Email Input */}
+                        <ContactFormInput
+                          ref={emailRef}
+                          type="email"
+                          label="Business email address"
+                          placeholder="john@company.com"
+                          value={contactForm.email}
+                          onChange={(e) => {
+                            setContactForm({ ...contactForm, email: e.target.value });
+                            if (contactErrors.email) setContactErrors({});
+                          }}
+                          error={contactErrors.email}
+                        />
 
-                        {/* Name Input (optional) */}
-                        <div className="relative">
-                          <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                            <User className="w-5 h-5 text-muted-foreground" />
-                          </div>
-                          <input
-                            type="text"
-                            placeholder="Full Name (optional)"
-                            value={contactForm.name}
-                            onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
-                            className="w-full pl-12 pr-4 py-3.5 bg-blue-50 border border-border rounded-xl text-foreground font-medium transition-all focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
-                          />
-                        </div>
+                        {/* Company Name Input */}
+                        <ContactFormInput
+                          type="text"
+                          label="Company name"
+                          placeholder="Please enter your company name"
+                          value={contactForm.phone}
+                          onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
+                        />
 
-                        {/* Phone Input (optional) */}
-                        <div className="relative">
-                          <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                            <Phone className="w-5 h-5 text-muted-foreground" />
-                          </div>
-                          <input
-                            type="tel"
-                            placeholder="Phone number (optional)"
-                            value={contactForm.phone}
-                            onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
-                            className="w-full pl-12 pr-4 py-3.5 bg-blue-50 border border-border rounded-xl text-foreground font-medium transition-all focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
-                          />
-                        </div>
-
-                        {/* Message Textarea (optional) */}
-                        <div>
-                          <textarea
-                            placeholder="Anything else you'd like us to know? (optional)"
-                            value={contactForm.message}
-                            onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
-                            className="w-full px-4 py-3.5 bg-blue-50 border border-border rounded-xl text-foreground font-medium transition-all focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary resize-vertical min-h-[120px]"
-                          />
-                        </div>
+                        {/* Message Textarea */}
+                        <ContactFormTextarea
+                          label="Reason for reaching out"
+                          placeholder="Tell us why you're interested in BeMaia..."
+                          value={contactForm.message}
+                          onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
+                        />
                       </div>
 
                       {/* Submit Button */}
-                      <Button
-                        variant="hero"
-                        size="lg"
-                        className="group text-white w-full transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:shadow-lg hover:shadow-primary/25"
-                        disabled={isSubmitting}
-                      >
-                        {isSubmitting ? (
-                          <>
-                            <motion.div
-                              animate={{ rotate: 360 }}
-                              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                              className="w-5 h-5 border-2 border-primary-foreground border-t-transparent rounded-full mr-3"
-                            />
-                            Sending...
-                          </>
-                        ) : (
-                          <>
-                            Send
-                            <Send className="ml-2 transition-all duration-300 group-hover:translate-x-1.5 group-hover:scale-110 group-active:translate-x-1 group-active:scale-95" />
-                          </>
-                        )}
-                      </Button>
+                      <div className="flex justify-end">
+                        <Button
+                          type="submit"
+                          className="px-8 py-3 rounded-[15px] text-base font-semibold transition-all duration-300 hover:scale-100"
+                          style={{
+                            background: '#88C0E5',
+                            color: '#000000'
+                          }}
+                          disabled={isSubmitting}
+                        >
+                          {isSubmitting ? (
+                            <>
+                              <motion.div
+                                animate={{ rotate: 360 }}
+                                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                                className="w-5 h-5 border-2 border-foreground border-t-transparent rounded-full mr-3"
+                              />
+                              Sending...
+                            </>
+                          ) : (
+                            'Submit'
+                          )}
+                        </Button>
+                      </div>
                     </motion.form>
                   )}
                 </AnimatePresence>
               </div>
-            </motion.div>
-
-            {/* CTA Buttons */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.5 }}
-              className="text-center"
-            >
-              <Button
-                variant="secondary"
-                size="lg"
-                className="text-white relative overflow-hidden group before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:-translate-x-full hover:before:translate-x-full before:transition-transform before:duration-700"
-                onClick={() => navigate('/questionnaire')}
-              >
-                Retake Assessment
-              </Button>
             </motion.div>
 
           </div>

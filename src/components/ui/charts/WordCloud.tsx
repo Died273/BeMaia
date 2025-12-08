@@ -26,9 +26,9 @@ export default function WordCloud({ words, height = 240 }: WordCloudProps) {
   
   const getColor = (value: number) => {
     const normalized = (value - minValue) / range;
-    if (normalized > 0.7) return '#EB5F43'; // High frequency - red
-    if (normalized > 0.4) return '#fbbf24'; // Medium - yellow
-    return '#6366f1'; // Low - blue
+    if (normalized > 0.7) return 'var(--danger)'; // High frequency - red
+    if (normalized > 0.4) return 'var(--warning)'; // Medium - yellow
+    return 'var(--chart-blue)'; // Low - blue
   };
   
   return (

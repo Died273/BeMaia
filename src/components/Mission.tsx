@@ -90,9 +90,8 @@ const Mission = () => {
                   ease: [0.39, 1.69, 0.36, 1],
                 }}
               >
-                BeMaia was founded on the belief that employee burnout is preventable. By combining cutting-edge data science
-                with deep organizational psychology insights, we empower companies to create workplaces where people thrive—and
-                businesses prosper.
+                Our mission is to empower organizations with real-time, data-driven insights into company health, enabling proactive decision-making that reduces burnout, improves employee well-being, and drives sustainable financial performance.
+
               </motion.p>
             </div>
 

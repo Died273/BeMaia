@@ -16,11 +16,11 @@ const Pricing = () => {
   return (
     <>
       <Header />
-  <section className="min-h-screen w-full pt-56 pb-6 page-bg relative overflow-x-hidden">
+  <section className="min-h-screen w-full pt-48 pb-6 page-bg relative overflow-x-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-16">
             <h1
-              className="text-4xl sm:text-5xl font-bold mb-6 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent py-4 animate-fade-down"
+              className="text-4xl sm:text-5xl font-bold mb-6 text-foreground py-4 animate-fade-down"
               style={{ animationDelay: `${headlineDelay}s` }}
             >
               Pricing
@@ -56,7 +56,7 @@ const Pricing = () => {
                 }}
               >
                 <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r text-primary">
-                  Early Access – <span className="text-secondary font-number" style={{ fontFamily: 'Arial, sans-serif' }}>€0</span>
+                  Early Access – <span className="text-secondary">€0</span>
                 </h2>
                 <p className="text-lg text-muted-foreground mb-4">
                   Enjoy <span className="font-bold text-primary">all features</span>,

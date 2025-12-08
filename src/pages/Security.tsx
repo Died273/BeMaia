@@ -143,7 +143,7 @@ const Security = () => {
                   }}
                 >
                   <Card className="p-8 h-full hover:shadow-2xl transition-all duration-300 border-2 hover:border-primary/30 group hover:scale-105">
-                    <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${feature.color} flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform`}>
+                    <div className={`w-16 h-16 rounded-[15px] bg-gradient-to-br ${feature.color} flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform`}>
                       <feature.icon className="w-8 h-8 text-white" />
                     </div>
                     <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
@@ -216,7 +216,7 @@ const Security = () => {
               <Card className="p-8 md:p-12 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5 border-2 border-primary/20">
                 <div className="max-w-3xl mx-auto">
                   <div className="flex items-start gap-4 mb-6">
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <div className="w-12 h-12 rounded-[15px] bg-primary/10 flex items-center justify-center flex-shrink-0">
                       <FileCheck className="w-6 h-6 text-primary" />
                     </div>
                     <div>

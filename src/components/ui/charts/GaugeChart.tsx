@@ -21,9 +21,9 @@ export default function GaugeChart({
   
   // Color based on score (assuming lower is better)
   const getColor = () => {
-    if (value <= max * 0.5) return '#4ade80'; // Green
-    if (value <= max * 0.7) return '#fbbf24'; // Yellow
-    return '#EB5F43'; // Red
+    if (value <= max * 0.5) return 'var(--success-bright)'; // Green
+    if (value <= max * 0.7) return 'var(--warning)'; // Yellow
+    return 'var(--danger)'; // Red
   };
   
   const color = getColor();
@@ -60,8 +60,8 @@ export default function GaugeChart({
         {/* Value display */}
         <div className="absolute inset-0 flex flex-col items-center justify-center mt-8">
           <motion.span
-            className="text-4xl font-black font-number"
-            style={{ color, fontFamily: 'Arial, sans-serif' }}
+            className="text-4xl font-black"
+            style={{ color }}
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.5, type: "spring" }}

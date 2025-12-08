@@ -62,28 +62,28 @@ const microsurveyData = {
     {
       label: "Week 1",
       values: [
-        { category: "Rarely", value: 15, color: "hsl(343 85% 51%)" },
-        { category: "Sometimes", value: 35, color: "hsl(43 98% 53%)" },
-        { category: "Often", value: 30, color: "hsl(251 51% 50%)" },
-        { category: "Always", value: 20, color: "hsl(251 51% 37%)" }
+        { category: "Rarely", value: 15, color: "var(--secondary)" },
+        { category: "Sometimes", value: 35, color: "var(--accent)" },
+        { category: "Often", value: 30, color: "var(--primary-medium)" },
+        { category: "Always", value: 20, color: "var(--primary)" }
       ]
     },
     {
       label: "Week 2",
       values: [
-        { category: "Rarely", value: 20, color: "hsl(343 85% 51%)" },
-        { category: "Sometimes", value: 30, color: "hsl(43 98% 53%)" },
-        { category: "Often", value: 28, color: "hsl(251 51% 50%)" },
-        { category: "Always", value: 22, color: "hsl(251 51% 37%)" }
+        { category: "Rarely", value: 20, color: "var(--secondary)" },
+        { category: "Sometimes", value: 30, color: "var(--accent)" },
+        { category: "Often", value: 28, color: "var(--primary-medium)" },
+        { category: "Always", value: 22, color: "var(--primary)" }
       ]
     },
     {
       label: "Week 3",
       values: [
-        { category: "Rarely", value: 12, color: "hsl(343 85% 51%)" },
-        { category: "Sometimes", value: 38, color: "hsl(43 98% 53%)" },
-        { category: "Often", value: 32, color: "hsl(251 51% 50%)" },
-        { category: "Always", value: 18, color: "hsl(251 51% 37%)" }
+        { category: "Rarely", value: 12, color: "var(--secondary)" },
+        { category: "Sometimes", value: 38, color: "var(--accent)" },
+        { category: "Often", value: 32, color: "var(--primary-medium)" },
+        { category: "Always", value: 18, color: "var(--primary)" }
       ]
     }
   ],
@@ -110,40 +110,40 @@ const microsurveyData = {
   ],
   
   moodTriggers: [
-    { label: "Workload Issues", value: 45, color: "hsl(343 85% 51%)" },
-    { label: "Work Relationships", value: 30, color: "hsl(43 98% 53%)" },
-    { label: "Personal Life", value: 25, color: "hsl(251 51% 37%)" }
+    { label: "Workload Issues", value: 45, color: "var(--secondary)" },
+    { label: "Work Relationships", value: 30, color: "var(--accent)" },
+    { label: "Personal Life", value: 25, color: "var(--primary)" }
   ],
   
   challengeTypes: [
-    { label: "High Workload", value: 42, color: "hsl(343 85% 51%)" },
-    { label: "Tight Deadlines", value: 38, color: "hsl(343 85% 60%)" },
-    { label: "Unclear Expectations", value: 28, color: "hsl(43 98% 53%)" },
-    { label: "Lack of Support", value: 22, color: "hsl(251 51% 45%)" },
-    { label: "Technical Challenges", value: 18, color: "hsl(251 51% 37%)" }
+    { label: "High Workload", value: 42, color: "var(--secondary)" },
+    { label: "Tight Deadlines", value: 38, color: "var(--secondary-light)" },
+    { label: "Unclear Expectations", value: 28, color: "var(--accent)" },
+    { label: "Lack of Support", value: 22, color: "var(--muted-foreground)" },
+    { label: "Technical Challenges", value: 18, color: "var(--primary)" }
   ],
   
   // 3. Team Dynamics & Psychological Safety
   weeklySupport: 3.8,
   psychologicalSafety: [
-    { label: "Yes", value: 72, color: "hsl(251 51% 37%)" },
-    { label: "No", value: 28, color: "hsl(343 85% 51%)" }
+    { label: "Yes", value: 72, color: "var(--primary)" },
+    { label: "No", value: 28, color: "var(--secondary)" }
   ],
   feelingConnected: 3.5,
   inputNotConsidered: [
-    { label: "No", value: 68, color: "hsl(251 51% 37%)" },
-    { label: "Yes", value: 32, color: "hsl(343 85% 51%)" }
+    { label: "No", value: 68, color: "var(--primary)" },
+    { label: "Yes", value: 32, color: "var(--secondary)" }
   ],
   
   // 4. Leadership & Recognition
   managerApproachability: 4.2,
   receivedRecognition: [
-    { label: "Yes", value: 58, color: "hsl(251 51% 37%)" },
-    { label: "No", value: 42, color: "hsl(343 85% 51%)" }
+    { label: "Yes", value: 58, color: "var(--primary)" },
+    { label: "No", value: 42, color: "var(--secondary)" }
   ],
   workAppreciated: [
-    { label: "Yes", value: 65, color: "hsl(251 51% 37%)" },
-    { label: "No", value: 35, color: "hsl(343 85% 51%)" }
+    { label: "Yes", value: 65, color: "var(--primary)" },
+    { label: "No", value: 35, color: "var(--secondary)" }
   ],
   clarityOfGoals: 3.6,
   
@@ -159,22 +159,22 @@ const microsurveyData = {
   ],
   
   unclearInstructions: [
-    { label: "No", value: 62, color: "hsl(251 51% 37%)" },
-    { label: "Yes", value: 38, color: "hsl(343 85% 51%)" }
+    { label: "No", value: 62, color: "var(--primary)" },
+    { label: "Yes", value: 38, color: "var(--secondary)" }
   ],
   roleClarity: [
-    { label: "Yes", value: 75, color: "hsl(251 51% 37%)" },
-    { label: "No", value: 25, color: "hsl(343 85% 51%)" }
+    { label: "Yes", value: 75, color: "var(--primary)" },
+    { label: "No", value: 25, color: "var(--secondary)" }
   ],
   
   // 6. Career & Growth
   careerStagnation: [
-    { label: "No", value: 55, color: "hsl(251 51% 37%)" },
-    { label: "Yes", value: 45, color: "hsl(343 85% 51%)" }
+    { label: "No", value: 55, color: "var(--primary)" },
+    { label: "Yes", value: 45, color: "var(--secondary)" }
   ],
   skillsUnderutilized: [
-    { label: "No", value: 60, color: "hsl(251 51% 37%)" },
-    { label: "Yes", value: 40, color: "hsl(343 85% 51%)" }
+    { label: "No", value: 60, color: "var(--primary)" },
+    { label: "Yes", value: 40, color: "var(--secondary)" }
   ],
   
   // 7. Remote & Hybrid Work
@@ -182,17 +182,17 @@ const microsurveyData = {
     {
       label: "Current",
       values: [
-        { category: "Full Remote", value: 30, color: "hsl(251 51% 37%)" },
-        { category: "Hybrid", value: 50, color: "hsl(251 51% 50%)" },
-        { category: "Full Office", value: 20, color: "hsl(343 85% 51%)" }
+        { category: "Full Remote", value: 30, color: "var(--primary)" },
+        { category: "Hybrid", value: 50, color: "var(--primary-medium)" },
+        { category: "Full Office", value: 20, color: "var(--secondary)" }
       ]
     },
     {
       label: "Preferred",
       values: [
-        { category: "Full Remote", value: 45, color: "hsl(251 51% 37%)" },
-        { category: "Hybrid", value: 40, color: "hsl(251 51% 50%)" },
-        { category: "Full Office", value: 15, color: "hsl(343 85% 51%)" }
+        { category: "Full Remote", value: 45, color: "var(--primary)" },
+        { category: "Hybrid", value: 40, color: "var(--primary-medium)" },
+        { category: "Full Office", value: 15, color: "var(--secondary)" }
       ]
     }
   ],
@@ -523,9 +523,9 @@ const microsurveyDetails = {
 
 // Helper function to get color based on score (lower is better for burnout)
 const getScoreColor = (score: number): string => {
-  if (score <= 2.5) return 'hsl(251 51% 37%)'; // Primary purple - Healthy
-  if (score <= 3.5) return 'hsl(43 98% 53%)'; // Accent yellow - At Risk
-  return 'hsl(343 85% 51%)'; // Secondary pink - Critical
+  if (score <= 2.5) return 'var(--primary)'; // Primary purple - Healthy
+  if (score <= 3.5) return 'var(--accent)'; // Accent yellow - At Risk
+  return 'var(--secondary)'; // Secondary pink - Critical
 };
 
 export default function TestMicro() {
@@ -549,7 +549,7 @@ export default function TestMicro() {
               transition={{ duration: 0.7, ease: [0.39, 1.69, 0.36, 1] }}
               className="mb-6 relative"
             >
-              <div className="relative rounded-3xl border border-border/50 bg-white shadow-lg p-6 lg:p-8">
+              <div className="relative rounded-[15px] border border-border/50 bg-white shadow-lg p-6 lg:p-8">
                 <div className="text-center">
                   <h1 className="text-3xl sm:text-4xl font-black text-primary tracking-tight mb-2">
                     📊 Microsurvey Dashboard
@@ -589,9 +589,9 @@ export default function TestMicro() {
           transition={{ duration: 0.6 }}
           className="mb-12"
         >
-          <div className="relative rounded-3xl border border-border/50 bg-white shadow-lg p-6 lg:p-8">
+          <div className="relative rounded-[15px] border border-border/50 bg-white shadow-lg p-6 lg:p-8">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 rounded-xl bg-primary/10">
+              <div className="p-2 rounded-[15px] bg-primary/10">
                 <Activity className="w-6 h-6 text-primary" />
               </div>
               <h3 className="text-2xl font-black text-foreground">Weekly Pulse & Burnout Risks</h3>
@@ -604,9 +604,9 @@ export default function TestMicro() {
                 transition={{ duration: 0.2 }}
                 onClick={() => setSelectedMicrosurvey({
                   ...microsurveyDetails.weeklyEnergyLevel,
-                  chartComponent: <LineChart data={microsurveyData.weeklyEnergyLevel} color="hsl(251 51% 37%)" />
+                  chartComponent: <LineChart data={microsurveyData.weeklyEnergyLevel} color="var(--primary)" />
                 })}
-                className="relative rounded-2xl p-5 transition-all duration-300 border-2 border-border/50 bg-card shadow-sm hover:shadow-xl hover:border-primary/40 cursor-pointer group"
+                className="relative rounded-[15px] p-5 transition-all duration-300 border-2 border-border/50 bg-card shadow-sm hover:shadow-xl hover:border-primary/40 cursor-pointer group"
               >
                 <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
                   <ArrowRight className="w-5 h-5 text-primary" />
@@ -616,7 +616,7 @@ export default function TestMicro() {
                   <LineChart 
                     data={microsurveyData.weeklyEnergyLevel}
                     height={128}
-                    color="hsl(251 51% 37%)"
+                    color="var(--primary)"
                     showGrid={false}
                   />
                 </div>
@@ -630,7 +630,7 @@ export default function TestMicro() {
                   ...microsurveyDetails.abilityToDisconnect,
                   chartComponent: <StackedBarChart data={microsurveyData.abilityToDisconnect} height={240} compact={false} />
                 })}
-                className="relative rounded-2xl p-5 transition-all duration-300 border-2 border-border/50 bg-card shadow-sm hover:shadow-xl hover:border-primary/40 cursor-pointer group"
+                className="relative rounded-[15px] p-5 transition-all duration-300 border-2 border-border/50 bg-card shadow-sm hover:shadow-xl hover:border-primary/40 cursor-pointer group"
               >
                 <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
                   <ArrowRight className="w-5 h-5 text-primary" />
@@ -653,7 +653,7 @@ export default function TestMicro() {
                   ...microsurveyDetails.weeklyWorkload,
                   chartComponent: <GaugeChart value={microsurveyData.weeklyWorkload} max={5} />
                 })}
-                className="relative rounded-2xl p-5 transition-all duration-300 border-2 border-border/50 bg-card shadow-sm hover:shadow-xl hover:border-primary/40 cursor-pointer group"
+                className="relative rounded-[15px] p-5 transition-all duration-300 border-2 border-border/50 bg-card shadow-sm hover:shadow-xl hover:border-primary/40 cursor-pointer group"
               >
                 <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
                   <ArrowRight className="w-5 h-5 text-primary" />
@@ -674,9 +674,9 @@ export default function TestMicro() {
                 transition={{ duration: 0.2 }}
                 onClick={() => setSelectedMicrosurvey({
                   ...microsurveyDetails.monthlyExhaustion,
-                  chartComponent: <LineChart data={microsurveyData.monthlyExhaustion} color="hsl(343 85% 51%)" />
+                  chartComponent: <LineChart data={microsurveyData.monthlyExhaustion} color="var(--secondary)" />
                 })}
-                className="relative rounded-2xl p-5 transition-all duration-300 border-2 border-border/50 bg-card shadow-sm hover:shadow-xl hover:border-primary/40 cursor-pointer group"
+                className="relative rounded-[15px] p-5 transition-all duration-300 border-2 border-border/50 bg-card shadow-sm hover:shadow-xl hover:border-primary/40 cursor-pointer group"
               >
                 <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
                   <ArrowRight className="w-5 h-5 text-primary" />
@@ -686,7 +686,7 @@ export default function TestMicro() {
                   <LineChart 
                     data={microsurveyData.monthlyExhaustion}
                     height={128}
-                    color="hsl(343 85% 51%)"
+                    color="var(--secondary)"
                     showGrid={false}
                   />
                 </div>
@@ -707,7 +707,7 @@ export default function TestMicro() {
         >
           <div className="container mx-auto px-4 max-w-7xl">
             <div className="mb-8 flex items-center gap-3">
-              <div className="p-3 rounded-2xl bg-accent/10">
+              <div className="p-3 rounded-[15px] bg-accent/10">
                 <AlertCircle className="w-7 h-7 text-accent" />
               </div>
               <h3 className="text-3xl font-black text-foreground">
@@ -724,7 +724,7 @@ export default function TestMicro() {
                   ...microsurveyDetails.weeklyChallenges,
                   chartComponent: <WordCloud words={microsurveyData.weeklyChallenges} />
                 })}
-                className="col-span-full rounded-2xl border-2 border-border bg-card p-6 cursor-pointer hover:border-accent/50 transition-all shadow-md hover:shadow-lg"
+                className="col-span-full rounded-[15px] border-2 border-border bg-card p-6 cursor-pointer hover:border-accent/50 transition-all shadow-md hover:shadow-lg"
               >
                 <div className="mb-4">
                   <div className="h-90">
@@ -748,7 +748,7 @@ export default function TestMicro() {
                   ...microsurveyDetails.moodTriggers,
                   chartComponent: <PieChart data={microsurveyData.moodTriggers} />
                 })}
-                className="rounded-2xl border-2 border-border bg-card p-6 cursor-pointer hover:border-accent/50 transition-all shadow-md hover:shadow-lg group"
+                className="rounded-[15px] border-2 border-border bg-card p-6 cursor-pointer hover:border-accent/50 transition-all shadow-md hover:shadow-lg group"
               >
                 <h4 className="text-sm font-bold text-foreground mb-3 pr-8">Weekly Mood Triggers</h4>
                 <div className="mb-4">
@@ -766,7 +766,7 @@ export default function TestMicro() {
                   ...microsurveyDetails.challengeTypes,
                   chartComponent: <HorizontalBarChart data={microsurveyData.challengeTypes} />
                 })}
-                className="rounded-2xl border-2 border-border bg-card p-6 cursor-pointer hover:border-accent/50 transition-all shadow-md hover:shadow-lg group"
+                className="rounded-[15px] border-2 border-border bg-card p-6 cursor-pointer hover:border-accent/50 transition-all shadow-md hover:shadow-lg group"
               >
                 <h4 className="text-sm font-bold text-foreground mb-3 pr-8">Bi-Weekly Challenge Types</h4>
                 <div className="mb-4">
@@ -789,7 +789,7 @@ export default function TestMicro() {
         >
           <div className="container mx-auto px-4 max-w-7xl">
             <div className="mb-8 flex items-center gap-3">
-              <div className="p-3 rounded-2xl bg-secondary/10">
+              <div className="p-3 rounded-[15px] bg-secondary/10">
                 <Heart className="w-7 h-7 text-secondary" />
               </div>
               <h3 className="text-3xl font-black text-foreground">
@@ -806,7 +806,7 @@ export default function TestMicro() {
                   ...microsurveyDetails.weeklySupport,
                   chartComponent: <GaugeChart value={microsurveyData.weeklySupport} max={5} />
                 })}
-                className="rounded-2xl border-2 border-border bg-card p-6 cursor-pointer hover:border-secondary/50 transition-all shadow-md hover:shadow-lg group flex flex-col"
+                className="rounded-[15px] border-2 border-border bg-card p-6 cursor-pointer hover:border-secondary/50 transition-all shadow-md hover:shadow-lg group flex flex-col"
               >
                 <div className="mb-auto">
                   <div className="h-64">
@@ -826,7 +826,7 @@ export default function TestMicro() {
                   ...microsurveyDetails.psychologicalSafety,
                   chartComponent: <PieChart data={microsurveyData.psychologicalSafety} />
                 })}
-                className="rounded-2xl border-2 border-border bg-card p-6 cursor-pointer hover:border-secondary/50 transition-all shadow-md hover:shadow-lg group flex flex-col"
+                className="rounded-[15px] border-2 border-border bg-card p-6 cursor-pointer hover:border-secondary/50 transition-all shadow-md hover:shadow-lg group flex flex-col"
               >
                 <div className="mb-auto">
                   <div className="h-64">
@@ -843,7 +843,7 @@ export default function TestMicro() {
                   ...microsurveyDetails.feelingConnected,
                   chartComponent: <GaugeChart value={microsurveyData.feelingConnected} max={5} />
                 })}
-                className="rounded-2xl border-2 border-border bg-card p-6 cursor-pointer hover:border-secondary/50 transition-all shadow-md hover:shadow-lg group flex flex-col"
+                className="rounded-[15px] border-2 border-border bg-card p-6 cursor-pointer hover:border-secondary/50 transition-all shadow-md hover:shadow-lg group flex flex-col"
               >
                 <div className="mb-auto">
                   <div className="h-64">
@@ -863,7 +863,7 @@ export default function TestMicro() {
                   ...microsurveyDetails.inputNotConsidered,
                   chartComponent: <PieChart data={microsurveyData.inputNotConsidered} />
                 })}
-                className="rounded-2xl border-2 border-border bg-card p-6 cursor-pointer hover:border-secondary/50 transition-all shadow-md hover:shadow-lg group flex flex-col"
+                className="rounded-[15px] border-2 border-border bg-card p-6 cursor-pointer hover:border-secondary/50 transition-all shadow-md hover:shadow-lg group flex flex-col"
               >
                 <div className="mb-auto">
                   <div className="h-64">
@@ -885,7 +885,7 @@ export default function TestMicro() {
         >
           <div className="container mx-auto px-4 max-w-7xl">
             <div className="mb-8 flex items-center gap-3">
-              <div className="p-3 rounded-2xl bg-primary/10">
+              <div className="p-3 rounded-[15px] bg-primary/10">
                 <Target className="w-7 h-7 text-primary" />
               </div>
               <h3 className="text-3xl font-black text-foreground">
@@ -902,7 +902,7 @@ export default function TestMicro() {
                   ...microsurveyDetails.managerApproachability,
                   chartComponent: <GaugeChart value={microsurveyData.managerApproachability} max={5} />
                 })}
-                className="rounded-2xl border-2 border-border bg-card p-6 cursor-pointer hover:border-primary/50 transition-all shadow-md hover:shadow-lg group flex flex-col"
+                className="rounded-[15px] border-2 border-border bg-card p-6 cursor-pointer hover:border-primary/50 transition-all shadow-md hover:shadow-lg group flex flex-col"
               >
                 <div className="mb-auto">
                   <div className="h-64">
@@ -922,7 +922,7 @@ export default function TestMicro() {
                   ...microsurveyDetails.receivedRecognition,
                   chartComponent: <PieChart data={microsurveyData.receivedRecognition} />
                 })}
-                className="rounded-2xl border-2 border-border bg-card p-6 cursor-pointer hover:border-primary/50 transition-all shadow-md hover:shadow-lg group flex flex-col"
+                className="rounded-[15px] border-2 border-border bg-card p-6 cursor-pointer hover:border-primary/50 transition-all shadow-md hover:shadow-lg group flex flex-col"
               >
                 <div className="mb-auto">
                   <div className="h-64">
@@ -939,7 +939,7 @@ export default function TestMicro() {
                   ...microsurveyDetails.workAppreciated,
                   chartComponent: <PieChart data={microsurveyData.workAppreciated} />
                 })}
-                className="rounded-2xl border-2 border-border bg-card p-6 cursor-pointer hover:border-primary/50 transition-all shadow-md hover:shadow-lg group flex flex-col"
+                className="rounded-[15px] border-2 border-border bg-card p-6 cursor-pointer hover:border-primary/50 transition-all shadow-md hover:shadow-lg group flex flex-col"
               >
                 <div className="mb-auto">
                   <div className="h-64">
@@ -956,7 +956,7 @@ export default function TestMicro() {
                   ...microsurveyDetails.clarityOfGoals,
                   chartComponent: <GaugeChart value={microsurveyData.clarityOfGoals} max={5} />
                 })}
-                className="rounded-2xl border-2 border-border bg-card p-6 cursor-pointer hover:border-primary/50 transition-all shadow-md hover:shadow-lg group flex flex-col"
+                className="rounded-[15px] border-2 border-border bg-card p-6 cursor-pointer hover:border-primary/50 transition-all shadow-md hover:shadow-lg group flex flex-col"
               >
                 <div className="mb-auto">
                   <div className="h-64">
@@ -981,7 +981,7 @@ export default function TestMicro() {
         >
           <div className="container mx-auto px-4 max-w-7xl">
             <div className="mb-8 flex items-center gap-3">
-              <div className="p-3 rounded-2xl bg-accent/10">
+              <div className="p-3 rounded-[15px] bg-accent/10">
                 <CheckCircle2 className="w-7 h-7 text-accent" />
               </div>
               <h3 className="text-3xl font-black text-foreground">
@@ -998,7 +998,7 @@ export default function TestMicro() {
                   ...microsurveyDetails.processBottlenecks,
                   chartComponent: <WordCloud words={microsurveyData.processBottlenecks} />
                 })}
-                className="col-span-full rounded-2xl border-2 border-border bg-card p-6 cursor-pointer hover:border-accent/50 transition-all shadow-md hover:shadow-lg"
+                className="col-span-full rounded-[15px] border-2 border-border bg-card p-6 cursor-pointer hover:border-accent/50 transition-all shadow-md hover:shadow-lg"
               >
                 <div className="mb-4">
                   <div className="h-48">
@@ -1022,7 +1022,7 @@ export default function TestMicro() {
                   ...microsurveyDetails.unclearInstructions,
                   chartComponent: <PieChart data={microsurveyData.unclearInstructions} />
                 })}
-                className="rounded-2xl border-2 border-border bg-card p-6 cursor-pointer hover:border-accent/50 transition-all shadow-md hover:shadow-lg group"
+                className="rounded-[15px] border-2 border-border bg-card p-6 cursor-pointer hover:border-accent/50 transition-all shadow-md hover:shadow-lg group"
               >
                 <h4 className="text-sm font-bold text-foreground mb-3 pr-8">Unclear Instructions</h4>
                 <div className="mb-4">
@@ -1040,7 +1040,7 @@ export default function TestMicro() {
                   ...microsurveyDetails.roleClarity,
                   chartComponent: <PieChart data={microsurveyData.roleClarity} />
                 })}
-                className="rounded-2xl border-2 border-border bg-card p-6 cursor-pointer hover:border-accent/50 transition-all shadow-md hover:shadow-lg group"
+                className="rounded-[15px] border-2 border-border bg-card p-6 cursor-pointer hover:border-accent/50 transition-all shadow-md hover:shadow-lg group"
               >
                 <h4 className="text-sm font-bold text-foreground mb-3 pr-8">Role Clarity</h4>
                 <div className="mb-4">
@@ -1063,7 +1063,7 @@ export default function TestMicro() {
         >
           <div className="container mx-auto px-4 max-w-7xl">
             <div className="mb-8 flex items-center gap-3">
-              <div className="p-3 rounded-2xl bg-secondary/10">
+              <div className="p-3 rounded-[15px] bg-secondary/10">
                 <TrendingUp className="w-7 h-7 text-secondary" />
               </div>
               <h3 className="text-3xl font-black text-foreground">
@@ -1080,7 +1080,7 @@ export default function TestMicro() {
                   ...microsurveyDetails.careerStagnation,
                   chartComponent: <PieChart data={microsurveyData.careerStagnation} />
                 })}
-                className="rounded-2xl border-2 border-border bg-card p-6 cursor-pointer hover:border-secondary/50 transition-all shadow-md hover:shadow-lg group"
+                className="rounded-[15px] border-2 border-border bg-card p-6 cursor-pointer hover:border-secondary/50 transition-all shadow-md hover:shadow-lg group"
               >
                 <h4 className="text-sm font-bold text-foreground mb-3 pr-8">Career Stagnation</h4>
                 <div className="mb-4">
@@ -1098,7 +1098,7 @@ export default function TestMicro() {
                   ...microsurveyDetails.skillsUnderutilized,
                   chartComponent: <PieChart data={microsurveyData.skillsUnderutilized} />
                 })}
-                className="rounded-2xl border-2 border-border bg-card p-6 cursor-pointer hover:border-secondary/50 transition-all shadow-md hover:shadow-lg group"
+                className="rounded-[15px] border-2 border-border bg-card p-6 cursor-pointer hover:border-secondary/50 transition-all shadow-md hover:shadow-lg group"
               >
                 <h4 className="text-sm font-bold text-foreground mb-3 pr-8">Skills Underutilized</h4>
                 <div className="mb-4">
@@ -1121,7 +1121,7 @@ export default function TestMicro() {
         >
           <div className="container mx-auto px-4 max-w-7xl">
             <div className="mb-8 flex items-center gap-3">
-              <div className="p-3 rounded-2xl bg-primary/10">
+              <div className="p-3 rounded-[15px] bg-primary/10">
                 <Wind className="w-7 h-7 text-primary" />
               </div>
               <h3 className="text-3xl font-black text-foreground">
@@ -1138,7 +1138,7 @@ export default function TestMicro() {
                   ...microsurveyDetails.remoteWorkPreference,
                   chartComponent: <StackedBarChart data={microsurveyData.remoteWorkPreference} height={240} compact={false} />
                 })}
-                className="rounded-2xl border-2 border-border bg-card p-6 cursor-pointer hover:border-primary/50 transition-all shadow-md hover:shadow-lg group"
+                className="rounded-[15px] border-2 border-border bg-card p-6 cursor-pointer hover:border-primary/50 transition-all shadow-md hover:shadow-lg group"
               >
                 <h4 className="text-sm font-bold text-foreground mb-1 pr-8">Remote Work Preference</h4>
                 <p className="text-xs text-muted-foreground mb-3">Distribution of work mode preferences</p>
@@ -1164,7 +1164,7 @@ export default function TestMicro() {
                   ...microsurveyDetails.remoteWorkBalance,
                   chartComponent: <DivergingBarChart data={microsurveyData.remoteWorkBalance} />
                 })}
-                className="rounded-2xl border-2 border-border bg-card p-6 cursor-pointer hover:border-primary/50 transition-all shadow-md hover:shadow-lg group"
+                className="rounded-[15px] border-2 border-border bg-card p-6 cursor-pointer hover:border-primary/50 transition-all shadow-md hover:shadow-lg group"
               >
                 <h4 className="text-sm font-bold text-foreground mb-3 pr-8">Remote Work Balance</h4>
                 <div className="mb-4">
@@ -1194,7 +1194,7 @@ export default function TestMicro() {
               exit={{ scale: 0.9, opacity: 0 }}
               transition={{ type: "spring", duration: 0.5 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-5xl max-h-[90vh] overflow-y-auto bg-white rounded-3xl shadow-2xl"
+              className="relative w-full max-w-5xl max-h-[90vh] overflow-y-auto bg-white rounded-[15px] shadow-2xl"
             >
               {/* Close Button */}
               <button
@@ -1208,7 +1208,7 @@ export default function TestMicro() {
                 {/* Header */}
                 <div className="mb-8">
                   <div className="flex items-start gap-4 mb-4">
-                    <div className="p-3 rounded-2xl bg-primary/10">
+                    <div className="p-3 rounded-[15px] bg-primary/10">
                       <Sparkles className="w-8 h-8 text-primary" />
                     </div>
                     <div className="flex-1">
@@ -1218,24 +1218,23 @@ export default function TestMicro() {
                       {selectedMicrosurvey.score > 0 && (
                         <div className="flex items-center gap-4">
                           <span
-                            className="text-5xl font-black font-number"
+                            className="text-5xl font-black"
                             style={{ 
-                              color: selectedMicrosurvey.status === 'at-risk' ? 'hsl(43 98% 53%)' : 
-                                     selectedMicrosurvey.status === 'healthy' ? 'hsl(251 51% 37%)' : 
-                                     'hsl(343 85% 51%)',
-                              fontFamily: 'Arial, sans-serif'
+                              color: selectedMicrosurvey.status === 'at-risk' ? 'var(--accent)' : 
+                                     selectedMicrosurvey.status === 'healthy' ? 'var(--primary)' : 
+                                     'var(--secondary)'
                             }}
                           >
                             {selectedMicrosurvey.score.toFixed(1)}
                           </span>
-                          <div className="px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide"
+                          <div className="px-3 py-1.5 rounded-[15px] text-xs font-bold uppercase tracking-wide"
                             style={{
-                              backgroundColor: selectedMicrosurvey.status === 'at-risk' ? 'rgba(253, 188, 17, 0.15)' : 
-                                             selectedMicrosurvey.status === 'healthy' ? 'rgba(100, 70, 186, 0.15)' : 
-                                             'rgba(235, 95, 67, 0.15)',
-                              color: selectedMicrosurvey.status === 'at-risk' ? 'hsl(43 98% 53%)' : 
-                                    selectedMicrosurvey.status === 'healthy' ? 'hsl(251 51% 37%)' : 
-                                    'hsl(343 85% 51%)'
+                              backgroundColor: selectedMicrosurvey.status === 'at-risk' ? 'var(--warning-bg)' : 
+                                             selectedMicrosurvey.status === 'healthy' ? 'hsla(251 51% 37% / 0.15)' : 
+                                             'var(--danger-bg)',
+                              color: selectedMicrosurvey.status === 'at-risk' ? 'var(--accent)' : 
+                                    selectedMicrosurvey.status === 'healthy' ? 'var(--primary)' : 
+                                    'var(--secondary)'
                             }}
                           >
                             {selectedMicrosurvey.status === 'at-risk' ? '⚠ At Risk' : 
@@ -1248,12 +1247,12 @@ export default function TestMicro() {
                   </div>
                   
                   {/* Chart */}
-                  <div className="mb-6 p-6 rounded-2xl bg-muted/30">
+                  <div className="mb-6 p-6 rounded-[15px] bg-muted/30">
                     {selectedMicrosurvey.chartComponent}
                   </div>
 
                   {/* Interpretation */}
-                  <div className="p-6 rounded-2xl bg-primary/5 border border-primary/20">
+                  <div className="p-6 rounded-[15px] bg-primary/5 border border-primary/20">
                     <h3 className="text-sm font-bold uppercase tracking-wide text-primary mb-3 flex items-center gap-2">
                       <Lightbulb className="w-4 h-4" />
                       Interpretation
@@ -1273,7 +1272,7 @@ export default function TestMicro() {
                   
                   <div className="space-y-4">
                     {selectedMicrosurvey.recommendations.map((rec: Recommendation, index: number) => (
-                      <div key={index} className="rounded-2xl border-2 border-border/50 bg-card p-5">
+                      <div key={index} className="rounded-[15px] border-2 border-border/50 bg-card p-5">
                         <h4 className="text-lg font-bold text-foreground mb-3">
                           {rec.title}
                         </h4>

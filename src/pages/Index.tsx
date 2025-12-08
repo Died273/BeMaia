@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import AffectingEveryone from "@/components/AffectingEveryone";
 import FeaturesShowcase from "@/components/FeaturesShowcase";
 
+
 const Index = () => {
   return (
   <div className="min-h-screen page-bg">

@@ -13,7 +13,7 @@ import ContactModal from '@/components/ui/ContactModal';
 import Security from "./pages/Security";
 import PrivacyPolicy from "./pages/Privacy";  
 import TermsOfService from "./pages/Terms";
-import Mission from "./pages/Mission"; 
+import Mission from "./pages/Mission";
 import Questionnaire from "./pages/Questionnaire";
 import DbQuestionnaire from "./pages/DbQuestionnaire";
 import Results from "./pages/Results";

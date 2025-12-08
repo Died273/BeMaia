@@ -86,13 +86,13 @@ const PartnerSection = () => {
             >
               <Card
                 className="p-12 bg-white border-2 transition-transform duration-200 hover:scale-105 cursor-pointer"
-                style={{ borderColor: "#B2DD5C" }}
+                style={{ borderColor: "var(--partner-green)" }}
               >
                 <div className="text-center space-y-8">
                   <img
                     src="https://www.byebyeburnout.nl/wp-content/uploads/2018/01/logo-bbb.png"
                     alt="ByeByeBurnout Logo"
-                    className="mx-auto rounded-xl shadow-md"
+                    className="mx-auto rounded-[15px] shadow-md"
                     style={{ width: "400px", maxWidth: "100%", height: "auto" }}
                   />
                   <h3 className="text-3xl font-bold"></h3>
@@ -121,10 +121,10 @@ const PartnerSection = () => {
                   >
                     <Card
                       className="p-6 text-center border-2 transition-transform duration-200 hover:scale-105 cursor-pointer"
-                      style={{ borderColor: "#B2DD5C" }}
+                      style={{ borderColor: "var(--partner-green)" }}
                     >
-                      <item.icon className="w-6 h-6 mx-auto mb-2" style={{ color: "#B2DD5C" }} />
-                      <p className="text-2xl font-bold mb-1" style={{ color: "#B2DD5C" }}>{item.stat}</p>
+                      <item.icon className="w-6 h-6 mx-auto mb-2" style={{ color: "var(--partner-green)" }} />
+                      <p className="text-2xl font-bold mb-1" style={{ color: "var(--partner-green)" }}>{item.stat}</p>
                       <p className="text-xs text-muted-foreground">{item.label}</p>
                     </Card>
                   </motion.div>

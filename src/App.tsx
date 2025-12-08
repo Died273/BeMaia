@@ -18,6 +18,7 @@ import Questionnaire from "./pages/Questionnaire";
 import DbQuestionnaire from "./pages/DbQuestionnaire";
 import Results from "./pages/Results";
 import Login from "./pages/Login";
+import ForgotPassword from "./pages/ForgotPassword";
 import Profile from "./pages/Profile";
 import Surveys from "./pages/Surveys";
 import DashboardCompany from "./pages/Dashboard";
@@ -38,6 +39,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/surveys" element={<Surveys />} />
             <Route path="/team" element={<Team />} />

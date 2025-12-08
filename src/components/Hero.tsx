@@ -7,7 +7,7 @@ export default function Hero() {
           Make Wellbeing<br />Your Advantage
         </h1>
         <p className="text-lg sm:text-xl md:text-2xl text-foreground mb-8 md:mb-12 max-w-3xl px-4">
-          Ensuring you have the tools to retain Gen Z employees in your organization.
+          Future-proof your business by creating a thriving work environment.
         </p>
         <button 
           onClick={() => window.open('https://calendly.com/l-boeker-bemaia/30min', '_blank')}

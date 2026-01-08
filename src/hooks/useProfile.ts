@@ -9,8 +9,8 @@ export const useProfile = () => {
   
   // Profile form state
   const [email, setEmail] = useState('');
-  const [fullName, setFullName] = useState('');
   const [company, setCompany] = useState('');
+  const [companyRole, setCompanyRole] = useState('');
   const [saving, setSaving] = useState(false);
   
   // Password change state
@@ -42,16 +42,17 @@ export const useProfile = () => {
       setUser(user);
       setEmail(user.email || '');
       
-      // Fetch additional profile data from your database if you have a profiles table
-      // const { data: profile } = await supabase
-      //   .from('profiles')
-      //   .select('*')
-      //   .eq('id', user.id)
-      //   .single();
-      // if (profile) {
-      //   setFullName(profile.full_name || '');
-      //   setCompany(profile.company || '');
-      // }
+      // Fetch additional profile data from database
+      const { data: profile } = await supabase
+        .from('profile')
+        .select('*')
+        .eq('auth_user_id', user.id)
+        .single();
+      
+      if (profile) {
+        setCompany(profile.company || '');
+        setCompanyRole(profile.company_role || '');
+      }
     } catch (error) {
       console.error('Error fetching user:', error);
     } finally {
@@ -67,20 +68,41 @@ export const useProfile = () => {
   const handleSaveProfile = async () => {
     setSaving(true);
     try {
-      // Update profile in your database
-      // const { error } = await supabase
-      //   .from('profiles')
-      //   .update({
-      //     full_name: fullName,
-      //     company: company,
-      //   })
-      //   .eq('id', user.id);
+      // Check if profile exists
+      const { data: existingProfile } = await supabase
+        .from('profile')
+        .select('auth_user_id')
+        .eq('auth_user_id', user.id)
+        .single();
+
+      if (existingProfile) {
+        // Update existing profile
+        const { error } = await supabase
+          .from('profile')
+          .update({
+            company: company,
+            company_role: companyRole,
+          })
+          .eq('auth_user_id', user.id);
+        
+        if (error) throw error;
+      } else {
+        // Create new profile
+        const { error } = await supabase
+          .from('profile')
+          .insert({
+            auth_user_id: user.id,
+            company: company,
+            company_role: companyRole,
+          });
+        
+        if (error) throw error;
+      }
       
-      // if (error) throw error;
       alert('Profile updated successfully!');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error updating profile:', error);
-      alert('Error updating profile');
+      alert('Error updating profile: ' + (error.message || 'Unknown error'));
     } finally {
       setSaving(false);
     }
@@ -231,8 +253,8 @@ export const useProfile = () => {
     loading,
     user,
     email,
-    fullName,
     company,
+    companyRole,
     saving,
     newPassword,
     confirmPassword,
@@ -248,8 +270,8 @@ export const useProfile = () => {
     
     // Setters
     setEmail,
-    setFullName,
     setCompany,
+    setCompanyRole,
     setNewPassword,
     setConfirmPassword,
     setShowNewPassword,

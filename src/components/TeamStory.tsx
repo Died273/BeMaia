@@ -29,8 +29,8 @@ export default function TeamStory() {
             {/* Text Content */}
             <div className="flex-1">
               <p className="text-xl text-foreground leading-relaxed">
-                BeMaia started at the University of Amsterdam Entrepreneurship minor, with the 
-                wish to improve peoples working lives.
+                BeMaia was founded during the University of Amsterdam Entrepreneurship minor, with the 
+                goal of improving people's working lives.
               </p>
             </div>
           </div>

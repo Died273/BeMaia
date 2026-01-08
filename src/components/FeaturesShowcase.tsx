@@ -55,7 +55,7 @@ export default function FeaturesShowcase() {
               Adapt to new<br />challenges
             </h2>
             <p className="text-base sm:text-lg text-foreground max-w-md mx-auto lg:mx-0">
-              Adapt your organizations working environment to your employees needs. Preventing potential burnouts, reducing stress and fostering a culture of high performing staff.
+              Adjust your organization's working environment to your employees' needs. Preventing burnout, reducing stress and fostering a high-performance culture.
             </p>
           </div>
           <div className="lg:w-1/2 w-full">
@@ -142,7 +142,7 @@ export default function FeaturesShowcase() {
               Create meaningful<br />change
             </h2>
             <p className="text-base sm:text-lg text-foreground max-w-md mx-auto lg:mx-0">
-              Change your procedures and working environment to benefit your employees wellbeing. Saving costs, improving retention and attracting the top talent from future generations.
+              Update procedures and working environment to benefit employees' well-being. Saving costs, improving retention and attracting the top talent from future generations.
             </p>
           </div>
           <div className="lg:w-1/2 w-full flex justify-center lg:justify-end">

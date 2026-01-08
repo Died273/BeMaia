@@ -31,7 +31,7 @@ export default function MentalHealthSection() {
                  fontSize: 'clamp(1rem, 1.5vw, 1.5rem)',
                  maxWidth: 'clamp(20rem, 30vw, 32rem)'
                }}>
-              The modern workplace is facing a crisis, affecting companies and their employees alike. BeMaia helps organizations adapt to the future.
+              The modern workplace faces a crisis, impacting companies and their employees alike. BeMaia helps organizations adapt for the future.
             </p>
           </div>
 
@@ -89,7 +89,7 @@ export default function MentalHealthSection() {
                  }}>
               <div className="flex flex-col justify-center flex-1 min-w-0">
                 <span className="font-bold text-foreground leading-none" 
-                      style={{ fontSize: 'clamp(2rem, 5vw, 6rem)' }}>3.2 B</span>
+                      style={{ fontSize: 'clamp(2rem, 5vw, 6rem)' }}>€3.2 billion</span>
                 <span className="font-bold text-foreground leading-none" 
                       style={{ fontSize: 'clamp(1.75rem, 4.5vw, 5rem)' }}>lost</span>
                 <p className="text-foreground font-medium" 
@@ -136,7 +136,7 @@ export default function MentalHealthSection() {
                  fontSize: 'clamp(1rem, 1.5vw, 1.5rem)',
                  maxWidth: 'clamp(20rem, 30vw, 32rem)'
                }}>
-              Organizations who adapt with their employees needs are more competitive. Ensuring the future of companies by attracting talent.
+              Organizations that adapt to their employees' needs are more competitive. Ensuring the future of companies by attracting talent.
             </p>
           </div>
 

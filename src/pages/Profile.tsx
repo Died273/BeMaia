@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,23 +13,27 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import { User, Settings, FileText, Lock, LogOut, Menu, X, Eye, EyeOff, Trash2, AlertTriangle, ChevronRight, Download } from 'lucide-react';
+import { User, Settings, Lock, LogOut, Menu, X, Eye, EyeOff, Trash2, AlertTriangle, ChevronRight, Download, Cookie } from 'lucide-react';
 import { useProfile } from '@/hooks/useProfile';
+import { getCookiePreferences, resetCookieConsent, initializeAnalytics, canUseAnalytics } from '@/lib/cookie-manager';
+import { Switch } from '@/components/ui/switch';
 
-type MenuSection = 'profile' | 'settings' | 'surveys' | 'security';
+type MenuSection = 'profile' | 'settings' | 'security';
 
 const Profile = () => {
   const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState<MenuSection>('profile');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showMyDataSection, setShowMyDataSection] = useState(false);
-  
+  const [showCookieSection, setShowCookieSection] = useState(false);
+  const [analyticsEnabled, setAnalyticsEnabled] = useState(false);
+
   const {
     loading,
     user,
     email,
-    fullName,
     company,
+    companyRole,
     saving,
     newPassword,
     confirmPassword,
@@ -42,8 +46,8 @@ const Profile = () => {
     showDeleteAccountDialog,
     deletingData,
     deletingAccount,
-    setFullName,
     setCompany,
+    setCompanyRole,
     setNewPassword,
     setConfirmPassword,
     setShowNewPassword,
@@ -59,10 +63,27 @@ const Profile = () => {
 
   const menuItems = [
     { id: 'profile' as MenuSection, label: 'Profile', icon: User },
-    { id: 'surveys' as MenuSection, label: 'My Surveys', icon: FileText },
     { id: 'security' as MenuSection, label: 'Password', icon: Lock },
     { id: 'settings' as MenuSection, label: 'Settings', icon: Settings },
   ];
+
+  // Load cookie preferences on mount
+  useEffect(() => {
+    const prefs = getCookiePreferences();
+    setAnalyticsEnabled(prefs?.analytics ?? false);
+  }, []);
+
+  const handleCookiePreferenceChange = (analytics: boolean) => {
+    setAnalyticsEnabled(analytics);
+    const preferences = { analytics };
+    localStorage.setItem("cookieConsent", JSON.stringify(preferences));
+    localStorage.setItem("cookieConsentDate", new Date().toISOString());
+    initializeAnalytics();
+  };
+
+  const handleResetCookieConsent = () => {
+    resetCookieConsent();
+  };
 
   if (loading) {
     return (
@@ -96,17 +117,6 @@ const Profile = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="fullName">Full Name</Label>
-                <Input
-                  id="fullName"
-                  type="text"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  placeholder="Enter your full name"
-                />
-              </div>
-
-              <div className="space-y-2">
                 <Label htmlFor="company">Company</Label>
                 <Input
                   id="company"
@@ -117,29 +127,19 @@ const Profile = () => {
                 />
               </div>
 
+              <div className="space-y-2">
+                <Label htmlFor="companyRole">Company Role</Label>
+                <Input
+                  id="companyRole"
+                  type="text"
+                  value={companyRole}
+                  onChange={(e) => setCompanyRole(e.target.value)}
+                  placeholder="Enter your role at the company"
+                />
+              </div>
+
               <Button onClick={handleSaveProfile} disabled={saving}>
                 {saving ? 'Saving...' : 'Save Changes'}
-              </Button>
-            </div>
-          </div>
-        );
-
-      case 'surveys':
-        return (
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-2xl font-bold text-foreground mb-2">My Surveys</h2>
-              <p className="text-muted-foreground">View and manage your survey responses</p>
-            </div>
-            <div className="bg-muted/50 rounded-lg p-8 text-center">
-              <FileText className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
-              <p className="text-muted-foreground">No surveys completed yet</p>
-              <Button 
-                variant="outline" 
-                className="mt-4"
-                onClick={() => navigate('/questionnaire')}
-              >
-                Take a Survey
               </Button>
             </div>
           </div>
@@ -286,6 +286,86 @@ const Profile = () => {
             </div>
             
             <div className="space-y-4">
+              {/* Cookie Management Section */}
+              <div className="border border-border rounded-lg">
+                <button
+                  onClick={() => setShowCookieSection(!showCookieSection)}
+                  className="w-full flex items-center justify-between p-4 hover:bg-muted/50 transition-colors rounded-lg"
+                >
+                  <div className="flex items-center gap-3">
+                    <Cookie className="w-5 h-5 text-muted-foreground" />
+                    <span className="text-lg font-semibold text-foreground">Cookie Management</span>
+                  </div>
+                  <ChevronRight 
+                    className={`w-5 h-5 text-muted-foreground transition-transform ${showCookieSection ? 'rotate-90' : ''}`} 
+                  />
+                </button>
+                
+                {showCookieSection && (
+                  <div className="border-t border-border p-4 space-y-4">
+                    <div className="mb-4">
+                      <p className="text-sm text-muted-foreground mb-4">
+                        Manage your cookie preferences. You can enable or disable analytics cookies at any time. 
+                        For more information, see our{" "}
+                        <a href="/cookies" className="text-accent hover:underline">
+                          Cookie Policy
+                        </a>.
+                      </p>
+                    </div>
+
+                    {/* Necessary Cookies */}
+                    <div className="flex items-start justify-between p-4 bg-muted/50 rounded-lg">
+                      <div className="flex-1 pr-4">
+                        <div className="flex items-center gap-2 mb-2">
+                          <h4 className="font-semibold">Necessary Cookies</h4>
+                          <span className="text-xs bg-accent/20 text-accent px-2 py-0.5 rounded">
+                            Always Active
+                          </span>
+                        </div>
+                        <p className="text-sm text-muted-foreground">
+                          These cookies are essential for the website to function properly. 
+                          They enable basic functions like page navigation and access to secure areas.
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Analytics Cookies */}
+                    <div className="flex items-start justify-between p-4 bg-muted/50 rounded-lg">
+                      <div className="flex-1 pr-4">
+                        <h4 className="font-semibold mb-2">Analytics Cookies (Google Analytics)</h4>
+                        <p className="text-sm text-muted-foreground">
+                          We use Google Analytics to understand how visitors interact with our website 
+                          by collecting and reporting information anonymously. This helps us improve our services.
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <Switch
+                          checked={analyticsEnabled}
+                          onCheckedChange={handleCookiePreferenceChange}
+                          aria-label="Toggle analytics cookies"
+                        />
+                        <span className="text-sm font-medium min-w-[60px]">
+                          {analyticsEnabled ? 'Enabled' : 'Disabled'}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="pt-2">
+                      <Button
+                        variant="outline"
+                        onClick={handleResetCookieConsent}
+                        className="w-full sm:w-auto"
+                      >
+                        Reset Cookie Preferences
+                      </Button>
+                      <p className="text-xs text-muted-foreground mt-2">
+                        This will clear your current preferences and show the cookie consent banner again.
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+
               {/* My Data Expandable Section */}
               <div className="border border-border rounded-lg">
                 <button

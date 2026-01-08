@@ -13,9 +13,8 @@ export default function TeamHero() {
         
         {/* Subheading */}
         <p className="text-xl md:text-2xl text-foreground mb-12 leading-relaxed">
-          Our founding team consists out of Gen Z experts<br />
-          since they themselves are part of the awesome<br />
-          generation.
+          Our founding team consists of Gen Z experts<br />
+          as they themselves belong to this dynamic generation.<br />
         </p>
         
         {/* CTA Button */}
